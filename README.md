@@ -1,11 +1,11 @@
-# - [ ] Users register for an account.
-# - [ ] Users pull existing contacts from Google Contacts API.
-# - [ ] Users pull existing contacts from Outlook API.
-# - [ ] Users manually input contacts.
+- [ ] Users register for an account.
+- [ ] Users pull existing contacts from Google Contacts API.
+- [ ] Users pull existing contacts from Outlook API.
+- [ ] Users manually input contacts.
 
 
-# - [ ]Users create remindrs.
- - [ ] Necessary:
+ - [ ] #Users create remindrs.
+ - [ ] ##Necessary:
  - [ ] Title
  - [ ] Date (start & end)
  - [ ] Time (start & end time)
@@ -15,7 +15,7 @@
  - [ ] Upload picture (Filestack API)
 
 
-# Goodies:
+ - [ ] ## Goodies:
  - [ ] Category for remindrs for user organization
  - [ ] Templates for categories
  - [ ] Are participants viewable?
