@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/partials :: head('Your profile')">
+</head>
+<body>
+
+<nav th:replace="fragments/partials :: navbar"></nav>
+
+<h2>Profile: </h2>
+<div sec:authorize="isAuthenticated()">
+
+    First name: <span th:text="${#authentication.principal.firstName}"/>
+    Username: <span th:text="${#authentication.principal.username}"/>
+    Email: <span th:text="${#authentication.principal.email}"/>
+</div>
+
+<div sec:authorize="!isAuthenticated()">
+    Please log in
+</div>
+
+<div th:include="fragments/partials :: scripts"></div>
+</body>
+</html>

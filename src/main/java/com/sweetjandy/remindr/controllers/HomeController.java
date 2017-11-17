@@ -4,12 +4,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class HelloWorld {
+public class HomeController {
 
-    @GetMapping("/hello")
+    @GetMapping("/")
     @ResponseBody
-    public String hello() {
-        return "Hello, world!";
+    public String landing() {
+        return "Landing page";
     }
 
 }
