@@ -7,16 +7,20 @@
 <nav th:replace="fragments/partials :: navbar"></nav>
 
 <h2>Profile: </h2>
-<div sec:authorize="isAuthenticated()">
+<!--<div>-->
+        <!--sec:authorize="isAuthenticated()"-->
+<!--&gt;-->
 
-    First name: <span th:text="${#authentication.principal.firstName}"/>
-    Username: <span th:text="${#authentication.principal.username}"/>
-    Email: <span th:text="${#authentication.principal.email}"/>
-</div>
+    <!--First name: <span th:text="${firstName}"/>-->
+    <!--#authentication.principal.firstName}"/>-->
+    <!--Email: <span th:text="${username}"/>-->
+    <!--#authentication.principal.username-->
+    <!--}"/>-->
+<!--</div>-->
 
-<div sec:authorize="!isAuthenticated()">
-    Please log in
-</div>
+<!--<div sec:authorize="!isAuthenticated()">-->
+    <!--Please log in-->
+<!--</div>-->
 
 <div th:include="fragments/partials :: scripts"></div>
 </body>
