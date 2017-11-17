@@ -3,6 +3,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.*;
+
 
 @Entity
 @Table(name = "users")
@@ -34,6 +36,7 @@ public class User {
     @NotBlank(message = "Password cannot be blank")
     private String password;
 
+    public User () {}
 
     public User(long id, String firstName, String lastName, String phoneNumber, String username, String password) {
         this.id = id;
