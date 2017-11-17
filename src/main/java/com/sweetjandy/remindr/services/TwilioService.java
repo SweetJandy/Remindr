@@ -21,7 +21,7 @@ public class TwilioService {
 
         Message message = Message
                 .creator(phoneNumberTo, phoneNumberFrom,
-                        "Hi Amy! It works!")
+                        "Hello from remindr!")
                 .setMediaUrl(mediaURL)
                 .create();
 
