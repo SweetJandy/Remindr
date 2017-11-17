@@ -66,7 +66,7 @@ public class UsersController {
         if (validation.hasErrors()) {
             viewModel.addAttribute("errors", validation);
             viewModel.addAttribute("user", user);
-            return "users/registration";
+            return "users/register";
         }
 
 
@@ -77,5 +77,34 @@ public class UsersController {
         repository.save(user);
         return "redirect:/login";
     }
+
+    @GetMapping("/login")
+    public String showLoginForm() {
+        return "users/login";
+    }
+
+    @PostMapping("/login")
+    public String loginUser(@Valid User user, Errors validation, Model viewModel) {
+
+        User existingUser = repository.findByUsername(user.getUsername());
+
+        if (validation.hasErrors()) {
+            viewModel.addAttribute("errors", validation);
+            viewModel.addAttribute("user", user);
+            return "users/login";
+        }
+
+        return "redirect:/profile";
+
+    }
+
+    @GetMapping("/profile")
+    public String profile(Model model){
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+//        model.addAttribute("user", user);
+        return "users/profile";
+    }
+
 }
 
