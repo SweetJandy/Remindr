@@ -25,27 +25,28 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-left">
-                <li sec:authorize="!isAuthenticated()">
+                <!--<li sec:authorize="!isAuthenticated()">-->
                     <a href="/login">Login</a>
-                </li>
-                <li sec:authorize="!isAuthenticated()">
+                <!--</li>-->
+                <!--<li sec:authorize="!isAuthenticated()">-->
                     <a href="/register">Register</a>
-                </li>
+                <!--</li>-->
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li sec:authorize="isAuthenticated()">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Welcome, <span th:text="${#authentication.principal.firstName}"><span class="caret"></span></span></a>
+                <!--<li sec:authorize="isAuthenticated()">-->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Welcome</a>
+                        <!--,<span th:text="${#authentication.principal.firstName}"><span class="caret"></span></span></a>-->
                     <ul class="dropdown-menu">
                         <li><a href="/profile">View profile</a></li>
                     </ul>
-                </li>
-                <li sec:authorize="isAuthenticated()">
+                <!--</li>-->
+                <!--<li sec:authorize="isAuthenticated()">-->
                     <form th:action="@{/logout}" th:method="post">
                         <button class="btn-link btn" style="margin-top: 8px">
                             Logout
                         </button>
                     </form>
-                </li>
+                <!--</li>-->
             </ul>
 
         </div><!-- /.navbar-collapse -->
