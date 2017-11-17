@@ -15,7 +15,7 @@
 - [ ] Upload picture (Filestack API)
 
 
-- [ ] ## Goodies:
+- [ ] ##Goodies:
 - [ ] Category for remindrs for user organization
 - [ ] Templates for categories
 - [ ] Are participants viewable?
