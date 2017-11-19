@@ -33,7 +33,7 @@ public class User {
 
     @ManyToMany(cascade = ALL)
     @JoinTable(
-            name = "user_contacts",
+            name = "user_contact",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "contacts_id")}
     )

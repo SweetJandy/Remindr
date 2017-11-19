@@ -1,10 +1,13 @@
 package com.sweetjandy.remindr.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.List;
+
+import static javax.persistence.CascadeType.ALL;
 
 @Entity
 @Table(name = "contacts")
@@ -28,21 +31,33 @@ public class Contact {
     @Size(min = 10, message = "The phone number must be at least 10 digits long")
     private String phoneNumber;
 
-    @Column(nullable = false, unique = true)
-    @NotBlank(message = "Google Contact Id cannot be blank")
+    @Column(nullable = true, unique = true)
+//    @NotBlank(message = "Google Contact Id cannot be blank")
     private long googleContact;
 
-    @Column(nullable = false, unique = true)
-    @NotBlank(message = "Outlook Id cannot be blank")
+    @Column(nullable = true, unique = true)
+//    @NotBlank(message = "Outlook Id cannot be blank")
     private long OutlookContact;
 
-    @Column(nullable = false, length = 6, unique = true)
+    @Column(nullable = false, length = 4, unique = true)
     @NotBlank(message = "Posts must have a description!")
-    @Size(min = 6, message = "The secret code is 6 character long")
+    @Size(min = 4, message = "The secret code is 6 character long")
     private long secretCode;
+
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contact")
+//    @JsonBackReference
+//    private List<Reminder> reminders;
 
     @ManyToMany(mappedBy = "contacts")
     private List<User> users;
+
+    @ManyToMany(cascade = ALL)
+    @JoinTable(
+            name = "contact_reminder",
+            joinColumns = {@JoinColumn(name = "contact_id")},
+            inverseJoinColumns = {@JoinColumn(name = "reminder_id")}
+    )
+    private List<Reminder> reminders;
 
     public Contact() {
     }
@@ -120,5 +135,13 @@ public class Contact {
     public void setUsers(List<User> users) {
         this.users = users;
     }
+
+//    public List<Reminder> getReminders() {
+//        return reminders;
+//    }
+//
+//    public void setReminders(List<Reminder> reminders) {
+//        this.reminders = reminders;
+//    }
 
 }
