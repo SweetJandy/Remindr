@@ -86,13 +86,13 @@ public class UsersController {
     @PostMapping("/login")
     public String loginUser(@Valid User user, Errors validation, Model viewModel) {
 
-        User existingUser = repository.findByUsername(user.getUsername());
-
-        if (validation.hasErrors()) {
-            viewModel.addAttribute("errors", validation);
-            viewModel.addAttribute("user", user);
-            return "users/login";
-        }
+//        User existingUser = repository.findByUsername(user.getUsername());
+//
+//        if (validation.hasErrors()) {
+//            viewModel.addAttribute("errors", validation);
+//            viewModel.addAttribute("user", user);
+//            return "users/login";
+//        }
 
         return "redirect:/profile";
 
