@@ -6,6 +6,10 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 
+import java.util.List;
+
+import static javax.persistence.CascadeType.ALL;
+
 
 @Entity
 @Table(name = "users")
@@ -26,6 +30,15 @@ public class User {
 
     @OneToOne
     private Contact contact;
+
+    @ManyToMany(cascade = ALL)
+    @JoinTable(
+            name = "user_contacts",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "contacts_id")}
+    )
+    private List<Contact> contacts;
+
 
     public User() {
     }
@@ -67,7 +80,15 @@ public class User {
         return contact;
     }
 
-    public void setUser(Contact contact) {
+    public void setContact(Contact contact) {
         this.contact = contact;
+    }
+
+    public List<Contact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
     }
 }

@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "contacts")
@@ -39,6 +40,9 @@ public class Contact {
     @NotBlank(message = "Posts must have a description!")
     @Size(min = 6, message = "The secret code is 6 character long")
     private long secretCode;
+
+    @ManyToMany(mappedBy = "contacts")
+    private List<User> users;
 
     public Contact() {
     }
@@ -107,6 +111,14 @@ public class Contact {
 
     public void setSecretCode(long secretCode) {
         this.secretCode = secretCode;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
 }
