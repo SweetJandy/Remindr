@@ -1,6 +1,5 @@
 package com.sweetjandy.remindr.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -18,7 +17,6 @@ public class Contact {
     private long id;
 
     @Column(nullable = false)
-
     @NotBlank(message = "First name cannot be blank")
     private String firstName;
 
@@ -32,11 +30,9 @@ public class Contact {
     private String phoneNumber;
 
     @Column(nullable = true, unique = true)
-//    @NotBlank(message = "Google Contact Id cannot be blank")
     private long googleContact;
 
     @Column(nullable = true, unique = true)
-//    @NotBlank(message = "Outlook Id cannot be blank")
     private long OutlookContact;
 
     @Column(nullable = false, length = 4, unique = true)
@@ -44,9 +40,6 @@ public class Contact {
     @Size(min = 4, message = "The secret code is 6 character long")
     private long secretCode;
 
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contact")
-//    @JsonBackReference
-//    private List<Reminder> reminders;
 
     @ManyToMany(mappedBy = "contacts")
     private List<User> users;
@@ -136,12 +129,11 @@ public class Contact {
         this.users = users;
     }
 
-//    public List<Reminder> getReminders() {
-//        return reminders;
-//    }
-//
-//    public void setReminders(List<Reminder> reminders) {
-//        this.reminders = reminders;
-//    }
+    public List<Reminder> getReminders() {
+        return reminders;
+    }
 
+    public void setReminders(List<Reminder> reminders) {
+        this.reminders = reminders;
+    }
 }

@@ -1,12 +1,14 @@
 package com.sweetjandy.remindr.models;
 
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import org.hibernate.validator.constraints.NotBlank;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+
 import java.util.List;
 
 @Entity
@@ -28,11 +30,11 @@ public class Reminder {
 
     @Column(nullable = false)
     @NotBlank(message = "Reminders must have a start date")
-    private LocalDateTime startDate;
+    private DateTime startDate;
 
     @Column(nullable = false)
     @NotBlank(message = "Reminders must have a end date")
-    private LocalDateTime endDate;
+    private DateTime endDate;
 
     @Column(nullable = false)
     @NotBlank(message = "Reminders must have a location")
@@ -42,25 +44,27 @@ public class Reminder {
     @NotBlank(message = "Must choose if you want to make the view public")
     private Boolean publicView;
 
-    @ManyToOne
-    @JsonManagedReference
-    private Contact contact;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "reminder")
+    @JsonBackReference
+    private List<Alert> alerts;
 
     @ManyToMany(mappedBy = "reminders")
     private List<Contact> contacts;
 
-    public Reminder(){}
+
+    public Reminder() {
+    }
 
 
-    public Reminder(String title, String description, LocalDateTime startDate, LocalDateTime endDate, String location, Boolean publicView, Contact contact) {
+    public Reminder(String title, String description, DateTime startDate, DateTime endDate, String location, Boolean publicView) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.location = location;
         this.publicView = publicView;
-        this.contact = contact;
+//        this.contact = contact;
     }
 
     public long getId() {
@@ -87,19 +91,19 @@ public class Reminder {
         this.description = description;
     }
 
-    public LocalDateTime getStartDate() {
+    public DateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(DateTime startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getEndDate() {
+    public DateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(DateTime endDate) {
         this.endDate = endDate;
     }
 
@@ -119,19 +123,19 @@ public class Reminder {
         this.publicView = publicView;
     }
 
-    public Contact getContact() {
-        return contact;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
-    }
-
     public List<Contact> getContacts() {
         return contacts;
     }
 
     public void setContacts(List<Contact> contacts) {
         this.contacts = contacts;
+    }
+
+    public List<Alert> getAlerts() {
+        return alerts;
+    }
+
+    public void setAlerts(List<Alert> alerts) {
+        this.alerts = alerts;
     }
 }

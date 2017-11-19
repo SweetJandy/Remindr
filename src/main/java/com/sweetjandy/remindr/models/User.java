@@ -21,6 +21,7 @@ public class User {
 
     @Column(nullable = false)
     @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Email must have an @ symbol")
     private String username;
 
     @Column(nullable = false)
