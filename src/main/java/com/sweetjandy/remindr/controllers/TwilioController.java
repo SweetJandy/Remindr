@@ -44,18 +44,17 @@ public class TwilioController {
 
 
         Body body = new Body("Sorry, try again.");
-        Body optIn = new Body("You have opted in to the Remindr.");
+        Body optIn = new Body("Congratulations! You have opted in to the Remindr. Text STOP to opt out at any time.");
         Body optOut = new Body("You have opted out of the Remindr.");
 
         if (bodyParam.equalsIgnoreCase("yes")) {
             return twilioSvc.setResponse(optIn);
-        } else if (bodyParam.equalsIgnoreCase("no")){
+        } else if (bodyParam.equalsIgnoreCase("no") || bodyParam.equalsIgnoreCase("stop")){
             return twilioSvc.setResponse(optOut);
         }
 
         return twilioSvc.setResponse(body);
 
     }
-
 
 }

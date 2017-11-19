@@ -26,7 +26,7 @@ public class TwilioService extends HttpServlet {
 
         com.twilio.rest.api.v2010.account.Message message = com.twilio.rest.api.v2010.account.Message
                     .creator(phoneNumberTo, phoneNumberFrom,
-                            "Hi Amy! It works!")
+                            "You have been added to a Remindr! Would you like to receive alerts? Reply YES/NO.")
                     .setMediaUrl(mediaURL)
                     .create();
 
