@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -30,11 +31,11 @@ public class Reminder {
 
     @Column(nullable = false)
     @NotBlank(message = "Reminders must have a start date")
-    private DateTime startDate;
+    private Date startDate;
 
     @Column(nullable = false)
     @NotBlank(message = "Reminders must have a end date")
-    private DateTime endDate;
+    private Date endDate;
 
     @Column(nullable = false)
     @NotBlank(message = "Reminders must have a location")
@@ -57,7 +58,7 @@ public class Reminder {
     }
 
 
-    public Reminder(String title, String description, DateTime startDate, DateTime endDate, String location, Boolean publicView) {
+    public Reminder(String title, String description, Date startDate, Date endDate, String location, Boolean publicView) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
@@ -91,19 +92,19 @@ public class Reminder {
         this.description = description;
     }
 
-    public DateTime getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(DateTime startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public DateTime getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(DateTime endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
