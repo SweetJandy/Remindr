@@ -16,7 +16,6 @@ import java.util.Map;
 
 import static ognl.DynamicSubscript.all;
 
-
 @Controller
 public class TwilioController {
 
@@ -30,7 +29,7 @@ public class TwilioController {
     @ResponseBody
     public String sendSMS () {
 
-        return twilioSvc.sendASMS(new PhoneNumber("+17203930339"), new PhoneNumber("+12104053232"), "https://cdn.pixabay.com/photo/2013/12/12/03/08/kitten-227009_960_720.jpg");
+        return twilioSvc.sendASMS(new PhoneNumber("+12102793042"), new PhoneNumber("+12104053232"), "https://cdn.pixabay.com/photo/2013/12/12/03/08/kitten-227009_960_720.jpg");
     }
 
     @RequestMapping(value ="/replySMS", produces = "text/xml")

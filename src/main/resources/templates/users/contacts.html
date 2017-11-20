@@ -1,13 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/fragments/partials :: head('Import contacts')"></head>
-<meta charset="UTF-8" />
-</head>
+<head th:replace="/fragments/partials :: head('Contacts')"></head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
 
-<h1>Authorize contacts</h1>
+<div class="container">
+    <div class="row">
+        <h1>View all contacts:</h1>
+
+        <a class="btn btn-primary" th:href="${authorizationUrl}">Authorize google</a>
+
+        <!--Hard-coded-->
+        <div>
+            <h2>First and last name</h2>
+            <h4>Phone number</h4>
+        </div>
+
+        <div>
+            <h2>First and last name</h2>
+            <h4>Phone number</h4>
+        </div>
+
+        <div>
+            <h2>First and last name</h2>
+            <h4>Phone number</h4>
+        </div>
+
+        <!--Dynamic -->
+        <!--<div th:each="contact : ${contacts}">-->
+            <!--<h2><a th:href="${'/contacts/' + contacts.id}" th:text="${contacts.firstName} + ' ' + ${contacts.lastName}"></a></h2>-->
+            <!--<h4 th:text="${contacts.phoneNumber}"></h4></a>-->
+        <!--</div>-->
+    </div>
+</div>
 
 <div th:replace="/fragments/partials :: scripts"></div>
+<script src="/scripts/google.js"></script>
 </body>
 </html>

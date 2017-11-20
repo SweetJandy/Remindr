@@ -1,4 +1,5 @@
 package com.sweetjandy.remindr.controllers;
+import com.sweetjandy.remindr.models.Contact;
 import com.sweetjandy.remindr.models.User;
 import com.sweetjandy.remindr.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.validation.Valid;
 
 
@@ -75,7 +78,7 @@ public class UsersController {
 
         user.setPassword(user.getPassword());
         repository.save(user);
-        return "redirect:/login";
+        return "redirect:/profile";
     }
 
     @GetMapping("/login")
@@ -97,6 +100,19 @@ public class UsersController {
         return "redirect:/profile";
 
     }
+
+//    Delete because Brandon added to contacts controller
+//    @GetMapping("/contacts/add")
+//    public String showAddContactsForm(Model viewModel) {
+//        viewModel.addAttribute("contact", new Contact());
+//
+//        return "users/add-contacts";
+//    }
+//
+//    @PostMapping("/contacts/add")
+//    public String addContactForm(@Valid User user, Errors validation, Model viewModel) {
+//        return "redirect:/contacts";
+//    }
 
     @GetMapping("/profile")
     public String profile(Model model){

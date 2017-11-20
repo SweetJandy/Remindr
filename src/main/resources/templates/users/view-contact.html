@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/partials :: head('View contact')"></head>
+</head>
+<body>
+<nav th:replace="/fragments/partials :: navbar"></nav>
+
+<div class="container">
+    <div class="row">
+        <h1>View contact:</h1>
+
+        <h2><a th:href="${'/contacts/' + contacts.id}" th:text="${contacts.firstName} + ' ' + ${contacts.lastName}"></a></h2>
+        <h4 th:text="${contacts.phoneNumber}"></h4></a>
+
+    </div>
+</div>
+
+<div th:replace="/fragments/partials :: scripts"></div>
+</body>
+</html>
