@@ -1,6 +1,8 @@
 package com.sweetjandy.remindr.controllers;
+
 import com.sweetjandy.remindr.models.Contact;
 import com.sweetjandy.remindr.models.User;
+import com.sweetjandy.remindr.repositories.ContactsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,22 +10,23 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 
 
 @Controller
 public class UsersController {
-    private UsersRepository repository;
+    private UsersRepository usersRepository;
+    private ContactsRepository contactsRepository;
 //    private PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public UsersController(UsersRepository repository
-//                            ,PasswordEncoder passwordEncoder
-    ) {
-        this.repository = repository;
+    public UsersController(UsersRepository usersRepository, ContactsRepository contactsRepository
+// ,PasswordEncoder passwordEncoder
+                           ) {
+        this.usersRepository = usersRepository;
+        this.contactsRepository = contactsRepository;
 //        this.passwordEncoder = passwordEncoder;
     }
 
@@ -34,14 +37,24 @@ public class UsersController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@Valid User user, Errors validation, Model viewModel) {
+    public String registerUser(@Valid User user, @Valid Contact contact, Errors validation, Model viewModel) {
 
 //    user.setPassword(passwordEncoder.encode(user.getPassword()));
 //   place the hashing encoder to storing password in a variable
 
-        User existingUser = repository.findByUsername(user.getUsername());
+        User existingUser = usersRepository.findByUsername(user.getUsername());
 
-//        User existingEmail = repository.findByEmail(user.getEmail());
+        Contact existingPhoneNumber = contactsRepository.findByPhoneNumber(contact.getPhoneNumber());
+
+        if (existingPhoneNumber != null) {
+            validation.rejectValue(
+                    "phoneNumber",
+                    "contact.phoneNumber",
+                    "Phone number is already taken"
+            );
+        }
+
+//        User existingEmail = usersRepository.findByEmail(user.getEmail());
 
         if (existingUser != null) {
             validation.rejectValue(
@@ -75,10 +88,11 @@ public class UsersController {
 
 //        String hashPassword = passwordEncoder.encode(user.getPassword());
 
+        user.setContact(contact);
 
         user.setPassword(user.getPassword());
-        repository.save(user);
-        return "redirect:/profile";
+        usersRepository.save(user);
+        return "redirect:/login";
     }
 
     @GetMapping("/login")
@@ -89,7 +103,7 @@ public class UsersController {
     @PostMapping("/login")
     public String loginUser(@Valid User user, Errors validation, Model viewModel) {
 
-//        User existingUser = repository.findByUsername(user.getUsername());
+//        User existingUser = usersRepository.findByUsername(user.getUsername());
 //
 //        if (validation.hasErrors()) {
 //            viewModel.addAttribute("errors", validation);
@@ -101,21 +115,8 @@ public class UsersController {
 
     }
 
-//    Delete because Brandon added to contacts controller
-//    @GetMapping("/contacts/add")
-//    public String showAddContactsForm(Model viewModel) {
-//        viewModel.addAttribute("contact", new Contact());
-//
-//        return "users/add-contacts";
-//    }
-//
-//    @PostMapping("/contacts/add")
-//    public String addContactForm(@Valid User user, Errors validation, Model viewModel) {
-//        return "redirect:/contacts";
-//    }
-
     @GetMapping("/profile")
-    public String profile(Model model){
+    public String profile(Model model) {
 //        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 //        model.addAttribute("user", user);

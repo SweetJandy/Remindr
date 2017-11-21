@@ -20,21 +20,22 @@ public class Alert {
     private Time time;
 
     @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     @NotBlank(message = "Alerts must have a date")
     private Date date;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "reminder_id")
-    private Reminder reminder;
+    @JoinColumn(name = "remindr_id")
+    private Remindr remindr;
 
     public Alert(){
     }
 
-    public Alert(Time time, Time date, Reminder reminder) {
+    public Alert(Time time, Time date, Remindr remindr) {
         this.time = time;
         this.date = date;
-        this.reminder = reminder;
+        this.remindr = remindr;
     }
     public long getId() {
         return id;
@@ -60,11 +61,11 @@ public class Alert {
         this.date = date;
     }
 
-    public Reminder getReminder() {
-        return reminder;
+    public Remindr getRemindr() {
+        return remindr;
     }
 
-    public void setReminder(Reminder reminder) {
-        this.reminder = reminder;
+    public void setRemindr(Remindr remindr) {
+        this.remindr = remindr;
     }
 }
