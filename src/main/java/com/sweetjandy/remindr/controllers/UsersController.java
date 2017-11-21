@@ -46,6 +46,7 @@ public class UsersController {
 
         Contact existingPhoneNumber = contactsRepository.findByPhoneNumber(contact.getPhoneNumber());
 
+        // check to see if phone number already exists
         if (existingPhoneNumber != null) {
             validation.rejectValue(
                     "phoneNumber",
@@ -56,6 +57,7 @@ public class UsersController {
 
 //        User existingEmail = usersRepository.findByEmail(user.getEmail());
 
+        // check to see if email already exists (?)
         if (existingUser != null) {
             validation.rejectValue(
                     "username",
@@ -63,6 +65,8 @@ public class UsersController {
                     "This email is already taken!"
             );
         }
+
+
         if (existingUser != null) {
             validation.rejectValue(
                     "phoneNumber",
@@ -89,7 +93,6 @@ public class UsersController {
 //        String hashPassword = passwordEncoder.encode(user.getPassword());
 
         user.setContact(contact);
-
         user.setPassword(user.getPassword());
         usersRepository.save(user);
         return "redirect:profile";
