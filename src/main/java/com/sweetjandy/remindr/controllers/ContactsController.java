@@ -33,8 +33,14 @@ public class ContactsController {
     @GetMapping("/contact/{id}")
     public String viewIndividualContact(@PathVariable long id, Model viewModel) {
         User user = usersRepository.findOne(1L);
+
         // use the contacts repository to find one contact by its id
         Contact contact = contactsRepository.findOne(id);
+
+        Contact usersContact = contactsRepository.findContactFor(user.getId(), contact.getId());
+        if (usersContact == null) {
+            return "redirect:/";
+        }
 
         // save the result in a variable contact
         viewModel.addAttribute("contact", contact); // replace null with the variable contact
@@ -46,6 +52,7 @@ public class ContactsController {
 
     @GetMapping("/contacts")
     public String viewAllContacts(Model viewModel) {
+        User user = usersRepository.findOne(1L);
         Iterable<Contact> contacts = contactsRepository.findAll();
         viewModel.addAttribute("contact", contacts);
         return "users/contacts";
