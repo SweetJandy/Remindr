@@ -55,14 +55,14 @@ public class Contact {
     public Contact() {
     }
 
-    public Contact(long id, String firstName, String lastName, String phoneNumber, long googleContact, long outlookContact, long secretCode) {
+    public Contact(long id, String firstName, String lastName, String phoneNumber, long googleContact, long outlookContact) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.googleContact = googleContact;
         this.outlookContact = outlookContact;
-        this.secretCode = secretCode;
+//        this.secretCode = secretCode;
     }
 
     public long getId() {
@@ -113,13 +113,13 @@ public class Contact {
         outlookContact = outlookContact;
     }
 
-    public long getSecretCode() {
-        return secretCode;
-    }
-
-    public void setSecretCode(long secretCode) {
-        this.secretCode = secretCode;
-    }
+//    public long getSecretCode() {
+//        return secretCode;
+//    }
+//
+//    public void setSecretCode(long secretCode) {
+//        this.secretCode = secretCode;
+//    }
 
     public List<User> getUsers() {
         return users;

@@ -17,12 +17,7 @@ public class Alert {
 
     @Column(nullable = false)
     @NotBlank(message = "Alerts must have a time")
-    private Time time;
-
-    @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    @NotBlank(message = "Alerts must have a date")
-    private Date date;
+    private String dateTime;
 
     @ManyToOne
     @JsonManagedReference
@@ -32,9 +27,8 @@ public class Alert {
     public Alert(){
     }
 
-    public Alert(Time time, Time date, Remindr remindr) {
-        this.time = time;
-        this.date = date;
+    public Alert(String dateTime,  Remindr remindr) {
+        this.dateTime = dateTime;
         this.remindr = remindr;
     }
     public long getId() {
@@ -45,20 +39,12 @@ public class Alert {
         this.id = id;
     }
 
-    public Time getTime() {
-        return time;
+    public String getdateTime() {
+        return dateTime;
     }
 
-    public void setTime(Time time) {
-        this.time = time;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Time date) {
-        this.date = date;
+    public void setdateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 
     public Remindr getRemindr() {

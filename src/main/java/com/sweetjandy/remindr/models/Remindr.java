@@ -32,11 +32,11 @@ public class Remindr {
 
     @Column(nullable = false)
     @NotBlank(message = "Remindrs must have a start date/time")
-    private Date startDateTime;
+    private String startDateTime;
 
     @Column(nullable = false)
     @NotBlank(message = "Remindrs must have a end date/time")
-    private Date endDateTime;
+    private String endDateTime;
 
     @Column(nullable = false)
     @NotBlank(message = "Remindrs must have a location")
@@ -59,7 +59,7 @@ public class Remindr {
     }
 
 
-    public Remindr(String title, String description, Date endDateTime, Date startDateTime, String location, Boolean publicView) {
+    public Remindr(String title, String description, String endDateTime, String startDateTime, String location, Boolean publicView) {
         this.title = title;
         this.description = description;
         this.startDateTime = startDateTime;
@@ -94,20 +94,20 @@ public class Remindr {
     }
 
 
-    public Date getStartDateTime() {
+    public String getStartDateTime() {
         return startDateTime;
     }
 
-    public void setStartDateTime(Date startDateTime) {
+    public void setStartDateTime(String startDateTime) {
         this.startDateTime = startDateTime;
     }
 
 
-    public Date getEndDateTime() {
+    public String getEndDateTime() {
         return endDateTime;
     }
 
-    public void setEndDateTime(Date endDateTime) {
+    public void setEndDateTime(String endDateTime) {
         this.endDateTime = endDateTime;
     }
 
