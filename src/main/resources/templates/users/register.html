@@ -10,33 +10,33 @@
 		<h1>Create an account</h1>
 
 		<form th:action="@{/register}" th:method="post" th:object="${user}">
-			<div class="form-group">
-				<label for="firstName">First Name</label>
-				<input id="firstName" name="firstName" th:field="*{firstName}" class="form-control"/>
-				<div
-					class="alert alert-danger"
-					th:if="${#fields.hasErrors('firstName')}"
-					th:errors="*{firstName}" >
-				</div>
-			</div>
-			<div class="form-group">
-				<label for="lastName">Last Name</label>
-				<input id="lastName" name="lastName" th:field="*{lastName}" class="form-control"/>
-				<div
-					class="alert alert-danger"
-					th:if="${#fields.hasErrors('lastName')}"
-					th:errors="*{lastName}">
-				</div>
-			</div>
-			<div class="form-group">
-				<label for="phoneNumber">Cell phone number</label>
-				<input type="text" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}" class="form-control" />
-				<div
-					class="alert alert-danger"
-					th:if="${#fields.hasErrors('phoneNumber')}"
-					th:errors="*{phoneNumber}" >
-				</div>
-			</div>
+			<!--<div class="form-group">-->
+				<!--<label for="firstName">First Name</label>-->
+				<!--<input id="firstName" name="firstName" th:field="*{user.contact.firstName}" class="form-control"/>-->
+				<!--<div-->
+					<!--class="alert alert-danger"-->
+					<!--th:if="${#fields.hasErrors('firstName')}"-->
+					<!--th:errors="*{user.contact.firstName}" >-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="form-group">-->
+				<!--<label for="lastName">Last Name</label>-->
+				<!--<input id="lastName" name="lastName" th:field="*{user.contact.lastName}" class="form-control"/>-->
+				<!--<div-->
+					<!--class="alert alert-danger"-->
+					<!--th:if="${#fields.hasErrors('lastName')}"-->
+					<!--th:errors="*{user.contact.lastName}">-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="form-group">-->
+				<!--<label for="phoneNumber">Cell phone number</label>-->
+				<!--<input type="text" id="phoneNumber" name="phoneNumber" th:field="*{user.contact.phoneNumber}" class="form-control" />-->
+				<!--<div-->
+					<!--class="alert alert-danger"-->
+					<!--th:if="${#fields.hasErrors('phoneNumber')}"-->
+					<!--th:errors="*{user.contact.phoneNumber}" >-->
+				<!--</div>-->
+			<!--</div>-->
 			<div class="form-group">
 				<label for="username">Email</label>
 				<input type="text" id="username" name="username" th:field="*{username}" class="form-control" />

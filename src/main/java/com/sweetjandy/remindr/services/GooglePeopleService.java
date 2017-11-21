@@ -1,4 +1,5 @@
 package com.sweetjandy.remindr.services;
+import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleBrowserClientRequestUrl;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
@@ -7,6 +8,8 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.people.v1.PeopleService;
+import com.google.api.services.people.v1.model.ListConnectionsResponse;
+import com.google.api.services.people.v1.model.Person;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,29 +17,23 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.List;
+
 
 @Service
 public class GooglePeopleService {
 
-    public void setUp() throws IOException {
-        HttpTransport httpTransport = new NetHttpTransport();
-        JacksonFactory jsonFactory = new JacksonFactory();
+    @Value("${google.people.clientId}")
+    private String clientId;
 
-        // Go to the Google API Console, open your application's
-        // credentials page, and copy the client ID and client secret.
-        // Then paste them into the following code.
-//        @Value("${google-people-client-id}")
-//        private String googlePeopleClientId;
-//
-//        @Value("${google-people-client-secret}")
-//        private String googlePeopleClientSecret;
+    @Value("${google.people.clientSecret}")
+    private String clientSecret;
 
+    @Value("${google.people.redirectUrl}")
+    private String redirectUrl;
 
-        String clientId = "689653849501-epmpae5spm8mvh77ihoiehhk0r1aneb0.apps.googleusercontent.com";
-        String clientSecret = "n6r_BI9ErexQT7QSJaxbIhsS";
+    public String setUp() throws IOException {
 
-        // Or your redirect URL for web based applications.
-        String redirectUrl = "https://www.remindr.life/contacts";
         String scope = "https://www.googleapis.com/auth/contacts.readonly";
 
         // Step 1: Authorize -->
@@ -48,16 +45,26 @@ public class GooglePeopleService {
         System.out.println(authorizationUrl);
 
         // Read the authorization code from the standard input stream.
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("What is the authorization code?");
-        String code = in.readLine();
-        // End of Step 1 <--
+//        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+//        System.out.println("What is the authorization code?");
+//        String code = in.readLine();
+//        // End of Step 1 <--
+//
+//        // Step 2: Exchange -->
+//        contacts(code);
 
-        // Step 2: Exchange -->
-        GoogleTokenResponse tokenResponse =
-                new GoogleAuthorizationCodeTokenRequest(
-                        httpTransport, jsonFactory, clientId, clientSecret, code, redirectUrl)
-                        .execute();
+        return authorizationUrl;
+
+    }
+
+    public List<Person> contacts(String code) throws IOException {
+        HttpTransport httpTransport = new NetHttpTransport();
+        JacksonFactory jsonFactory = new JacksonFactory();
+
+//        GoogleTokenResponse tokenResponse =
+//                new GoogleAuthorizationCodeTokenRequest(
+//                        httpTransport, jsonFactory, clientId, clientSecret, code, redirectUrl)
+//                        .execute();
         // End of Step 2 <--
 
         GoogleCredential credential = new GoogleCredential.Builder()
@@ -65,10 +72,16 @@ public class GooglePeopleService {
                 .setJsonFactory(jsonFactory)
                 .setClientSecrets(clientId, clientSecret)
                 .build()
-                .setFromTokenResponse(tokenResponse);
+                .setAccessToken(code);
+//                .setFromTokenResponse(tokenResponse);
 
-        PeopleService peopleService =
-                new PeopleService.Builder(httpTransport, jsonFactory, credential).build();
+
+        PeopleService peopleService = new PeopleService.Builder(httpTransport, jsonFactory, credential).build();
+
+        // show all contacts
+        ListConnectionsResponse response = peopleService.people().connections().list("people/me")
+                .setPersonFields("names,emailAddresses")
+                .execute();
+        return response.getConnections();
     }
-
 }
