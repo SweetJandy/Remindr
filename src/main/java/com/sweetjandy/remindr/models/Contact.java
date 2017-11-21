@@ -105,12 +105,12 @@ public class Contact {
         this.googleContact = googleContact;
     }
 
-    public long getoutlookContact() {
+    public long getOutlookContact() {
         return outlookContact;
     }
 
     public void setOutlookContact(long outlookContact) {
-        outlookContact = outlookContact;
+        this.outlookContact = outlookContact;
     }
 
 //    public long getSecretCode() {
