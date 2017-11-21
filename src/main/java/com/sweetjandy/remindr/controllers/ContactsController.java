@@ -50,7 +50,6 @@ public class ContactsController {
     }
 
     @PostMapping("/contacts/add")
-    @ResponseBody
     public String addContactForm(@Valid Contact contact, Errors validation, Model viewModel) {
     //hardcoded until security measures are placed.
         User user = usersRepository.findOne(2L);
@@ -68,6 +67,6 @@ public class ContactsController {
             return "users/add-contacts";
         }
         contactsRepository.save(contact);
-        return "It works!";
+        return "users/contacts";
     }
 }
