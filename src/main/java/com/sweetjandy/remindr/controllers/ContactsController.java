@@ -5,6 +5,7 @@ import com.sweetjandy.remindr.models.User;
 import com.sweetjandy.remindr.repositories.ContactsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
 //import com.sweetjandy.remindr.services.GooglePeopleService;
+import com.sweetjandy.remindr.services.GooglePeopleService;
 import com.sweetjandy.remindr.services.PhoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,15 +22,14 @@ import java.io.IOException;
 public class ContactsController {
     private final ContactsRepository contactsRepository;
     private final UsersRepository usersRepository;
-//    private final GooglePeopleService googlePeopleService;
+    private final GooglePeopleService googlePeopleService;
 //
     @Autowired
-    public ContactsController(ContactsRepository contactsRepository, UsersRepository usersRepository)
-//            , GooglePeopleService googlePeopleService)
+    public ContactsController(ContactsRepository contactsRepository, UsersRepository usersRepository, GooglePeopleService googlePeopleService)
     {
         this.contactsRepository = contactsRepository;
         this.usersRepository = usersRepository;
-//        this.googlePeopleService = googlePeopleService;
+        this.googlePeopleService = googlePeopleService;
     }
 
     @GetMapping("/contacts")
@@ -41,8 +41,8 @@ public class ContactsController {
 
     @GetMapping("/contacts/add")
     public String showAddContactsForm(Model viewModel) throws IOException {
-//        String authorizationUrl = googlePeopleService.setUp();
-//        viewModel.addAttribute("authorizationUrl", authorizationUrl);
+        String authorizationUrl = googlePeopleService.setUp();
+        viewModel.addAttribute("authorizationUrl", authorizationUrl);
 
         viewModel.addAttribute("contact", new Contact());
 
