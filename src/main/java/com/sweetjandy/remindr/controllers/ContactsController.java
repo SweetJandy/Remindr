@@ -50,7 +50,7 @@ public class ContactsController {
     }
 
     @PostMapping("/contacts/add")
-    public String addContactForm(@Valid Contact contact, Errors validation, Model viewModel, String phoneNumber) {
+    public String addContactForm(@Valid Contact contact, Errors validation, Model viewModel) {
     //hardcoded until security measures are placed.
         User user = usersRepository.findOne(2L);
         //contact.setUser(user);
@@ -60,6 +60,14 @@ public class ContactsController {
         contact.setOutlookContact((long) (Math.random() * (double) Long.MAX_VALUE));
         user.setContact(contact);
 
+        boolean validated = PhoneService.validatePhoneNumber(user.getContact().getPhoneNumber());
+        if (!validated) {
+            validation.rejectValue(
+                    "phoneNumber",
+                    "phoneNumber",
+                    "Invalid format: (xxx)xxx-xxxx"
+            );
+        }
 
         if (validation.hasErrors()) {
             viewModel.addAttribute("errors", validation);
@@ -67,11 +75,7 @@ public class ContactsController {
             return "users/add-contacts";
         }
 
-//        boolean validated = PhoneService.validatePhoneNumber(phoneNumber);
-//
-//        if (validated) {
-            contactsRepository.save(contact);
-//        }
+        contactsRepository.save(contact);
 
         return "users/contacts";
     }
