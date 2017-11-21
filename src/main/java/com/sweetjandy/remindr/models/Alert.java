@@ -20,6 +20,7 @@ public class Alert {
     private Time time;
 
     @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     @NotBlank(message = "Alerts must have a date")
     private Date date;
 
