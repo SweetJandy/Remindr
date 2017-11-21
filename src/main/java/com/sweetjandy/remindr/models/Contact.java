@@ -55,7 +55,7 @@ public class Contact {
     public Contact() {
     }
 
-    public Contact(long id, String firstName, String lastName, String phoneNumber, long googleContact, long outlookContact, long secretCode) {
+    public Contact(long id, String firstName, String lastName, String phoneNumber, long googleContact, long outlookContact) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
