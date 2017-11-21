@@ -35,10 +35,10 @@ public class Contact {
     @Column(nullable = true, unique = true)
     private long outlookContact;
 
-    @Column(nullable = false, length = 4, unique = true)
-    @NotBlank(message = "Posts must have a description!")
-    @Size(min = 4, message = "The secret code is 6 character long")
-    private long secretCode;
+//    @Column(nullable = false, length = 4, unique = true)
+//    @NotBlank(message = "Posts must have a description!")
+//    @Size(min = 4, message = "The secret code is 6 character long")
+//    private long secretCode;
 
 
     @ManyToMany(mappedBy = "contacts")

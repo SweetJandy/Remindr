@@ -25,9 +25,7 @@ public class Remindr {
     @Size(min = 3, message = "The title must be at least 3 character long")
     private String title;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Remindrs must have a description")
-    @Size(min = 10, message = "The description must be at least 10 character long")
+    @Column(nullable = true)
     private String description;
 
     @Column(nullable = false)
