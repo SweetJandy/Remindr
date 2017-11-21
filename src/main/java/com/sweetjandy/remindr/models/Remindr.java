@@ -3,6 +3,7 @@ package com.sweetjandy.remindr.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
 
@@ -24,9 +25,7 @@ public class Remindr {
     @Size(min = 3, message = "The title must be at least 3 character long")
     private String title;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Remindrs must have a description")
-    @Size(min = 10, message = "The description must be at least 10 character long")
+    @Column(nullable = true)
     private String description;
 
     @Column(nullable = false)
@@ -45,20 +44,15 @@ public class Remindr {
     @JsonBackReference
     private List<Alert> alerts;
 
+    @ManyToOne
+    @JsonManagedReference
+    private User user;
+
     @ManyToMany(mappedBy = "remindrs")
     private List<Contact> contacts;
 
 
     public Remindr() {
-    }
-
-    public Remindr(Remindr copy) {
-        this.title = copy.title;
-        this.description = copy.description;
-        this.startDateTime = copy.startDateTime;
-        this.endDateTime = copy.endDateTime;
-        this.location = copy.location;
-//        this.contact = contact;
     }
 
     public Remindr(String title, String description, String endDateTime, String startDateTime, String location) {
@@ -67,7 +61,6 @@ public class Remindr {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.location = location;
-//        this.contact = contact;
     }
 
     public long getId() {
@@ -124,6 +117,14 @@ public class Remindr {
     }
 
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public List<Contact> getContacts() {
         return contacts;
     }
@@ -140,4 +141,5 @@ public class Remindr {
     public void setAlerts(List<Alert> alerts) {
         this.alerts = alerts;
     }
+
 }

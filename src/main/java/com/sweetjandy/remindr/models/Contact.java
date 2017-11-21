@@ -33,7 +33,7 @@ public class Contact {
     private long googleContact;
 
     @Column(nullable = true, unique = true)
-    private long OutlookContact;
+    private long outlookContact;
 
 //    @Column(nullable = false, length = 4, unique = true)
 //    @NotBlank(message = "Posts must have a description!")
@@ -55,13 +55,13 @@ public class Contact {
     public Contact() {
     }
 
-    public Contact(long id, String firstName, String lastName, String phoneNumber, long googleContact, long outlookContact, long secretCode) {
+    public Contact(long id, String firstName, String lastName, String phoneNumber, long googleContact, long outlookContact) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.googleContact = googleContact;
-        OutlookContact = outlookContact;
+        this.outlookContact = outlookContact;
 //        this.secretCode = secretCode;
     }
 
@@ -105,12 +105,12 @@ public class Contact {
         this.googleContact = googleContact;
     }
 
-    public long getOutlookContact() {
-        return OutlookContact;
+    public long getoutlookContact() {
+        return outlookContact;
     }
 
     public void setOutlookContact(long outlookContact) {
-        OutlookContact = outlookContact;
+        outlookContact = outlookContact;
     }
 
 //    public long getSecretCode() {
