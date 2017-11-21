@@ -26,7 +26,7 @@ public class Contact {
 
     @Column(nullable = false, unique = true, length = 20)
     @NotBlank(message = "Phone number cannot be blank")
-    @Size(min = 10, message = "The phone number must be at least 10 digits long")
+    @Size(min = 13, message = "Invalid Format for Phone Number")
     private String phoneNumber;
 
     @Column(nullable = true, unique = true)
