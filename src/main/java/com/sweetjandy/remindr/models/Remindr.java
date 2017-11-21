@@ -3,6 +3,7 @@ package com.sweetjandy.remindr.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
 
@@ -41,14 +42,14 @@ public class Remindr {
     @NotBlank(message = "Remindrs must have a location")
     private String location;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Must choose if you want to make the view public")
-    private Boolean publicView;
-
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "remindr")
     @JsonBackReference
     private List<Alert> alerts;
+
+    @ManyToOne
+    @JsonManagedReference
+    private User user;
 
     @ManyToMany(mappedBy = "remindrs")
     private List<Contact> contacts;
@@ -57,15 +58,6 @@ public class Remindr {
     public Remindr() {
     }
 
-    public Remindr(Remindr copy) {
-        this.title = copy.title;
-        this.description = copy.description;
-        this.startDateTime = copy.startDateTime;
-        this.endDateTime = copy.endDateTime;
-        this.location = copy.location;
-        this.publicView = copy.publicView;
-//        this.contact = contact;
-    }
 
     public Remindr(String title, String description, Date endDateTime, Date startDateTime, String location, Boolean publicView) {
         this.title = title;
@@ -73,8 +65,6 @@ public class Remindr {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.location = location;
-        this.publicView = publicView;
-//        this.contact = contact;
     }
 
     public long getId() {
@@ -130,15 +120,13 @@ public class Remindr {
         this.location = location;
     }
 
-
-    public Boolean getPublicView() {
-        return publicView;
+    public User getUser() {
+        return user;
     }
 
-    public void setPublicView(Boolean publicView) {
-        this.publicView = publicView;
+    public void setUser(User user) {
+        this.user = user;
     }
-
 
     public List<Contact> getContacts() {
         return contacts;
@@ -156,4 +144,5 @@ public class Remindr {
     public void setAlerts(List<Alert> alerts) {
         this.alerts = alerts;
     }
+
 }

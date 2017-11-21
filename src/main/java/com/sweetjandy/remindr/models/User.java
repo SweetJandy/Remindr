@@ -1,5 +1,6 @@
 package com.sweetjandy.remindr.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -32,6 +33,11 @@ public class User {
     @OneToOne
     private Contact contact;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonBackReference
+    private List<Remindr> remindrs ;
+
+
     @ManyToMany(cascade = ALL)
     @JoinTable(
             name = "user_contact",
@@ -44,7 +50,13 @@ public class User {
     public User() {
     }
 
-    public User(long id, String username, String password, Contact contact) {
+    public User(User copy) {
+        id = copy.id;
+        username = copy.username;
+        password = copy.password;
+    }
+
+    public User(long id, String username, String password, Contact contact, List<Contact> contacts) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -83,6 +95,14 @@ public class User {
 
     public void setContact(Contact contact) {
         this.contact = contact;
+    }
+
+    public List<Remindr> getRemindrs() {
+        return remindrs;
+    }
+
+    public void setRemindrs(List<Remindr> remindrs) {
+        this.remindrs = remindrs;
     }
 
     public List<Contact> getContacts() {
