@@ -10,6 +10,10 @@
 
         <h1>Add a contact</h1>
 
+        <!--<a class="btn btn-primary" th:href="${authorizationUrl}">Authorize google</a>-->
+
+        <p>OR</p>
+
         <!--Check th:object after Brandon creates contacts controller-->
         <form th:action="@{/contacts/add}" th:method="post" th:object="${contact}">
             <div class="form-group">
@@ -51,5 +55,6 @@
 </div>
 
 <div th:replace="/fragments/partials :: scripts"></div>
+<script src="/scripts/google.js"></script>
 </body>
 </html>

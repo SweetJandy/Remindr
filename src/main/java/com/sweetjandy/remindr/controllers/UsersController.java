@@ -92,7 +92,7 @@ public class UsersController {
 
         user.setPassword(user.getPassword());
         usersRepository.save(user);
-        return "redirect:/login";
+        return "redirect:profile";
     }
 
     @GetMapping("/login")
