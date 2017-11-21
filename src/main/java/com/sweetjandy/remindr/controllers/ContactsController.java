@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -31,6 +32,15 @@ public class ContactsController {
         this.usersRepository = usersRepository;
 //        this.googlePeopleService = googlePeopleService;
     }
+
+    @GetMapping("/contact/{id}")
+    public String viewIndividualContact(@PathVariable long id, Model viewModel) {
+        viewModel.addAttribute("contact", contactsRepository.findOne(id).getUsers());
+//        Contact contact = contactsRepository.findOne(id);
+//        viewModel.addAttribute("contact", contact);
+        return "users/view-contact";
+    }
+
 
     @GetMapping("/contacts")
     public String viewAllContacts(Model viewModel) {
