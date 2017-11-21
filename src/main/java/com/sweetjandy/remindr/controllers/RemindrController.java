@@ -8,9 +8,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class RemindrController {
@@ -30,18 +32,37 @@ public class RemindrController {
     }
 
     @PostMapping("/remindrs/create")
-    public String createRemindr(@Valid Remindr remindr, Model model) {
-        model.addAttribute("remindr", remindr);
+    public String createRemindr(@Valid Remindr remindr, Errors validation, Model model) {
+        //validation.rejectvalue("")
 
+        if (validation.hasErrors()) {
+            model.addAttribute("errors", validation);
+            model.addAttribute("remindr", remindr);
+            return "/remindrs/create";
+        }
+
+        model.addAttribute("remindr", remindr);
         repository.save(remindr);
 
-        return "redirect:/remindrs/showall";
+        return "redirect:/remindrs";
     }
 
-    @GetMapping("/remindrs/showall")
-    public String showAllRemindrs() {
-
+    @GetMapping("/remindrs")
+    public String showAllRemindrs(Model model) {
+        Iterable<Remindr> remindrs = repository.findAll();
+        model.addAttribute("remindrs", remindrs);
 
         return "/remindrs/show-all-remindrs";
+    }
+
+    @GetMapping("/remindrs/{id}")
+    public String showRemindr(@PathVariable Long id, Model model) {
+        Remindr remindr = repository.findOne(id);
+
+        model.addAttribute("remindr", remindr);
+        model.addAttribute("remindrId", id);
+
+
+        return "remindrs/show-remindr";
     }
 }

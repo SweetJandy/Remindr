@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/partials :: head('Show All Remindrs')"></head>
+<body>
+<nav th:replace="/fragments/partials :: navbar"></nav>
+    <div class="container">
+        <h1 th:text="${remindr.title}"></h1>
+        <p th:text="${remindr.description}"></p>
+
+    </div>
+<div th:replace="/fragments/partials :: scripts"></div>
+</body>
+</html>

@@ -52,7 +52,7 @@ public class ContactsController {
     @PostMapping("/contacts/add")
     public String addContactForm(@Valid Contact contact, Errors validation, Model viewModel, String phoneNumber) {
     //hardcoded until security measures are placed.
-        User user = usersRepository.findOne(2L);
+        User user = usersRepository.findOne(1L);
         //contact.setUser(user);
 
         // setting to random number to avoid defaulting to 0, since field is unique
