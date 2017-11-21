@@ -35,10 +35,10 @@ public class Contact {
     @Column(nullable = true, unique = true)
     private long OutlookContact;
 
-    @Column(nullable = false, length = 4, unique = true)
-    @NotBlank(message = "Posts must have a description!")
-    @Size(min = 4, message = "The secret code is 6 character long")
-    private long secretCode;
+//    @Column(nullable = false, length = 4, unique = true)
+//    @NotBlank(message = "Posts must have a description!")
+//    @Size(min = 4, message = "The secret code is 6 character long")
+//    private long secretCode;
 
 
     @ManyToMany(mappedBy = "contacts")
@@ -62,7 +62,7 @@ public class Contact {
         this.phoneNumber = phoneNumber;
         this.googleContact = googleContact;
         OutlookContact = outlookContact;
-        this.secretCode = secretCode;
+//        this.secretCode = secretCode;
     }
 
     public long getId() {
@@ -113,13 +113,13 @@ public class Contact {
         OutlookContact = outlookContact;
     }
 
-    public long getSecretCode() {
-        return secretCode;
-    }
-
-    public void setSecretCode(long secretCode) {
-        this.secretCode = secretCode;
-    }
+//    public long getSecretCode() {
+//        return secretCode;
+//    }
+//
+//    public void setSecretCode(long secretCode) {
+//        this.secretCode = secretCode;
+//    }
 
     public List<User> getUsers() {
         return users;

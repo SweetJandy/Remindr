@@ -30,24 +30,24 @@ public class GooglePeopleController {
         this.googlePeopleSvc = googlePeopleSvc;
     }
 
-    @GetMapping("/contacts")
-    public String showAll (Model model) throws IOException {
-
-        String authorizationUrl = googlePeopleSvc.setUp();
-
-        model.addAttribute("authorizationUrl", authorizationUrl);
-//        // show all contacts
-//        ListConnectionsResponse response = peopleService.people().connections().list("people/me")
-//                .setPersonFields("names,emailAddresses")
-//                .execute();
-//        List<Person> connections = response.getConnections();
-//        System.out.println(connections);
-
-        return "users/contacts";
-    }
+//    @GetMapping("/contacts")
+//    public String showAll (Model model) throws IOException {
+//
+////        String authorizationUrl = googlePeopleSvc.setUp();
+////
+////        model.addAttribute("authorizationUrl", authorizationUrl);
+////        // show all contacts
+////        ListConnectionsResponse response = peopleService.people().connections().list("people/me")
+////                .setPersonFields("names,emailAddresses")
+////                .execute();
+////        List<Person> connections = response.getConnections();
+////        System.out.println(connections);
+//
+//        return "users/contacts";
+//    }
 
     @GetMapping("/confirm")
-    public String confirm (HttpServletRequest request) throws IOException {
+    public String confirm () throws IOException {
 
 //        StringBuffer requestURL = request.getRequestURL();
 //        String s = requestURL.toString();
