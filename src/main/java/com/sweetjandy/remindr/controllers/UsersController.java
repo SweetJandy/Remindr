@@ -4,11 +4,13 @@ import com.sweetjandy.remindr.models.Contact;
 import com.sweetjandy.remindr.models.User;
 import com.sweetjandy.remindr.repositories.ContactsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
+import com.sweetjandy.remindr.services.PhoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -37,6 +39,7 @@ public class UsersController {
     }
 
     @PostMapping("/register")
+    // Errors validation has to be right after the object
     public String registerUser(@Valid User user, Errors validation, Model viewModel) {
 
 //    user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -49,7 +52,7 @@ public class UsersController {
         if (existingPhoneNumber != null) {
             validation.rejectValue(
                     "phoneNumber",
-                    "contact.phoneNumber",
+                    "user.contact.phoneNumber",
                     "Phone number is already taken"
             );
         }
@@ -78,6 +81,14 @@ public class UsersController {
 //            );
 //        }
 
+        boolean validated = PhoneService.validatePhoneNumber(user.getContact().getPhoneNumber());
+        if (!validated) {
+            validation.rejectValue(
+                    "contact.phoneNumber",
+                    "contact.phoneNumber",
+                    "Invalid format: (xxx)xxx-xxxx"
+            );
+        }
 
         if (validation.hasErrors()) {
             viewModel.addAttribute("errors", validation);
@@ -96,6 +107,7 @@ public class UsersController {
         contactsRepository.save(user.getContact());
         user.setPassword(user.getPassword());
         usersRepository.save(user);
+
         return "redirect:profile";
     }
 

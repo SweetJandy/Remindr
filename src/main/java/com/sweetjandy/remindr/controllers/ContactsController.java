@@ -5,13 +5,14 @@ import com.sweetjandy.remindr.models.User;
 import com.sweetjandy.remindr.repositories.ContactsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
 //import com.sweetjandy.remindr.services.GooglePeopleService;
+import com.sweetjandy.remindr.services.GooglePeopleService;
+import com.sweetjandy.remindr.services.PhoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -21,15 +22,14 @@ import java.io.IOException;
 public class ContactsController {
     private final ContactsRepository contactsRepository;
     private final UsersRepository usersRepository;
-//    private final GooglePeopleService googlePeopleService;
+    private final GooglePeopleService googlePeopleService;
 //
     @Autowired
-    public ContactsController(ContactsRepository contactsRepository, UsersRepository usersRepository)
-//            , GooglePeopleService googlePeopleService)
+    public ContactsController(ContactsRepository contactsRepository, UsersRepository usersRepository, GooglePeopleService googlePeopleService)
     {
         this.contactsRepository = contactsRepository;
         this.usersRepository = usersRepository;
-//        this.googlePeopleService = googlePeopleService;
+        this.googlePeopleService = googlePeopleService;
     }
 
     @GetMapping("/contacts")
@@ -41,8 +41,8 @@ public class ContactsController {
 
     @GetMapping("/contacts/add")
     public String showAddContactsForm(Model viewModel) throws IOException {
-//        String authorizationUrl = googlePeopleService.setUp();
-//        viewModel.addAttribute("authorizationUrl", authorizationUrl);
+        String authorizationUrl = googlePeopleService.setUp();
+        viewModel.addAttribute("authorizationUrl", authorizationUrl);
 
         viewModel.addAttribute("contact", new Contact());
 
@@ -50,15 +50,15 @@ public class ContactsController {
     }
 
     @PostMapping("/contacts/add")
-    public String addContactForm(@Valid Contact contact, Errors validation, Model viewModel) {
+    public String addContactForm(@Valid Contact contact, Errors validation, Model viewModel, String phoneNumber) {
     //hardcoded until security measures are placed.
         User user = usersRepository.findOne(2L);
         //contact.setUser(user);
 
+        // setting to random number to avoid defaulting to 0, since field is unique
         contact.setGoogleContact((long) (Math.random() * (double) Long.MAX_VALUE));
         contact.setOutlookContact((long) (Math.random() * (double) Long.MAX_VALUE));
         user.setContact(contact);
-
 
 
         if (validation.hasErrors()) {
@@ -66,7 +66,13 @@ public class ContactsController {
             viewModel.addAttribute("contact", contact);
             return "users/add-contacts";
         }
-        contactsRepository.save(contact);
+
+//        boolean validated = PhoneService.validatePhoneNumber(phoneNumber);
+//
+//        if (validated) {
+            contactsRepository.save(contact);
+//        }
+
         return "users/contacts";
     }
 }
