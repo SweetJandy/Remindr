@@ -42,6 +42,7 @@ public class User {
 
 
     public User() {
+        this.contact = new Contact();
     }
 
     public User(long id, String username, String password, Contact contact) {
