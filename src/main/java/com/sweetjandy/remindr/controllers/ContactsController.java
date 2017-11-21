@@ -32,7 +32,7 @@ public class ContactsController {
 
     @GetMapping("/contact/{id}")
     public String viewIndividualContact(@PathVariable long id, Model viewModel) {
-        User user = usersRepository.findOne(1L);
+        User user = usersRepository.findOne(3L);
 
         // use the contacts repository to find one contact by its id
         Contact contact = contactsRepository.findOne(id);
@@ -52,9 +52,13 @@ public class ContactsController {
 
     @GetMapping("/contacts")
     public String viewAllContacts(Model viewModel) {
-        User user = usersRepository.findOne(1L);
-        Iterable<Contact> contacts = contactsRepository.findAll();
-        viewModel.addAttribute("contact", contacts);
+        User user = usersRepository.findOne(2L);
+
+        Iterable<Contact> usersContacts = contactsRepository.findAllContactsFor(user.getId());
+                if(usersContacts == null) {
+                    return "redirect:/";
+                }
+        viewModel.addAttribute("contacts", usersContacts);
         return "users/contacts";
     }
 

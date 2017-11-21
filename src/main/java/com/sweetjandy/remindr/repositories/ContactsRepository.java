@@ -16,6 +16,9 @@ public interface ContactsRepository extends CrudRepository<Contact, Long> {
      @Query("SELECT c FROM Contact c JOIN c.users u WHERE u.id = ?1 AND c.id = ?2")
      Contact findContactFor(long userId, long contactId);
 
+     @Query("SELECT c FROM Contact c JOIN c.users u Where u.id = ?1")
+     List<Contact> findAllContactsFor(long userId);
+
      //Contact findByUsersAndId(User user, long id);
 }
 

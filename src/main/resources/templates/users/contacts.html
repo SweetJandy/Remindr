@@ -5,31 +5,33 @@
 <nav th:replace="/fragments/partials :: navbar"></nav>
 
 <div class="container">
-    <div class="row">
-        <h1>View all contacts:</h1>
+	<div class="row">
+		<h1>View all contacts:</h1>
 
-        <!--Hard-coded-->
-        <div>
-            <h2>First and last name</h2>
-            <h4>Phone number</h4>
-        </div>
+		<!--&lt;!&ndash;Hard-coded&ndash;&gt;-->
+		<!--<div>-->
+		<!--<h2>First and last name</h2>-->
+		<!--<h4>Phone number</h4>-->
+		<!--</div>-->
 
-        <div>
-            <h2>First and last name</h2>
-            <h4>Phone number</h4>
-        </div>
+		<!--<div>-->
+		<!--<h2>First and last name</h2>-->
+		<!--<h4>Phone number</h4>-->
+		<!--</div>-->
 
-        <div>
-            <h2>First and last name</h2>
-            <h4>Phone number</h4>
-        </div>
+		<!--<div>-->
+		<!--<h2>First and last name</h2>-->
+		<!--<h4>Phone number</h4>-->
+		<!--</div>-->
 
-        <!--Dynamic -->
-        <!--<div th:each="contact : ${contacts}">-->
-            <!--<h2><a th:href="${'/contacts/' + contacts.id}" th:text="${contacts.firstName} + ' ' + ${contacts.lastName}"></a></h2>-->
-            <!--<h4 th:text="${contacts.phoneNumber}"></h4></a>-->
-        <!--</div>-->
-    </div>
+		<!--Dynamic -->
+		<div th:each="contact : ${contacts}">
+			<h2><a th:href="${'/contacts/' + contact.id}"
+				   th:text="${contact.firstName} + ' ' + ${contact.lastName}"></a>
+			</h2>
+			<h4 th:text="${contact.phoneNumber}"></h4>
+		</div>
+	</div>
 </div>
 
 <div th:replace="/fragments/partials :: scripts"></div>
