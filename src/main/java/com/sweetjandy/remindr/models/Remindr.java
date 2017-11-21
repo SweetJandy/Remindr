@@ -31,20 +31,15 @@ public class Remindr {
 
     @Column(nullable = false)
     @NotBlank(message = "Remindrs must have a start date/time")
-    private Date startDateTime;
+    private String startDateTime;
 
     @Column(nullable = false)
     @NotBlank(message = "Remindrs must have a end date/time")
-    private Date endDateTime;
+    private String endDateTime;
 
     @Column(nullable = false)
     @NotBlank(message = "Remindrs must have a location")
     private String location;
-
-    @Column(nullable = false)
-    @NotBlank(message = "Must choose if you want to make the view public")
-    private Boolean publicView;
-
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "remindr")
     @JsonBackReference
@@ -63,17 +58,15 @@ public class Remindr {
         this.startDateTime = copy.startDateTime;
         this.endDateTime = copy.endDateTime;
         this.location = copy.location;
-        this.publicView = copy.publicView;
 //        this.contact = contact;
     }
 
-    public Remindr(String title, String description, Date endDateTime, Date startDateTime, String location, Boolean publicView) {
+    public Remindr(String title, String description, String endDateTime, String startDateTime, String location) {
         this.title = title;
         this.description = description;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.location = location;
-        this.publicView = publicView;
 //        this.contact = contact;
     }
 
@@ -104,20 +97,20 @@ public class Remindr {
     }
 
 
-    public Date getStartDateTime() {
+    public String getStartDateTime() {
         return startDateTime;
     }
 
-    public void setStartDateTime(Date startDateTime) {
+    public void setStartDateTime(String startDateTime) {
         this.startDateTime = startDateTime;
     }
 
 
-    public Date getEndDateTime() {
+    public String getEndDateTime() {
         return endDateTime;
     }
 
-    public void setEndDateTime(Date endDateTime) {
+    public void setEndDateTime(String endDateTime) {
         this.endDateTime = endDateTime;
     }
 
@@ -128,15 +121,6 @@ public class Remindr {
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-
-    public Boolean getPublicView() {
-        return publicView;
-    }
-
-    public void setPublicView(Boolean publicView) {
-        this.publicView = publicView;
     }
 
 
