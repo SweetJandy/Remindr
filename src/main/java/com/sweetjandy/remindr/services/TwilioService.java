@@ -21,13 +21,14 @@ public class TwilioService extends HttpServlet {
     @Value("${twilio-auth-token}")
     private String twiliotoken;
 
-    public String sendASMS (PhoneNumber phoneNumberTo, PhoneNumber phoneNumberFrom, String mediaURL) {
+    public String sendInitialSMS (PhoneNumber phoneNumberTo, PhoneNumber phoneNumberFrom, String mediaURL) {
         Twilio.init(this.twiliosid, this.twiliotoken);
 
         com.twilio.rest.api.v2010.account.Message message = com.twilio.rest.api.v2010.account.Message
                     .creator(phoneNumberTo, phoneNumberFrom,
                             "You have been added to a Remindr! Would you like to receive alerts? Reply YES/NO.")
                     .setMediaUrl(mediaURL)
+                    .setProvideFeedback(true)
                     .create();
 
         return message.getSid();

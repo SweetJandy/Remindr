@@ -13,32 +13,32 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "reminders")
-public class Reminder {
+@Table(name = "remindrs")
+public class Remindr {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false, length = 100)
-    @NotBlank(message = "Reminders must have a title")
+    @NotBlank(message = "Remindrs must have a title")
     @Size(min = 3, message = "The title must be at least 3 character long")
     private String title;
 
     @Column(nullable = false)
-    @NotBlank(message = "Reminders must have a description")
+    @NotBlank(message = "Remindrs must have a description")
     @Size(min = 10, message = "The description must be at least 10 character long")
     private String description;
 
     @Column(nullable = false)
-    @NotBlank(message = "Reminders must have a start date")
-    private Date startDate;
+    @NotBlank(message = "Remindrs must have a start date/time")
+    private Date startDateTime;
 
     @Column(nullable = false)
-    @NotBlank(message = "Reminders must have a end date")
-    private Date endDate;
+    @NotBlank(message = "Remindrs must have a end date/time")
+    private Date endDateTime;
 
     @Column(nullable = false)
-    @NotBlank(message = "Reminders must have a location")
+    @NotBlank(message = "Remindrs must have a location")
     private String location;
 
     @Column(nullable = false)
@@ -46,23 +46,32 @@ public class Reminder {
     private Boolean publicView;
 
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "reminder")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "remindr")
     @JsonBackReference
     private List<Alert> alerts;
 
-    @ManyToMany(mappedBy = "reminders")
+    @ManyToMany(mappedBy = "remindrs")
     private List<Contact> contacts;
 
 
-    public Reminder() {
+    public Remindr() {
     }
 
+    public Remindr(Remindr copy) {
+        this.title = copy.title;
+        this.description = copy.description;
+        this.startDateTime = copy.startDateTime;
+        this.endDateTime = copy.endDateTime;
+        this.location = copy.location;
+        this.publicView = copy.publicView;
+//        this.contact = contact;
+    }
 
-    public Reminder(String title, String description, Date startDate, Date endDate, String location, Boolean publicView) {
+    public Remindr(String title, String description, Date endDateTime, Date startDateTime, String location, Boolean publicView) {
         this.title = title;
         this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
         this.location = location;
         this.publicView = publicView;
 //        this.contact = contact;
@@ -76,6 +85,7 @@ public class Reminder {
         this.id = id;
     }
 
+
     public String getTitle() {
         return title;
     }
@@ -83,6 +93,7 @@ public class Reminder {
     public void setTitle(String title) {
         this.title = title;
     }
+
 
     public String getDescription() {
         return description;
@@ -92,21 +103,24 @@ public class Reminder {
         this.description = description;
     }
 
-    public Date getStartDate() {
-        return startDate;
+
+    public Date getStartDateTime() {
+        return startDateTime;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStartDateTime(Date startDateTime) {
+        this.startDateTime = startDateTime;
     }
 
-    public Date getEndDate() {
-        return endDate;
+
+    public Date getEndDateTime() {
+        return endDateTime;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEndDateTime(Date endDateTime) {
+        this.endDateTime = endDateTime;
     }
+
 
     public String getLocation() {
         return location;
@@ -116,6 +130,7 @@ public class Reminder {
         this.location = location;
     }
 
+
     public Boolean getPublicView() {
         return publicView;
     }
@@ -124,6 +139,7 @@ public class Reminder {
         this.publicView = publicView;
     }
 
+
     public List<Contact> getContacts() {
         return contacts;
     }
@@ -131,6 +147,7 @@ public class Reminder {
     public void setContacts(List<Contact> contacts) {
         this.contacts = contacts;
     }
+
 
     public List<Alert> getAlerts() {
         return alerts;

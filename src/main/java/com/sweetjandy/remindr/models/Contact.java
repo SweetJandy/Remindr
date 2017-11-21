@@ -46,11 +46,11 @@ public class Contact {
 
     @ManyToMany(cascade = ALL)
     @JoinTable(
-            name = "contact_reminder",
+            name = "contact_remindr",
             joinColumns = {@JoinColumn(name = "contact_id")},
-            inverseJoinColumns = {@JoinColumn(name = "reminder_id")}
+            inverseJoinColumns = {@JoinColumn(name = "remindr_id")}
     )
-    private List<Reminder> reminders;
+    private List<Remindr> remindrs;
 
     public Contact() {
     }
@@ -129,11 +129,11 @@ public class Contact {
         this.users = users;
     }
 
-    public List<Reminder> getReminders() {
-        return reminders;
+    public List<Remindr> getRemindrs() {
+        return remindrs;
     }
 
-    public void setReminders(List<Reminder> reminders) {
-        this.reminders = reminders;
+    public void setRemindrs(List<Remindr> remindrs) {
+        this.remindrs = remindrs;
     }
 }

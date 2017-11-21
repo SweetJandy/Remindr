@@ -24,7 +24,7 @@
 - [ ] Users add customizable alert(s) to remindrs.
 - [ ] Users share remindrs with remindees.
 - [ ] Remindees receive a text from the remindr Twilio phone number with an invitation to receive remindrs.
-- [ ] Remindees choose to opt in or out. If opted in, recipients will receive reminders via text from the event creator.
+- [ ] Remindees choose to opt in or out. If opted in, recipients will receive remindrs via text from the event creator.
 - [ ] Remindees can choose to create an account in order to view event details, other remindees, and create their own remindrs.
 - [ ] Users can edit their profile.
 - [ ] Users can view all of their remindrs.

@@ -28,12 +28,12 @@ public class GooglePeopleController {
 
         googlePeopleSvc.setUp();
 
-        PeopleService peopleService;
-        ListConnectionsResponse response = peopleService.people().connections().list("people/me")
-                .setPersonFields("names,emailAddresses")
-                .execute();
-        List<Person> connections = response.getConnections();
-        System.out.println(connections);
+//        PeopleService peopleService;
+//        ListConnectionsResponse response = peopleService.people().connections().list("people/me")
+//                .setPersonFields("names,emailAddresses")
+//                .execute();
+//        List<Person> connections = response.getConnections();
+//        System.out.println(connections);
 
         return "users/contacts";
     }
