@@ -68,7 +68,7 @@ public class GooglePeopleController {
     }
 
     @GetMapping("/google/contacts")
-    public @ResponseBody List<Person>  viewContacts(@RequestParam(name = "token") String token) throws IOException {
+    public @ResponseBody List<Person> viewContacts(@RequestParam(name = "token") String token) throws IOException {
         return googlePeopleSvc.contacts(token);
 
 //        return "yes?";
