@@ -32,8 +32,8 @@ public class GooglePeopleService {
 //        private String googlePeopleClientSecret;
 
 
-        String clientId = "";
-        String clientSecret = "";
+        String clientId = "689653849501-epmpae5spm8mvh77ihoiehhk0r1aneb0.apps.googleusercontent.com";
+        String clientSecret = "n6r_BI9ErexQT7QSJaxbIhsS";
 
         // Or your redirect URL for web based applications.
         String redirectUrl = "https://www.remindr.life/contacts";
