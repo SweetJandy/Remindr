@@ -48,6 +48,7 @@ public class User {
 
 
     public User() {
+        this.contact = new Contact();
     }
 
     public User(User copy) {

@@ -37,14 +37,14 @@ public class UsersController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@Valid User user, @Valid Contact contact, Errors validation, Model viewModel) {
+    public String registerUser(@Valid User user, Errors validation, Model viewModel) {
 
 //    user.setPassword(passwordEncoder.encode(user.getPassword()));
 //   place the hashing encoder to storing password in a variable
 
         User existingUser = usersRepository.findByUsername(user.getUsername());
 
-        Contact existingPhoneNumber = contactsRepository.findByPhoneNumber(contact.getPhoneNumber());
+        Contact existingPhoneNumber = contactsRepository.findByPhoneNumber(user.getContact().getPhoneNumber());
 
         if (existingPhoneNumber != null) {
             validation.rejectValue(
@@ -88,8 +88,12 @@ public class UsersController {
 
 //        String hashPassword = passwordEncoder.encode(user.getPassword());
 
-        user.setContact(contact);
+        //Brandon's previous code
+//        user.setContact(contact);
 
+        user.getContact().setGoogleContact((long) (Math.random() * (double) Long.MAX_VALUE));
+        user.getContact().setOutlookContact((long) (Math.random() * (double) Long.MAX_VALUE));
+        contactsRepository.save(user.getContact());
         user.setPassword(user.getPassword());
         usersRepository.save(user);
         return "redirect:profile";

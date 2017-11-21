@@ -4,8 +4,8 @@
 </head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
-    <h1>Create a Remindr</h1>
     <div class="container">
+    <h1>Create a Remindr</h1>
         <div class="row">
             <form action="/remindrs/create" method="post" th:object="${remindr}">
                 <!--TITLE-->
@@ -38,52 +38,6 @@
                     <input type="text" id="description" name="description" th:field="*{description}" class="form-control" />
                 </div>
 
-                <!--CONTACTS-->
-                <!--<div class="form-group">-->
-                    <!--<label for="remindee1">Remindee 1</label>-->
-                    <!--<input id="remindee1" name="remindee1" type="text" th:field="*{remindee1}" class="form-control"/>-->
-                    <!--&lt;!&ndash;<div&ndash;&gt;-->
-                            <!--&lt;!&ndash;class="alert alert-danger"&ndash;&gt;-->
-                            <!--&lt;!&ndash;th:if="${#fields.hasErrors('remindee1')}"&ndash;&gt;-->
-                            <!--&lt;!&ndash;th:errors="*{remindee1}">&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label for="remindee2">Remindee 2</label>-->
-                    <!--<input id="remindee2" name="remindee2" type="text" th:field="*{remindee2}" class="form-control"/>-->
-                    <!--&lt;!&ndash;<div&ndash;&gt;-->
-                            <!--&lt;!&ndash;class="alert alert-danger"&ndash;&gt;-->
-                            <!--&lt;!&ndash;th:if="${#fields.hasErrors('remindee2')}"&ndash;&gt;-->
-                            <!--&lt;!&ndash;th:errors="*{remindee2}">&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label for="remindee3">Remindee 3</label>-->
-                    <!--<input id="remindee3" name="remindee3" type="text" th:field="*{remindee3}" class="form-control"/>-->
-                    <!--&lt;!&ndash;<div&ndash;&gt;-->
-                            <!--&lt;!&ndash;class="alert alert-danger"&ndash;&gt;-->
-                            <!--&lt;!&ndash;th:if="${#fields.hasErrors('remindee3')}"&ndash;&gt;-->
-                            <!--&lt;!&ndash;th:errors="*{remindee3}">&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label for="remindee4">Remindee 4</label>-->
-                    <!--<input id="remindee4" name="remindee4" type="text" th:field="*{remindee4}" class="form-control"/>-->
-                    <!--&lt;!&ndash;<div&ndash;&gt;-->
-                            <!--&lt;!&ndash;class="alert alert-danger"&ndash;&gt;-->
-                            <!--&lt;!&ndash;th:if="${#fields.hasErrors('remindee4')}"&ndash;&gt;-->
-                            <!--&lt;!&ndash;th:errors="*{remindee4}">&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label for="remindee5">Remindee 5</label>-->
-                    <!--<input id="remindee5" name="remindee5" type="text" th:field="*{remindee5}" class="form-control"/>-->
-                    <!--&lt;!&ndash;<div&ndash;&gt;-->
-                            <!--&lt;!&ndash;class="alert alert-danger"&ndash;&gt;-->
-                            <!--&lt;!&ndash;th:if="${#fields.hasErrors('remindee5')}"&ndash;&gt;-->
-                            <!--&lt;!&ndash;th:errors="*{remindee5}">&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--</div>-->
                 <!--&lt;!&ndash;UPLOAD AN IMAGE&ndash;&gt;-->
                 <!--<h2>Upload an Image</h2>-->
 

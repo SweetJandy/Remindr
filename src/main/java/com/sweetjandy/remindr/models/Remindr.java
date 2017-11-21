@@ -40,7 +40,6 @@ public class Remindr {
     @NotBlank(message = "Remindrs must have a location")
     private String location;
 
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "remindr")
     @JsonBackReference
     private List<Alert> alerts;
@@ -56,8 +55,7 @@ public class Remindr {
     public Remindr() {
     }
 
-
-    public Remindr(String title, String description, String endDateTime, String startDateTime, String location, Boolean publicView) {
+    public Remindr(String title, String description, String endDateTime, String startDateTime, String location) {
         this.title = title;
         this.description = description;
         this.startDateTime = startDateTime;
@@ -117,6 +115,7 @@ public class Remindr {
     public void setLocation(String location) {
         this.location = location;
     }
+
 
     public User getUser() {
         return user;
