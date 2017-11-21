@@ -33,7 +33,7 @@ public class Contact {
     private long googleContact;
 
     @Column(nullable = true, unique = true)
-    private long OutlookContact;
+    private long outlookContact;
 
 //    @Column(nullable = false, length = 4, unique = true)
 //    @NotBlank(message = "Posts must have a description!")
@@ -61,7 +61,7 @@ public class Contact {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.googleContact = googleContact;
-        OutlookContact = outlookContact;
+        this.outlookContact = outlookContact;
 //        this.secretCode = secretCode;
     }
 
@@ -106,11 +106,11 @@ public class Contact {
     }
 
     public long getOutlookContact() {
-        return OutlookContact;
+        return outlookContact;
     }
 
     public void setOutlookContact(long outlookContact) {
-        OutlookContact = outlookContact;
+        this.outlookContact = outlookContact;
     }
 
 //    public long getSecretCode() {
