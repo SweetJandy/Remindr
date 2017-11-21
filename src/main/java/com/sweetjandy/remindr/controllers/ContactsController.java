@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -35,11 +32,16 @@ public class ContactsController {
 
     @GetMapping("/contact/{id}")
     public String viewIndividualContact(@PathVariable long id, Model viewModel) {
-        viewModel.addAttribute("contact", contactsRepository.findOne(id).getUsers());
-//        Contact contact = contactsRepository.findOne(id);
+        User user = usersRepository.findOne(1L);
+        // use the contacts repository to find one contact by its id
+        Contact contact = contactsRepository.findOne(id);
+
+        // save the result in a variable contact
+        viewModel.addAttribute("contact", contact); // replace null with the variable contact
 //        viewModel.addAttribute("contact", contact);
         return "users/view-contact";
     }
+
 
 
     @GetMapping("/contacts")
@@ -65,11 +67,20 @@ public class ContactsController {
         User user = usersRepository.findOne(2L);
         //contact.setUser(user);
 
+
+        Contact existingPhoneNumber = contactsRepository.findByPhoneNumber(contact.getPhoneNumber());
         contact.setGoogleContact((long) (Math.random() * (double) Long.MAX_VALUE));
         contact.setOutlookContact((long) (Math.random() * (double) Long.MAX_VALUE));
         user.setContact(contact);
 
 
+        if (existingPhoneNumber != null) {
+            validation.rejectValue(
+                    "phoneNumber",
+                    "contact.phoneNumber",
+                    "Phone number is already taken"
+            );
+        }
 
         if (validation.hasErrors()) {
             viewModel.addAttribute("errors", validation);
