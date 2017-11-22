@@ -4,7 +4,6 @@ import com.sweetjandy.remindr.models.Contact;
 import com.sweetjandy.remindr.models.User;
 import com.sweetjandy.remindr.repositories.ContactsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
-//import com.sweetjandy.remindr.services.GooglePeopleService;
 import com.sweetjandy.remindr.services.GooglePeopleService;
 import com.sweetjandy.remindr.services.PhoneService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class ContactsController {
     private final ContactsRepository contactsRepository;
     private final UsersRepository usersRepository;
     private final GooglePeopleService googlePeopleService;
-//
+
     @Autowired
     public ContactsController(ContactsRepository contactsRepository, UsersRepository usersRepository, GooglePeopleService googlePeopleService)
     {
@@ -77,7 +76,8 @@ public class ContactsController {
 
     @PostMapping("/contacts/add")
     public String addContactForm(@Valid Contact contact, Errors validation, Model viewModel) {
-        //hardcoded until security measures are placed.
+    //hardcoded until security measures are placed.
+
         User user = usersRepository.findOne(2L);
         //contact.setUser(user);
 
