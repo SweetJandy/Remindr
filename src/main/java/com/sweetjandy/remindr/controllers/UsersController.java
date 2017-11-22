@@ -133,7 +133,9 @@ public class UsersController {
 
     @GetMapping("/logout")
     public String logout() {
+
         return "redirect:/login";
+
     }
 
     @GetMapping("/profile")
@@ -144,5 +146,36 @@ public class UsersController {
         return "users/profile";
     }
 
+    @GetMapping("/profile/update")
+    public String showUpdateProfile(Model model) {
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+//        model.addAttribute("user", user);
+        return "users/update-profile";
+    }
+
+    @PostMapping("/profile/update")
+    public String updateProfile (@Valid User user, Errors validation, Model viewModel) {
+
+        boolean validated = PhoneService.validatePhoneNumber(user.getContact().getPhoneNumber());
+        if (!validated) {
+            validation.rejectValue(
+                    "contact.phoneNumber",
+                    "contact.phoneNumber",
+                    "Invalid format: (xxx)xxx-xxxx"
+            );
+        }
+
+        if (validation.hasErrors()) {
+            viewModel.addAttribute("errors", validation);
+            viewModel.addAttribute("user", user);
+            return "users/register";
+        }
+//        user.setPassword(user.getPassword());
+        contactsRepository.save(user.getContact());
+        usersRepository.save(user);
+
+        return "redirect:users/update-profile";
+    }
 }
 

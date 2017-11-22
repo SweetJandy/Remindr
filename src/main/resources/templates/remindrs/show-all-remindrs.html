@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-<head th:replace="/fragments/partials :: head('Show All Remindrs')"></head>
+<head th:replace="/fragments/partials :: head('Show all remindrs')"></head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
 
 <div class="container">
-    <h1>Show All Remindrs</h1>
-    <div th:each="remindr : ${remindrs}">
-        <h1>
-            <a th:href="@{/remindrs/{id}(id=${remindr.id})}" th:text="${remindr.title}"></a>
-        </h1>
-        <p th:text="${remindr.description}"></p>
+    <div class="row">
+        <h1>Your remindrs</h1>
+        <div th:each="remindr : ${remindrs}">
+            <h1>
+                <a th:href="@{/remindrs/{id}(id=${remindr.id})}" th:text="${remindr.title}"></a>
+            </h1>
+            <p th:text="${remindr.description}"></p>
 
-        <!--<div sec:authorize="isAuthenticated()">-->
-        <form method="post" th:action="@{/remindrs/{id}/delete(id=${remindr.id})}">
-            <input class="btn btn-default" type="submit" value="Delete" />
-        </form>
-        <button class="btn btn-default" type="submit"><a th:href="@{/remindrs/{id}/edit(id=${remindr.id})}">Edit</a></button>
-        <!--</div>-->
+            <!--<div sec:authorize="isAuthenticated()">-->
+            <form method="post" th:action="@{/remindrs/{id}/delete(id=${remindr.id})}">
+                <input class="btn btn-default" type="submit" value="Delete" />
+            </form>
+            <button class="btn btn-default" type="submit"><a th:href="@{/remindrs/{id}/edit(id=${remindr.id})}">Edit</a></button>
+            <!--</div>-->
+        </div>
+        <br />
+        <button class="btn btn-default" type="submit"><a th:href="@{/remindrs/create}">Create Remindr</a></button>
     </div>
-    <br />
-    <button class="btn btn-default" type="submit"><a th:href="@{/remindrs/create}">Create Remindr</a></button>
 </div>
 
 <div th:replace="/fragments/partials :: scripts"></div>

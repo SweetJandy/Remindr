@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/partials :: head('Update profile')">
+</head>
+<body>
+
+<nav th:replace="fragments/partials :: navbar"></nav>
+
+<div class="container">
+
+    <div class="row">
+
+        <h1>Update profile: </h1>
+        <!--<div>-->
+        <!--sec:authorize="isAuthenticated()"-->
+        <!--&gt;-->
+
+        <!--First name: <span th:text="${firstName}"/>-->
+        <!--#authentication.principal.firstName}"/>-->
+        <!--Email: <span th:text="${username}"/>-->
+        <!--#authentication.principal.username-->
+        <!--}"/>-->
+        <!--</div>-->
+
+        <!--<div sec:authorize="!isAuthenticated()">-->
+        <!--Please log in-->
+        <!--</div>-->
+
+        <form th:action="@{/update-profile}" th:method="POST" th:object="${user}">
+
+            <div class="col-xs-12 col-md-6">
+
+                <a href="#" class="list-group-item active">Your profile info</a>
+
+                <div class="form-row">
+
+                    <div class="form-group col-md-6">
+                        <label for="firstName">First name</label>
+                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First name"
+                               value="${contact.firstName}" />
+                               <!--th:field="*{contact.firstName}" />-->
+                        <!--<div-->
+                            <!--class="alert alert-danger"-->
+                            <!--th:if="${#fields.hasErrors('contact.firstName')}"-->
+                            <!--th:errors="*{contact.firstName}">-->
+                        <!--</div>-->
+
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="lastName">Last name</label>
+                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name"
+                               value="${contact.lastName}" />
+                               <!--th:field="*{contact.lastName}">-->
+
+                        <!--<div-->
+                            <!--class="alert alert-danger"-->
+                            <!--th:if="${#fields.hasErrors('contact.lastName')}"-->
+                            <!--th:errors="*{contact.lastName}">-->
+                        <!--</div>-->
+
+                    </div>
+
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group col-md-6">
+                        <label for="username">Email</label>
+                        <input type="username" class="form-control" id="username" name="username" placeholder="Email"
+                               value="${username}" />
+                               <!--th:field="*{username}">-->
+
+                        <!--<div-->
+                            <!--class="alert alert-danger"-->
+                            <!--th:if="${#fields.hasErrors('username')}"-->
+                            <!--th:errors="*{username}">-->
+                        <!--</div>-->
+
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="phoneNumber" class="col-form-label">Cell phone number</label>
+                        <input type="text" class="form-control" id="phoneNumber" placeholder="(xxx)xxx-xxxx" value="${contact.phoneNumber}" />
+                               <!--th:field="*{contact.phoneNumber}">-->
+                    </div>
+
+                    <!--<div-->
+                        <!--class="alert alert-danger"-->
+                        <!--th:if="${#fields.hasErrors('contact.phoneNumber')}"-->
+                        <!--th:errors="*{contact.phoneNumber}">-->
+                    <!--</div>-->
+
+                </div>
+
+            </div>
+
+            <div class="col-xs-12 col-md-6">
+
+                <a href="#" class="list-group-item active">Update your password</a>
+
+
+                <div class="form-row">
+
+                    <div class="form-group col-md-12">
+
+                        <label for="password">Current password</label>
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Current password" />
+
+                        <!--<div-->
+                            <!--class="alert alert-danger"-->
+                            <!--th:if="${#fields.hasErrors('password')}"-->
+                            <!--th:errors="*{password}">-->
+                        <!--</div>-->
+
+                        <!--Validate that what they enter = current password-->
+                        <!--<c:if test="${errors.containsKey('currentPassword')}">-->
+                            <!--<p class="error"> ${errors.get('currentPassword')}</p>-->
+                        <!--</c:if>-->
+
+                    </div>
+
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group col-md-6">
+
+                        <label for="newPassword">New password</label>
+                        <input type="password" class="form-control" name="newPassword" id="newPassword" placeholder="New password" />
+
+                        <!--<div-->
+                            <!--class="alert alert-danger"-->
+                            <!--th:if="${#fields.hasErrors('password')}"-->
+                            <!--th:errors="*{password}">-->
+                        <!--</div>-->
+
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="confirmNewPassword">Confirm password</label>
+                        <input type="password" class="form-control" name="confirmNewPassword" id="confirmNewPassword"
+                               placeholder="Confirm new password" />
+
+                        <!--<c:if test="${errors.containsKey('confirmPassword')}">-->
+                            <!--<p class="error"> ${errors.get('confirmPassword')}</p>-->
+                        <!--</c:if>-->
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-xs-4 col-xs-offset-4 col-md-2 col-md-offset-5">
+                <button type="submit" id="update-profile" class="btn btn-primary" style="width: 100%;">Update profile</button>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+
+<div th:include="fragments/partials :: scripts"></div>
+</body>
+</html>

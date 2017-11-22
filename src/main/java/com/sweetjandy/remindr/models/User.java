@@ -51,11 +51,11 @@ public class User {
         this.contact = new Contact();
     }
 
-    public User(User copy) {
-        id = copy.id;
-        username = copy.username;
-        password = copy.password;
-    }
+//    public User(User copy) {
+//        id = copy.id;
+//        username = copy.username;
+//        password = copy.password;
+//    }
 
     public User(long id, String username, String password, Contact contact, List<Contact> contacts) {
         this.id = id;

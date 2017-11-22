@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/fragments/partials :: head('Show All Remindrs')"></head>
+<head th:replace="/fragments/partials :: head('Show remindr')"></head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
     <div class="container">
+        <div class="row">
+
         <h1 th:text="${remindr.title}"></h1>
 
         <h4>Description:</h4>
@@ -34,6 +36,7 @@
         <!--</div>-->
         <br />
         <button class="btn btn-default" type="submit"><a th:href="@{/remindrs}">Back to all Remindrs</a></button>
+        </div>
     </div>
 
 <div th:replace="/fragments/partials :: scripts"></div>

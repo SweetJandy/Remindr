@@ -5,16 +5,18 @@
 <nav th:replace="/fragments/partials :: navbar"></nav>
 
 <div class="container">
+
 	<div class="row">
+
 		<h1>View contact:</h1>
 
-		<h2>
-			<a th:href="${'/contacts/' + contact.id}" th:text="${contact.firstName} + ' ' + ${contact.lastName}">
-			</a>
-		</h2>
-		<h4 th:text="${contact.phoneNumber}"></h4>
+		<h2 th:text="${contact.firstName} + ' ' + ${contact.lastName}"></h2>
+
+		<h3 th:text="${contact.phoneNumber}"></h3>
+		<h3 th:text="${contact.username}"></h3>
 
 	</div>
+
 </div>
 
 <div th:replace="/fragments/partials :: scripts"></div>
