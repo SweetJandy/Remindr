@@ -123,6 +123,6 @@ public class ContactsController {
 
     @GetMapping("/contacts/ajax")
     public String viewAllContactsWithAjax() {
-        return "contacts/ajax";
+        return "users/ajax";
     }
 }

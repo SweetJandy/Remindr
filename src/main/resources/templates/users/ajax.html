@@ -2,15 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
-<head th:replace="/fragments/header :: head('View All Contacts')"></head>
+<head th:replace="/fragments/partials :: head('View All Contacts')"></head>
 <body>
-<nav th:replace="/fragments/navbar :: nav-bar"></nav>
+<nav th:replace="/fragments/partials :: navbar"></nav>
 
-<h1>Contacts</h1>
+<h1>View All Contacts</h1>
 <div id="contacts"></div>
 
-<footer th:replace="/fragments/footer :: main-footer"></footer>
+<footer th:replace="/fragments/partials :: scripts"></footer>
 
-<script src="/js/contacts.js"></script>
 </body>
 </html>
+<script src="/scripts/contacts.js"></script>
