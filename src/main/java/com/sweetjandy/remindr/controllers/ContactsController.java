@@ -104,6 +104,6 @@ public class ContactsController {
 
         contactsRepository.save(contact);
 
-        return "users/contacts";
+        return "redirect:/contacts";
     }
 }
