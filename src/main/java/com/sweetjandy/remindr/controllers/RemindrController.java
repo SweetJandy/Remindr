@@ -80,4 +80,21 @@ public class RemindrController {
 
         return "remindrs/show-remindr";
     }
+
+    @GetMapping("/remindrs/{id}/edit")
+    public String editPost(Model model, @PathVariable Long id) {
+        model.addAttribute("remindr", remindrsRepository.findOne(id));
+
+        return "remindrs/edit";
+    }
+
+//    @PostMapping("/remindrs/{id}/edit")
+//    public String editPost(@ModelAttribute Remindr remindr) {
+//
+//    }
+//
+//    @PostMapping("/remindrs/{id}/delete")
+//    public String deleteRemindr(@PathVariable Long id) {
+//
+//    }
 }

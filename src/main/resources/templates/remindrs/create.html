@@ -9,6 +9,7 @@
         <div class="row">
             <form th:action="@{/remindrs/create}" method="post" th:object="${remindr}">
                 <!--TITLE-->
+                <h4>Title: </h4>
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input id="title" name="title" th:field="*{title}" class="form-control" type="text"/>
@@ -17,6 +18,18 @@
                         class="alert alert-danger"
                         th:if="${#fields.hasErrors('title')}"
                         th:errors="*{title}" >
+                </div>
+
+                <!--Description-->
+                <h4>Description: </h4>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description" th:field="*{description}" class="form-control" />
+                </div>
+                <div
+                        class="alert alert-danger"
+                        th:if="${#fields.hasErrors('description')}"
+                        th:errors="*{description}" >
                 </div>
 
                 <!--START DATE/TIME-->
@@ -50,17 +63,6 @@
                         class="alert alert-danger"
                         th:if="${#fields.hasErrors('location')}"
                         th:errors="*{location}" >
-                </div>
-
-                <!--Description-->
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <input type="text" id="description" name="description" th:field="*{description}" class="form-control" />
-                </div>
-                <div
-                        class="alert alert-danger"
-                        th:if="${#fields.hasErrors('description')}"
-                        th:errors="*{description}" >
                 </div>
 
                 <!--&lt;!&ndash;UPLOAD AN IMAGE&ndash;&gt;-->
