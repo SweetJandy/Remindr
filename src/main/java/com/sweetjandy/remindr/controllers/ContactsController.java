@@ -77,23 +77,22 @@ public class ContactsController {
 
     @PostMapping("/contacts/add")
     public String addContactForm(@Valid Contact contact, Errors validation, Model viewModel) {
-    //hardcoded until security measures are placed.
+        //hardcoded until security measures are placed.
         User user = usersRepository.findOne(2L);
         //contact.setUser(user);
 
+    Contact existingPhoneNumber = contactsRepository.findByPhoneNumber(contact.getPhoneNumber());
         // setting to random number to avoid defaulting to 0, since field is unique
-
-        Contact existingPhoneNumber = contactsRepository.findByPhoneNumber(contact.getPhoneNumber());
         contact.setGoogleContact((long) (Math.random() * (double) Long.MAX_VALUE));
         contact.setOutlookContact((long) (Math.random() * (double) Long.MAX_VALUE));
         user.setContact(contact);
 
-
-        if (existingPhoneNumber != null) {
+        boolean validated = PhoneService.validatePhoneNumber(user.getContact().getPhoneNumber());
+        if (!validated) {
             validation.rejectValue(
                     "phoneNumber",
-                    "contact.phoneNumber",
-                    "Phone number is already taken"
+                    "phoneNumber",
+                    "Invalid format: (xxx)xxx-xxxx"
             );
         }
 
@@ -102,7 +101,9 @@ public class ContactsController {
             viewModel.addAttribute("contact", contact);
             return "users/add-contacts";
         }
+
         contactsRepository.save(contact);
+
         return "users/contacts";
     }
 }
