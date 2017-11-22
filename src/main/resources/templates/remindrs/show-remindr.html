@@ -6,7 +6,9 @@
     <div class="container">
         <div class="row">
 
-        <h1 th:text="${remindr.title}"></h1>
+        <h1>Show remindr</h1>
+
+        <h2 th:text="${remindr.title}"></h2>
 
         <h4>Description:</h4>
         <p th:text="${remindr.description}"></p>
@@ -35,7 +37,7 @@
         </button>
         <!--</div>-->
         <br />
-        <button class="btn btn-default" type="submit"><a th:href="@{/remindrs}">Back to all Remindrs</a></button>
+        <button class="btn btn-primary" type="submit" ><a th:href="@{/remindrs}" style="color: white;">View all remindrs</a></button>
         </div>
     </div>
 

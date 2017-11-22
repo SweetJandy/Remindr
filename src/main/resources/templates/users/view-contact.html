@@ -8,12 +8,15 @@
 
 	<div class="row">
 
-		<h1>View contact:</h1>
+		<h1>View contact</h1>
 
 		<h2 th:text="${contact.firstName} + ' ' + ${contact.lastName}"></h2>
 
 		<h3 th:text="${contact.phoneNumber}"></h3>
-		<h3 th:text="${contact.username}"></h3>
+
+		<h3 th:text="${username}"></h3>
+
+		<a href="/contacts" class="btn btn-primary">View all contacts</a>
 
 	</div>
 

@@ -6,13 +6,13 @@
 
 <div class="container">
 	<div class="row">
-		<h1>View all contacts:</h1>
+		<h1>View all contacts</h1>
 
 		<div th:each="contact : ${contacts}">
-			<h2><a th:href="${'/contacts/' + contact.id}"
+			<h4><a th:href="${'/contacts/' + contact.id}"
 				   th:text="${contact.firstName} + ' ' + ${contact.lastName}"></a>
-			</h2>
-			<h4 th:text="${contact.phoneNumber}"></h4>
+			</h4>
+			<!--<h4 th:text="${contact.phoneNumber}"></h4>-->
 		</div>
 	</div>
 </div>
