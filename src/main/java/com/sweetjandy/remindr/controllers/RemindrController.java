@@ -88,13 +88,17 @@ public class RemindrController {
         return "remindrs/edit";
     }
 
-//    @PostMapping("/remindrs/{id}/edit")
-//    public String editPost(@ModelAttribute Remindr remindr) {
-//
-//    }
-//
-//    @PostMapping("/remindrs/{id}/delete")
-//    public String deleteRemindr(@PathVariable Long id) {
-//
-//    }
+    @PostMapping("/remindrs/{id}/edit")
+    public String editPost(@ModelAttribute Remindr remindr) {
+        remindrsRepository.save(remindr);
+
+        return "redirect:/remindrs";
+    }
+
+    @PostMapping("/remindrs/{id}/delete")
+    public String deleteRemindr(@PathVariable Long id) {
+        remindrsRepository.delete(id);
+
+        return "redirect:/remindrs";
+    }
 }

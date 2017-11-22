@@ -5,7 +5,7 @@
 <nav th:replace="/fragments/partials :: navbar"></nav>
 <div class="container">
     <h1>Edit a Post</h1>
-    <form th:action="${'/remindr/'+ remindr.id +'/edit'}" method="post" th:object="${remindr}">
+    <form th:action="${'/remindrs/'+ remindr.id +'/edit'}" method="post" th:object="${remindr}">
         <div class="form-group">
             <label for="title">Title</label>
             <input id="title" name="title" th:field="*{title}" class="form-control" type="text"/>
