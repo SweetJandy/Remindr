@@ -76,7 +76,6 @@ public class GooglePeopleController {
     public @ResponseBody List<Person>  viewContacts(@RequestParam(name = "token") String token) throws IOException {
         return googlePeopleSvc.contacts(token);
 
-//        return "yes?";
     }
 }
 
