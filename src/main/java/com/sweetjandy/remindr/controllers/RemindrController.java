@@ -74,8 +74,33 @@ public class RemindrController {
         Remindr remindr = remindrsRepository.findOne(id);
 
 
+        // parse into correct format for displaying in the view
+        String startDateTime = remindr.getStartDateTime();
+        String startYear = startDateTime.substring(0, 4);
+        String startMonth = startDateTime.substring(5, 7);
+        String startDate = startDateTime.substring(8, 10);
+
+        // pass these to the view
+        String startTime = startDateTime.substring(11);
+        String finalStartDate = startMonth + "/" + startDate + "/" + startYear;
+
+
+        String endDateTime = remindr.getEndDateTime();
+        String endYear = endDateTime.substring(0, 4);
+        String endMonth = endDateTime.substring(5, 7);
+        String endDate = endDateTime.substring(8, 10);
+
+        // pass these to the view
+        String endTime = endDateTime.substring(11);
+        String finalEndDate = endMonth + "/" + endDate + "/" + startYear;
+
+
         model.addAttribute("remindr", remindr);
         model.addAttribute("remindrId", id);
+        model.addAttribute("startdate", finalStartDate);
+        model.addAttribute("enddate", finalEndDate);
+        model.addAttribute("starttime", startTime);
+        model.addAttribute("endtime", endTime);
 
 
         return "remindrs/show-remindr";
