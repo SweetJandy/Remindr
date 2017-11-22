@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:replace="/fragments/header :: head('View All Contacts')"></head>
+<body>
+<nav th:replace="/fragments/navbar :: nav-bar"></nav>
+
+<h1>Contacts</h1>
+<div id="contacts"></div>
+
+<footer th:replace="/fragments/footer :: main-footer"></footer>
+
+<script src="/js/contacts.js"></script>
+</body>
+</html>
