@@ -6,33 +6,77 @@
 <div class="container">
     <h1>Edit a Post</h1>
     <form th:action="${'/remindrs/'+ remindr.id +'/edit'}" method="post" th:object="${remindr}">
+        <!--START DATE/TIME-->
         <div class="form-group">
-            <label for="title">Title</label>
-            <input id="title" name="title" th:field="*{title}" class="form-control" type="text"/>
-        </div>
-
-        <div class="form-group">
-            <label for="description">Description</label>
-            <input type="text" id="description" name="description" th:field="*{description}" class="form-control" />
-        </div>
-
-        <div class="form-group">
-            <label for="startDateTime">Start Date</label>
+            <label for="startDateTime">Event start date/time*</label>
             <input id="startDateTime" name="startDateTime" class="form-control" type="datetime-local" th:field="*{startDateTime}" />
         </div>
+        <div
+                class="alert alert-danger"
+                th:if="${#fields.hasErrors('startDateTime')}"
+                th:errors="*{startDateTime}" >
+        </div>
 
+        <!--END DATE/TIME-->
         <div class="form-group">
-            <label for="endDateTime">End Date</label>
+            <label for="endDateTime">Event end date/time*</label>
             <input id="endDateTime" name="endDateTime" class="form-control" type="datetime-local" th:field="*{endDateTime}" />
         </div>
-
-        <div class="form-group">
-            <label for="location">Location</label>
-            <input type="text" id="location" name="location" th:field="*{location}" class="form-control" />
+        <div
+                class="alert alert-danger"
+                th:if="${#fields.hasErrors('endDateTime')}"
+                th:errors="*{endDateTime}" >
         </div>
 
+        <!--&lt;!&ndash;ALERTS&ndash;&gt;-->
+        <!--<div class="form-group">-->
+        <!--<label for="endDateTime">Set a remindr*</label>-->
+        <!--<input id="endDateTime" name="endDateTime" class="form-control" type="datetime-local" th:field="*{alert}" />-->
+        <!--</div>-->
+        <!--<div-->
+        <!--class="alert alert-danger"-->
+        <!--th:if="${#fields.hasErrors('alert')}"-->
+        <!--th:errors="*{alert}" >-->
+        <!--</div>-->
 
-        <input type="submit" />
+        <!--LOCATION-->
+        <div class="form-group">
+            <label for="location">Location*</label>
+            <input type="text" id="location" name="location" th:field="*{location}" class="form-control" />
+        </div>
+        <div
+                class="alert alert-danger"
+                th:if="${#fields.hasErrors('location')}"
+                th:errors="*{location}" >
+        </div>
+
+        <!--TITLE-->
+        <div class="form-group">
+            <label for="title">Title*</label>
+            <input id="title" name="title" th:field="*{title}" class="form-control" type="text"/>
+        </div>
+        <div
+                class="alert alert-danger"
+                th:if="${#fields.hasErrors('title')}"
+                th:errors="*{title}" >
+        </div>
+
+        <!--Description-->
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" rows="3" id="description" name="description" th:field="*{description}"></textarea>
+            <!--<input type="text" id="description" name="description" th:field="*{description}" class="form-control" />-->
+        </div>
+        <div
+                class="alert alert-danger"
+                th:if="${#fields.hasErrors('description')}"
+                th:errors="*{description}" >
+        </div>
+
+        <!--&lt;!&ndash;UPLOAD AN IMAGE&ndash;&gt;-->
+        <!--<h2>Upload an Image</h2>-->
+        <p>* marked fields are required</p>
+        <input class="btn btn-primary" type="submit" value="Submit" />
     </form>
 </div>
 <div th:replace="/fragments/partials :: scripts"></div>

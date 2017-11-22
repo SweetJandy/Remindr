@@ -32,7 +32,7 @@ public class ContactsController {
         this.googlePeopleService = googlePeopleService;
     }
 
-    @GetMapping("/contact/{id}")
+    @GetMapping("/contacts/{id}")
     public String viewIndividualContact(@PathVariable long id, Model viewModel) {
         User user = usersRepository.findOne(3L);
 

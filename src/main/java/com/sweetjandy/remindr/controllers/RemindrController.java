@@ -6,6 +6,7 @@ import com.sweetjandy.remindr.models.User;
 import com.sweetjandy.remindr.repositories.ContactsRepository;
 import com.sweetjandy.remindr.repositories.RemindrsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
+import com.sweetjandy.remindr.services.RemindrService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ public class RemindrController {
     private RemindrsRepository remindrsRepository;
     private UsersRepository usersRepository;
     private ContactsRepository contactsRepository;
+    private RemindrService remindrService = new RemindrService();
 
     @Autowired
     public RemindrController(RemindrsRepository remindrsRepository, UsersRepository usersRepository) {
@@ -43,9 +45,10 @@ public class RemindrController {
 
 
         User user = usersRepository.findOne(1L);
-        Contact contact = user.getContact();
-
         remindr.setUser(user);
+
+        Contact contact = user.getContact();
+        String fullName = contact.getFirstName() + contact.getLastName();
 
         model.addAttribute("contact", contact);
 
@@ -75,33 +78,18 @@ public class RemindrController {
 
 
         // parse into correct format for displaying in the view
-        String startDateTime = remindr.getStartDateTime();
-        String startYear = startDateTime.substring(0, 4);
-        String startMonth = startDateTime.substring(5, 7);
-        String startDate = startDateTime.substring(8, 10);
-
-        // pass these to the view
-        String startTime = startDateTime.substring(11);
-        String finalStartDate = startMonth + "/" + startDate + "/" + startYear;
-
-
-        String endDateTime = remindr.getEndDateTime();
-        String endYear = endDateTime.substring(0, 4);
-        String endMonth = endDateTime.substring(5, 7);
-        String endDate = endDateTime.substring(8, 10);
-
-        // pass these to the view
-        String endTime = endDateTime.substring(11);
-        String finalEndDate = endMonth + "/" + endDate + "/" + startYear;
-
+        String startDate = remindrService.getFinalDate(remindr.getStartDateTime());
+        String endDate = remindrService.getFinalDate(remindr.getEndDateTime());
+        String startTime = remindrService.getTime(remindr.getStartDateTime());
+        String endTime = remindrService.getTime(remindr.getEndDateTime());
 
         model.addAttribute("remindr", remindr);
         model.addAttribute("remindrId", id);
-        model.addAttribute("startdate", finalStartDate);
-        model.addAttribute("enddate", finalEndDate);
+
+        model.addAttribute("startdate", startDate);
+        model.addAttribute("enddate", endDate);
         model.addAttribute("starttime", startTime);
         model.addAttribute("endtime", endTime);
-
 
         return "remindrs/show-remindr";
     }
@@ -114,7 +102,16 @@ public class RemindrController {
     }
 
     @PostMapping("/remindrs/{id}/edit")
-    public String editPost(@ModelAttribute Remindr remindr) {
+    public String editPost(@Valid Remindr remindr, Errors validation, Model model) {
+        User user = usersRepository.findOne(1L);
+        remindr.setUser(user);
+
+        if (validation.hasErrors()) {
+            model.addAttribute("errors", validation);
+            model.addAttribute("remindr", remindr);
+            return "/remindrs/edit";
+        }
+
         remindrsRepository.save(remindr);
 
         return "redirect:/remindrs";
