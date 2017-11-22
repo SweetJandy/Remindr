@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/partials :: head('Show All Remindrs')"></head>
+<body>
+<nav th:replace="/fragments/partials :: navbar"></nav>
+    <div class="container">
+        <h1 th:text="${remindr.title}"></h1>
+
+        <h4>Description:</h4>
+        <p th:text="${remindr.description}"></p>
+
+        <h4>Start Date/Time:</h4>
+        <p th:text="${startdate}"></p>
+        <p th:text="${starttime}"></p>
+
+        <h4>End Date/Time:</h4>
+        <p th:text="${enddate}"></p>
+        <p th:text="${endtime}"></p>
+
+        <h4>Location:</h4>
+        <p th:text="${remindr.location}"></p>
+
+        <h4>Created by:
+            <span th:text="${remindr.user.contact.firstName + ' ' + remindr.user.contact.lastName}"></span>
+        </h4>
+
+        <!--<div sec:authorize="isAuthenticated()">-->
+        <form method="post" th:action="@{/remindrs/{id}/delete(id=${remindr.id})}">
+            <input class="btn btn-default" type="submit" value="Delete" />
+        </form>
+        <button class="btn btn-default" type="submit">
+            <a th:href="@{/remindrs/{id}/edit(id=${remindr.id})}">Edit</a>
+        </button>
+        <!--</div>-->
+        <br />
+        <button class="btn btn-default" type="submit"><a th:href="@{/remindrs}">Back to all Remindrs</a></button>
+    </div>
+
+<div th:replace="/fragments/partials :: scripts"></div>
+</body>
+</html>
