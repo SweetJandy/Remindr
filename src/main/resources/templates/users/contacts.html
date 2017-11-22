@@ -8,23 +8,6 @@
 	<div class="row">
 		<h1>View all contacts:</h1>
 
-		<!--&lt;!&ndash;Hard-coded&ndash;&gt;-->
-		<!--<div>-->
-		<!--<h2>First and last name</h2>-->
-		<!--<h4>Phone number</h4>-->
-		<!--</div>-->
-
-		<!--<div>-->
-		<!--<h2>First and last name</h2>-->
-		<!--<h4>Phone number</h4>-->
-		<!--</div>-->
-
-		<!--<div>-->
-		<!--<h2>First and last name</h2>-->
-		<!--<h4>Phone number</h4>-->
-		<!--</div>-->
-
-		<!--Dynamic -->
 		<div th:each="contact : ${contacts}">
 			<h2><a th:href="${'/contacts/' + contact.id}"
 				   th:text="${contact.firstName} + ' ' + ${contact.lastName}"></a>

@@ -131,6 +131,11 @@ public class UsersController {
 
     }
 
+    @GetMapping("/logout")
+    public String logout() {
+        return "redirect:/login";
+    }
+
     @GetMapping("/profile")
     public String profile(Model model) {
 //        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
