@@ -37,13 +37,14 @@ public class User {
     @JsonBackReference
     private List<Remindr> remindrs ;
 
-
     @ManyToMany(cascade = ALL)
     @JoinTable(
             name = "user_contact",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "contacts_id")}
     )
+//    @JsonIdentityInfo
+    @JsonBackReference
     private List<Contact> contacts;
 
 

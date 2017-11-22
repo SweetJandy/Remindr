@@ -49,6 +49,8 @@ public class Remindr {
     private User user;
 
     @ManyToMany(mappedBy = "remindrs")
+    //    @JsonIdentityInfo
+    @JsonManagedReference
     private List<Contact> contacts;
 
 
