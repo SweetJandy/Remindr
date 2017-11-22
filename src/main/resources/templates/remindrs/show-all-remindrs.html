@@ -11,15 +11,6 @@
             <a th:href="@{/remindrs/{id}(id=${remindr.id})}" th:text="${remindr.title}"></a>
         </h1>
         <p th:text="${remindr.description}"></p>
-
-        <h4>Start Date/Time:</h4>
-        <p th:text="${remindr.startDateTime}"></p>
-
-        <h4>End Date/Time:</h4>
-        <p th:text="${remindr.endDateTime}"></p>
-
-        <h4>Location:</h4>
-        <p th:text="${remindr.location}"></p>
     </div>
 </div>
 

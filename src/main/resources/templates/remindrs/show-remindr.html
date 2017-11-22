@@ -6,7 +6,18 @@
     <div class="container">
         <h1 th:text="${remindr.title}"></h1>
         <p th:text="${remindr.description}"></p>
+        <h4>Start Date/Time:</h4>
+        <p th:text="${remindr.startDateTime}"></p>
 
+        <h4>End Date/Time:</h4>
+        <p th:text="${remindr.endDateTime}"></p>
+
+        <h4>Location:</h4>
+        <p th:text="${remindr.location}"></p>
+
+        <h4>Created by:
+            <span th:text="${remindr.user.contact.firstName + ' ' + remindr.user.contact.lastName}"></span>
+        </h4>
     </div>
 <div th:replace="/fragments/partials :: scripts"></div>
 </body>
