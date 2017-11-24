@@ -34,7 +34,7 @@ public class ContactsController {
 
     @GetMapping("/contacts/{id}")
     public String viewIndividualContact(@PathVariable long id, Model viewModel) {
-        User user = usersRepository.findOne(3L);
+        User user = usersRepository.findOne(2L);
 
         // use the contacts repository to find one contact by its id
         Contact contact = contactsRepository.findOne(id);
@@ -104,6 +104,6 @@ public class ContactsController {
 
         contactsRepository.save(contact);
 
-        return "users/contacts";
+        return "redirect:/contacts";
     }
 }
