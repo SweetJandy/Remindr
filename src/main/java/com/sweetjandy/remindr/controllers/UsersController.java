@@ -51,13 +51,11 @@ public class UsersController {
 
         if (existingPhoneNumber != null) {
             validation.rejectValue(
-                    "phoneNumber",
-                    "user.contact.phoneNumber",
+                    "contact.phoneNumber",
+                    "contact.phoneNumber",
                     "Phone number is already taken"
             );
         }
-
-//        User existingEmail = usersRepository.findByEmail(user.getEmail());
 
         if (existingUser != null) {
             validation.rejectValue(
@@ -66,20 +64,6 @@ public class UsersController {
                     "This email is already taken!"
             );
         }
-        if (existingUser != null) {
-            validation.rejectValue(
-                    "phoneNumber",
-                    "user.phoneNumber",
-                    "This phone number is already taken!"
-            );
-        }
-//        if (existingEmail != null) {
-//            validation.rejectValue(
-//                    "email",
-//                    "user.email",
-//                    "Email already taken!"
-//            );
-//        }
 
         boolean validated = PhoneService.validatePhoneNumber(user.getContact().getPhoneNumber());
         if (!validated) {
