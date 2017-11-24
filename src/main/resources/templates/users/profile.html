@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-<head th:replace="fragments/partials :: head('Your profile')">
+<head th:replace="fragments/partials :: head('Profile')">
 </head>
 <body>
 
 <nav th:replace="fragments/partials :: navbar"></nav>
 
-<h2>Profile: </h2>
+<div class="container">
+
+    <div class="row">
+
+        <h1>Profile </h1>
 <!--<div>-->
         <!--sec:authorize="isAuthenticated()"-->
 <!--&gt;-->
@@ -22,11 +26,28 @@
     <!--Please log in-->
 <!--</div>-->
 
-<h4>First name</h4>
-<h4>Last name</h4>
-<h4>Cell phone number</h4>
-<h4>Email</h4>
-<h4>Password</h4>
+        <div class="list-group col-xs-12 col-sm-6">
+            <a href="#" class="list-group-item active">
+                Manage your profile
+            </a>
+            <a href="/profile/update" class="list-group-item">Update profile info</a>
+            <a href="/contacts/add" class="list-group-item">Add contacts</a>
+            <a href="/contacts" class="list-group-item">View contacts</a>
+        </div>
+
+        <div class="list-group col-xs-12 col-sm-6">
+            <a href="#" class="list-group-item active">
+                Manage your remindrs
+            </a>
+            <a href="/remindrs"
+                    class="list-group-item">View your remindrs</a>
+                    <!--th:href="/ads/users-ads?id=${sessionScope.user.id}"-->
+            <a href="/remindrs/create" class="list-group-item">Create remindr</a>
+        </div>
+
+    </div>
+
+</div>
 
 
 <div th:include="fragments/partials :: scripts"></div>

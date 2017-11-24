@@ -42,7 +42,7 @@ public class RemindrController {
     public String createRemindr(@Valid Remindr remindr, Errors validation, Model model) {
 
 
-        User user = usersRepository.findOne(1L);
+        User user = usersRepository.findOne(2L);
         Contact contact = user.getContact();
 
         remindr.setUser(user);
