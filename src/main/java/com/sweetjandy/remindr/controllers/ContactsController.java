@@ -87,6 +87,16 @@ public class ContactsController {
         contact.setOutlookContact((long) (Math.random() * (double) Long.MAX_VALUE));
         user.setContact(contact);
 
+        Contact existingPhoneNumberInContacts = contactsRepository.findByPhoneNumber(user.getContact().getPhoneNumber());
+
+        if (existingPhoneNumberInContacts != null) {
+            validation.rejectValue(
+                    "phoneNumber",
+                    "phoneNumber",
+                    "Phone number is already taken"
+            );
+        }
+
         boolean validated = PhoneService.validatePhoneNumber(user.getContact().getPhoneNumber());
         if (!validated) {
             validation.rejectValue(
