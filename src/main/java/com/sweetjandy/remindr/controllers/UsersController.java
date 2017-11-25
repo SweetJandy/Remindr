@@ -131,11 +131,11 @@ public class UsersController {
         return "users/profile";
     }
 
-    @GetMapping("/profile/{id}/edit")
-    public String showEditProfile(Model model, @PathVariable Long id) {
+    @GetMapping("/profile/edit")
+    public String showEditProfile(Model model) {
 //        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        User user = usersRepository.findOne(id);
+        User user = usersRepository.findOne(2L);
         model.addAttribute("user", user);
 
         return "users/edit-profile";

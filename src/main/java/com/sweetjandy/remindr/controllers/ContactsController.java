@@ -123,7 +123,7 @@ public class ContactsController {
     public String editPost(Model model, @PathVariable Long id) {
         model.addAttribute("contact", contactsRepository.findOne(id));
 
-        return "contacts/edit";
+        return "users/edit-contact";
     }
 
     @PostMapping("/contacts/{id}/edit")
