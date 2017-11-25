@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -130,16 +131,18 @@ public class UsersController {
         return "users/profile";
     }
 
-    @GetMapping("/profile/update")
-    public String showUpdateProfile(Model model) {
+    @GetMapping("/profile/{id}/edit")
+    public String showEditProfile(Model model, @PathVariable Long id) {
 //        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-//        model.addAttribute("user", user);
-        return "users/update-profile";
+        User user = usersRepository.findOne(id);
+        model.addAttribute("user", user);
+
+        return "users/edit-profile";
     }
 
-    @PostMapping("/profile/update")
-    public String updateProfile (@Valid User user, Errors validation, Model viewModel) {
+    @PostMapping("/profile/edit")
+    public String editProfile (@Valid User user, Errors validation, Model viewModel) {
 
         boolean validated = PhoneService.validatePhoneNumber(user.getContact().getPhoneNumber());
         if (!validated) {
@@ -153,13 +156,13 @@ public class UsersController {
         if (validation.hasErrors()) {
             viewModel.addAttribute("errors", validation);
             viewModel.addAttribute("user", user);
-            return "users/register";
+            return "users/edit-profile";
         }
 //        user.setPassword(user.getPassword());
         contactsRepository.save(user.getContact());
         usersRepository.save(user);
 
-        return "redirect:users/update-profile";
+        return "redirect:users/profile";
     }
 }
 

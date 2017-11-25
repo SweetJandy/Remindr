@@ -26,7 +26,10 @@
         <!--Please log in-->
         <!--</div>-->
 
-        <form th:action="@{/update-profile}" th:method="POST" th:object="${user}">
+        <form
+              th:action="${'/profile/'+ user.id +'/edit'}"
+              th:method="POST" th:object="${user}">
+                <!--th:action="@{/edit-profile}"-->
 
             <div class="col-xs-12 col-md-6">
 
@@ -36,9 +39,7 @@
 
                     <div class="form-group col-md-6">
                         <label for="firstName">First name</label>
-                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First name"
-                               value="${contact.firstName}" />
-                               <!--th:field="*{contact.firstName}" />-->
+                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First name" th:field="*{contact.firstName}" />
                         <!--<div-->
                             <!--class="alert alert-danger"-->
                             <!--th:if="${#fields.hasErrors('contact.firstName')}"-->
@@ -49,9 +50,7 @@
 
                     <div class="form-group col-md-6">
                         <label for="lastName">Last name</label>
-                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name"
-                               value="${contact.lastName}" />
-                               <!--th:field="*{contact.lastName}">-->
+                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name" th:field="*{contact.lastName}" />
 
                         <!--<div-->
                             <!--class="alert alert-danger"-->
@@ -59,7 +58,7 @@
                             <!--th:errors="*{contact.lastName}">-->
                         <!--</div>-->
 
-                    </div>
+                    <!--</div>-->
 
                 </div>
 
@@ -67,9 +66,7 @@
 
                     <div class="form-group col-md-6">
                         <label for="username">Email</label>
-                        <input type="username" class="form-control" id="username" name="username" placeholder="Email"
-                               value="${username}" />
-                               <!--th:field="*{username}">-->
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Email" th:field="*{username}" />
 
                         <!--<div-->
                             <!--class="alert alert-danger"-->
@@ -81,8 +78,7 @@
 
                     <div class="form-group col-md-6">
                         <label for="phoneNumber" class="col-form-label">Cell phone number</label>
-                        <input type="text" class="form-control" id="phoneNumber" placeholder="(xxx)xxx-xxxx" value="${contact.phoneNumber}" />
-                               <!--th:field="*{contact.phoneNumber}">-->
+                        <input type="text" class="form-control" id="phoneNumber" placeholder="(xxx)xxx-xxxx" th:field="*{contact.phoneNumber}" />
                     </div>
 
                     <!--<div-->
@@ -153,6 +149,7 @@
 
             <div class="col-xs-4 col-xs-offset-4 col-md-2 col-md-offset-5">
                 <button type="submit" id="update-profile" class="btn btn-primary" style="width: 100%;">Update profile</button>
+            </div>
             </div>
         </form>
         <div class="col-xs-4 col-xs-offset-4 col-md-2 col-md-offset-5">
