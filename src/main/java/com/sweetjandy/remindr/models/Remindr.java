@@ -6,10 +6,13 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
+import javax.swing.*;
 import javax.validation.constraints.Size;
 
+import java.awt.*;
 import java.util.Date;
 import java.util.List;
 
@@ -40,6 +43,10 @@ public class Remindr {
     @NotBlank(message = "Remindrs must have a location")
     private String location;
 
+    @Column(nullable = true)
+    @Value("${file-upload-path")
+    private String uploadPath;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "remindr")
     @JsonBackReference
     private List<Alert> alerts;
@@ -55,12 +62,13 @@ public class Remindr {
     public Remindr() {
     }
 
-    public Remindr(String title, String description, String endDateTime, String startDateTime, String location) {
+    public Remindr(String title, String description, String endDateTime, String startDateTime, String location, String uploadPath) {
         this.title = title;
         this.description = description;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.location = location;
+        this.uploadPath = uploadPath;
     }
 
     public long getId() {
@@ -142,4 +150,11 @@ public class Remindr {
         this.alerts = alerts;
     }
 
+    public String getUploadPath() {
+        return uploadPath;
+    }
+
+    public void setUploadPath(String uploadPath) {
+        this.uploadPath = uploadPath;
+    }
 }
