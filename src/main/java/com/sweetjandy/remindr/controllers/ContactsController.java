@@ -72,7 +72,7 @@ public class ContactsController {
 
         viewModel.addAttribute("contact", new Contact());
 
-        return "users/addcontacts";
+        return "users/add-contacts";
     }
 
     @PostMapping("/contacts/add")
@@ -107,7 +107,7 @@ public class ContactsController {
         if (validation.hasErrors()) {
             viewModel.addAttribute("errors", validation);
             viewModel.addAttribute("contact", contact);
-            return "users/addcontacts";
+            return "users/add-contacts";
         }
 
         contactsRepository.save(contact);
