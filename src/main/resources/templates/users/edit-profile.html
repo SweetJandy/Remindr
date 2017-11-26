@@ -27,9 +27,13 @@
         <!--</div>-->
 
         <form
-              th:action="${'/profile/'+ user.id +'/edit'}"
+              th:action="${'/profile/edit'}"
               th:method="POST" th:object="${user}">
                 <!--th:action="@{/edit-profile}"-->
+
+            <!--Resubmit object ids-->
+            <input type="hidden" th:field="*{id}"/>
+            <input type="hidden" th:field="*{contact.id}"/>
 
             <div class="col-xs-12 col-md-6">
 
@@ -40,11 +44,11 @@
                     <div class="form-group col-md-6">
                         <label for="firstName">First name</label>
                         <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First name" th:field="*{contact.firstName}" />
-                        <!--<div-->
-                            <!--class="alert alert-danger"-->
-                            <!--th:if="${#fields.hasErrors('contact.firstName')}"-->
-                            <!--th:errors="*{contact.firstName}">-->
-                        <!--</div>-->
+                        <div
+                            class="alert alert-danger"
+                            th:if="${#fields.hasErrors('contact.firstName')}"
+                            th:errors="*{contact.firstName}">
+                        </div>
 
                     </div>
 
@@ -52,13 +56,13 @@
                         <label for="lastName">Last name</label>
                         <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name" th:field="*{contact.lastName}" />
 
-                        <!--<div-->
-                            <!--class="alert alert-danger"-->
-                            <!--th:if="${#fields.hasErrors('contact.lastName')}"-->
-                            <!--th:errors="*{contact.lastName}">-->
-                        <!--</div>-->
+                        <div
+                            class="alert alert-danger"
+                            th:if="${#fields.hasErrors('contact.lastName')}"
+                            th:errors="*{contact.lastName}">
+                        </div>
 
-                    <!--</div>-->
+                    </div>
 
                 </div>
 
@@ -68,24 +72,23 @@
                         <label for="username">Email</label>
                         <input type="text" class="form-control" id="username" name="username" placeholder="Email" th:field="*{username}" />
 
-                        <!--<div-->
-                            <!--class="alert alert-danger"-->
-                            <!--th:if="${#fields.hasErrors('username')}"-->
-                            <!--th:errors="*{username}">-->
-                        <!--</div>-->
+                        <div
+                            class="alert alert-danger"
+                            th:if="${#fields.hasErrors('username')}"
+                            th:errors="*{username}">
+                        </div>
 
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="phoneNumber" class="col-form-label">Cell phone number</label>
                         <input type="text" class="form-control" id="phoneNumber" placeholder="(xxx)xxx-xxxx" th:field="*{contact.phoneNumber}" />
+                        <div
+                            class="alert alert-danger"
+                            th:if="${#fields.hasErrors('contact.phoneNumber')}"
+                            th:errors="*{contact.phoneNumber}">
+                        </div>
                     </div>
-
-                    <!--<div-->
-                        <!--class="alert alert-danger"-->
-                        <!--th:if="${#fields.hasErrors('contact.phoneNumber')}"-->
-                        <!--th:errors="*{contact.phoneNumber}">-->
-                    <!--</div>-->
 
                 </div>
 
@@ -101,18 +104,13 @@
                     <div class="form-group col-md-12">
 
                         <label for="password">Current password</label>
-                        <input type="password" class="form-control" name="password" id="password" placeholder="Current password" />
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Current password" th:field="*{password}"/>
 
-                        <!--<div-->
-                            <!--class="alert alert-danger"-->
-                            <!--th:if="${#fields.hasErrors('password')}"-->
-                            <!--th:errors="*{password}">-->
-                        <!--</div>-->
-
-                        <!--Validate that what they enter = current password-->
-                        <!--<c:if test="${errors.containsKey('currentPassword')}">-->
-                            <!--<p class="error"> ${errors.get('currentPassword')}</p>-->
-                        <!--</c:if>-->
+                        <div
+                            class="alert alert-danger"
+                            th:if="${#fields.hasErrors('password')}"
+                            th:errors="*{password}">
+                        </div>
 
                     </div>
 
@@ -123,24 +121,25 @@
                     <div class="form-group col-md-6">
 
                         <label for="newPassword">New password</label>
-                        <input type="password" class="form-control" name="newPassword" id="newPassword" placeholder="New password" />
+                        <input type="password" class="form-control" name="newPassword" id="newPassword" placeholder="New password" th:field="*{newPassword}"/>
 
-                        <!--<div-->
-                            <!--class="alert alert-danger"-->
-                            <!--th:if="${#fields.hasErrors('password')}"-->
-                            <!--th:errors="*{password}">-->
-                        <!--</div>-->
+                        <div
+                            class="alert alert-danger"
+                            th:if="${#fields.hasErrors('newPassword')}"
+                            th:errors="*{newPassword}">
+                        </div>
 
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="confirmNewPassword">Confirm password</label>
+                        <label for="confirmNewPassword">Confirm new password</label>
                         <input type="password" class="form-control" name="confirmNewPassword" id="confirmNewPassword"
-                               placeholder="Confirm new password" />
-
-                        <!--<c:if test="${errors.containsKey('confirmPassword')}">-->
-                            <!--<p class="error"> ${errors.get('confirmPassword')}</p>-->
-                        <!--</c:if>-->
+                               placeholder="Confirm new password" th:field="*{confirmNewPassword}"/>
+                        <div
+                                class="alert alert-danger"
+                                th:if="${#fields.hasErrors('confirmNewPassword')}"
+                                th:errors="*{confirmNewPassword}">
+                        </div>
 
                     </div>
 
@@ -149,7 +148,6 @@
 
             <div class="col-xs-4 col-xs-offset-4 col-md-2 col-md-offset-5">
                 <button type="submit" id="update-profile" class="btn btn-primary" style="width: 100%;">Update profile</button>
-            </div>
             </div>
         </form>
         <div class="col-xs-4 col-xs-offset-4 col-md-2 col-md-offset-5">
