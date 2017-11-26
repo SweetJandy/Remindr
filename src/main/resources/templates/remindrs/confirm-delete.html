@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/partials :: head('Show remindr')"></head>
+<body>
+<nav th:replace="/fragments/partials :: navbar"></nav>
+    <div class="container">
+        <div th:each="remindr : ${remindrs}">
+            <h1>Are you sure you would like to delete
+                <p th:text="${'''' + remindr.title + '''?'}"></p>
+            </h1>
+            <form method="post" th:action="@{/remindrs/{id}/delete(id=${remindr.id})}">
+                <input class="btn btn-primary" type="submit" value="Delete" />
+                <a href="/remindrs" class="btn btn-danger">Cancel</a>
+            </form>
+        </div>
+    </div>
+<div th:replace="/fragments/partials :: scripts"></div>
+</body>
+</html>
