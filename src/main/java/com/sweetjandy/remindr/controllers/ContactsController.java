@@ -127,7 +127,32 @@ public class ContactsController {
     }
 
     @PostMapping("/contacts/{id}/edit")
-    public String editPost(@ModelAttribute Contact contact) {
+    public String editPost(@Valid Contact contact, Errors validation, Model viewModel) {
+
+        Contact existingPhoneNumberInContacts = contactsRepository.findByPhoneNumber(contact.getPhoneNumber());
+
+        if (existingPhoneNumberInContacts != null) {
+            validation.rejectValue(
+                    "phoneNumber",
+                    "phoneNumber",
+                    "Phone number is already in your contacts"
+            );
+        }
+
+        boolean validated = PhoneService.validatePhoneNumber(contact.getPhoneNumber());
+        if (!validated) {
+            validation.rejectValue(
+                    "phoneNumber",
+                    "phoneNumber",
+                    "Invalid format: (xxx)xxx-xxxx"
+            );
+        }
+
+        if (validation.hasErrors()) {
+            viewModel.addAttribute("errors", validation);
+            viewModel.addAttribute("contact", contact);
+            return "users/edit-contact";
+        }
         contactsRepository.save(contact);
 
         return "redirect:/contacts";
