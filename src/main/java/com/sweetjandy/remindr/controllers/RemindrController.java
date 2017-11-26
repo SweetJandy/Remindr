@@ -117,6 +117,14 @@ public class RemindrController {
         return "redirect:/remindrs";
     }
 
+    @PostMapping("/remindrs/{id}/confirm-delete")
+    public String confirmDeleteRemindr(@PathVariable Long id, Model model) {
+        Iterable<Remindr> remindrs = remindrsRepository.findAll();
+        model.addAttribute("remindrs", remindrs);
+
+        return "/remindrs/confirm-delete";
+    }
+
     @PostMapping("/remindrs/{id}/delete")
     public String deleteRemindr(@PathVariable Long id) {
         remindrsRepository.delete(id);
