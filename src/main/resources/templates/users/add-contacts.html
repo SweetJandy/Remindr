@@ -8,9 +8,9 @@
 
     <div class="row">
 
-        <h1>Add a contact</h1>
+        <h1>Add contacts</h1>
 
-        <a class="btn btn-primary" th:href="${authorizationUrl}">Authorize google</a>
+        <a class="btn btn-primary" th:href="${authorizationUrl}">Import your Google contacts</a>
 
         <h4>OR</h4>
 
@@ -42,6 +42,7 @@
                     th:errors="*{phoneNumber}" >
                 </div>
             </div>
+            <!--End of first form-->
 
             <input class="btn btn-primary" type="submit" value="Submit" />
 
@@ -55,6 +56,7 @@
 </div>
 
 <div th:replace="/fragments/partials :: scripts"></div>
-<script src="/scripts/google.js"></script>
+<script src="../../static/scripts/google.js"></script>
+<!--<script src="../../static/scripts/show-additional-contact-form.js"></script>-->
 </body>
 </html>

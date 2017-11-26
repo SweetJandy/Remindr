@@ -6,14 +6,21 @@
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
 
-<div class="container">
 
-    <div class="row">
+<div class="jumbotron">
 
-        <h1>This is the home page</h1>
+    <div class="container">
+
+        <div class="row">
+
+            <h1>Welcome to remindr!</h1>
+
+            <p>At remindr.life, we remind YOUR life!</p>
+
+            <p><a class="btn btn-primary btn-lg" href="/register" role="button">Create your first remindr!</a></p>
+        </div>
 
     </div>
-
 </div>
 
 <div th:replace="/fragments/partials :: scripts"></div>

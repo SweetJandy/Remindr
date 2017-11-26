@@ -1,6 +1,7 @@
 package com.sweetjandy.remindr.controllers;
 
 import com.sweetjandy.remindr.models.Contact;
+import com.sweetjandy.remindr.models.Remindr;
 import com.sweetjandy.remindr.models.User;
 import com.sweetjandy.remindr.repositories.ContactsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
@@ -56,7 +57,7 @@ public class ContactsController {
     public String viewAllContacts(Model viewModel) {
         User user = usersRepository.findOne(2L);
 
-        Iterable<Contact> usersContacts = contactsRepository.findAllContactsFor(user.getId());
+        Iterable<Contact> usersContacts = contactsRepository.getContactList(user.getId());
                 if(usersContacts == null) {
                     return "redirect:/";
                 }
@@ -76,28 +77,27 @@ public class ContactsController {
 
     @PostMapping("/contacts/add")
     public String addContactForm(@Valid Contact contact, Errors validation, Model viewModel) {
-    //hardcoded until security measures are placed.
 
+    //hardcoded until security measures are placed.
         User user = usersRepository.findOne(2L);
-        //contact.setUser(user);
+
 
     Contact existingPhoneNumber = contactsRepository.findByPhoneNumber(contact.getPhoneNumber());
         // setting to random number to avoid defaulting to 0, since field is unique
         contact.setGoogleContact((long) (Math.random() * (double) Long.MAX_VALUE));
         contact.setOutlookContact((long) (Math.random() * (double) Long.MAX_VALUE));
-        user.setContact(contact);
 
-        Contact existingPhoneNumberInContacts = contactsRepository.findByPhoneNumber(user.getContact().getPhoneNumber());
+        Contact existingPhoneNumberInContacts = contactsRepository.findByPhoneNumber(contact.getPhoneNumber());
 
         if (existingPhoneNumberInContacts != null) {
             validation.rejectValue(
                     "phoneNumber",
                     "phoneNumber",
-                    "Phone number is already taken"
+                    "Phone number is already in your contacts"
             );
         }
 
-        boolean validated = PhoneService.validatePhoneNumber(user.getContact().getPhoneNumber());
+        boolean validated = PhoneService.validatePhoneNumber(contact.getPhoneNumber());
         if (!validated) {
             validation.rejectValue(
                     "phoneNumber",
@@ -112,6 +112,22 @@ public class ContactsController {
             return "users/add-contacts";
         }
 
+        contact = contactsRepository.save(contact);
+        contactsRepository.addContactToList(user.getId(), contact.getId());
+
+
+        return "redirect:/contacts";
+    }
+
+    @GetMapping("/contacts/{id}/edit")
+    public String editPost(Model model, @PathVariable Long id) {
+        model.addAttribute("contact", contactsRepository.findOne(id));
+
+        return "users/edit-contact";
+    }
+
+    @PostMapping("/contacts/{id}/edit")
+    public String editPost(@ModelAttribute Contact contact) {
         contactsRepository.save(contact);
 
         return "redirect:/contacts";
