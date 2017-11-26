@@ -75,6 +75,14 @@ public class UsersController {
             );
         }
 
+        if (user.getPassword().equals("")) {
+            validation.rejectValue(
+                    "password",
+                    "password",
+                    "Password cannot be blank"
+            );
+        }
+
         if (validation.hasErrors()) {
             viewModel.addAttribute("errors", validation);
             viewModel.addAttribute("user", user);
@@ -97,20 +105,27 @@ public class UsersController {
     }
 
     @GetMapping("/login")
-    public String showLoginForm() {
+    public String showLoginForm(Model viewModel) {
+
+        viewModel.addAttribute("user", new User());
         return "users/login";
     }
 
     @PostMapping("/login")
     public String loginUser(@Valid User user, Errors validation, Model viewModel) {
 
-//        User existingUser = usersRepository.findByUsername(user.getUsername());
-//
-//        if (validation.hasErrors()) {
-//            viewModel.addAttribute("errors", validation);
-//            viewModel.addAttribute("user", user);
-//            return "users/login";
-//        }
+        User existingUser = usersRepository.findByUsername(user.getUsername());
+
+        if (existingUser == null || !existingUser.getPassword().equals(user.getPassword())) {
+            validation.rejectValue(
+                    "password",
+                    "password",
+                    "Username and password combination is incorrect"
+            );
+            viewModel.addAttribute("errors", validation);
+            viewModel.addAttribute("user", user);
+            return "users/login";
+        }
 
         return "redirect:/profile";
 
@@ -144,6 +159,8 @@ public class UsersController {
     @PostMapping("/profile/edit")
     public String editProfile (@Valid User user, Errors validation, Model viewModel) {
 
+        User currentUser = usersRepository.findOne(2L);
+
         boolean validated = PhoneService.validatePhoneNumber(user.getContact().getPhoneNumber());
         if (!validated) {
             validation.rejectValue(
@@ -153,16 +170,57 @@ public class UsersController {
             );
         }
 
+
+//        PASSWORD VALIDATION
+//        If current password field is not empty
+        if (!user.getPassword().equals("")) {
+//            If current password field does not equal current user's password
+            if (!currentUser.getPassword().equals(user.getPassword())){
+                validation.rejectValue(
+                        "password",
+                        "password",
+                        "Current password is incorrect"
+                );
+            } else {
+
+                // If new password field does not equal the confirm password field
+                if(user.getNewPassword().equals("")) {
+                    validation.rejectValue(
+                            "newPassword",
+                            "newPassword",
+                            "New password cannot be blank"
+                    );
+                }
+                else if (!user.getNewPassword().equals(user.getConfirmNewPassword())) {
+                    validation.rejectValue(
+                            "confirmNewPassword",
+                            "confirmNewPassword",
+                            "Password confirmation does not match"
+                    );
+                // if user is changing password and everything is ok
+                } else {
+                    // set new password to user
+                    user.setPassword(user.getNewPassword());
+                }
+
+            }
+        // if user does not want to change password
+        } else {
+            // transfer current user's password to new user object
+            user.setPassword(currentUser.getPassword());
+        }
+
+
         if (validation.hasErrors()) {
             viewModel.addAttribute("errors", validation);
             viewModel.addAttribute("user", user);
             return "users/edit-profile";
         }
-//        user.setPassword(user.getPassword());
+
         contactsRepository.save(user.getContact());
         usersRepository.save(user);
 
-        return "redirect:users/profile";
+        return "redirect:/profile";
     }
 }
 
