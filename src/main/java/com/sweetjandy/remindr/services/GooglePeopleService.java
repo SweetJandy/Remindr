@@ -34,7 +34,7 @@ public class GooglePeopleService {
 
     public String setUp() throws IOException {
 
-        String scope = "https://www.googleapis.com/auth/contacts.readonly";
+        String scope = "https://www.googleapis.com/auth/contacts";
 
         // Step 1: Authorize -->
         String authorizationUrl =
@@ -80,7 +80,7 @@ public class GooglePeopleService {
 
         // show all contacts
         ListConnectionsResponse response = peopleService.people().connections().list("people/me")
-                .setPersonFields("names,emailAddresses")
+                .setPersonFields("names,phoneNumbers")
                 .execute();
         return response.getConnections();
     }
