@@ -23,6 +23,7 @@ import java.util.Map;
 
 @Controller
 public class GooglePeopleController {
+
     private final GooglePeopleService googlePeopleSvc;
     private PeopleService peopleService;
 
@@ -30,18 +31,52 @@ public class GooglePeopleController {
         this.googlePeopleSvc = googlePeopleSvc;
     }
 
+//    @GetMapping("/contacts")
+//    public String showAll (Model model) throws IOException {
+//
+//        String authorizationUrl = googlePeopleSvc.setUp();
+//
+//        model.addAttribute("authorizationUrl", authorizationUrl);
+//        // show all contacts
+//        ListConnectionsResponse response = peopleService.people().connections().list("people/me")
+//                .setPersonFields("names,emailAddresses")
+//                .execute();
+//        List<Person> connections = response.getConnections();
+//        System.out.println(connections);
+//
+//        return "users/contacts";
+//    }
+
     @GetMapping("/confirm")
-    public String confirm(Model viewModel) throws IOException {
+    public String confirm (Model viewModel) throws IOException {
+
         String authorizationUrl = googlePeopleSvc.setUp();
         viewModel.addAttribute("authorizationUrl", authorizationUrl);
         viewModel.addAttribute("contact", new Contact());
+
+//        StringBuffer requestURL = request.getRequestURL();
+//        String s = requestURL.toString();
+//        String pathInfo = request.getPathInfo();
+//        String requestURI = request.getRequestURI();
+//        Map<String, String[]> parameterMap = request.getParameterMap();
+//
+//        googlePeopleSvc.setUp();
+//
+//        // show all contacts
+//        ListConnectionsResponse response = peopleService.people().connections().list("people/me")
+//                .setPersonFields("names,emailAddresses")
+//                .execute();
+//        List<Person> connections = response.getConnections();
+//        System.out.println(connections);
 
         return "users/add-contacts";
     }
 
     @GetMapping("/google/contacts")
-    public @ResponseBody
-    List<Person> viewContacts(@RequestParam(name = "token") String token) throws IOException {
+    public @ResponseBody List<Person>  viewContacts(@RequestParam(name = "token") String token) throws IOException {
         return googlePeopleSvc.contacts(token);
+
     }
 }
+
+

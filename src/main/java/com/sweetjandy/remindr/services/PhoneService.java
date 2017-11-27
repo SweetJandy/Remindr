@@ -16,7 +16,7 @@ public class PhoneService {
 
     public static boolean validatePhoneNumber(String phoneNumber) {
 
-        return phoneNumber.charAt(0) == '(' &&
+        return phoneNumber != null && !phoneNumber.equals("") && phoneNumber.charAt(0) == '(' &&
                 phoneNumber.charAt(4) == ')' &&
                 phoneNumber.charAt(8) == '-' &&
                 phoneNumber.length() == 13 &&

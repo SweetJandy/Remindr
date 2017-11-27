@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 
 import java.util.List;
 
@@ -20,17 +21,22 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @NotBlank(message = "Email cannot be blank")
     @Email(message = "Email must have an @ symbol")
     private String username;
 
     @Column(nullable = false)
     @JsonIgnore
-    @NotBlank(message = "Password cannot be blank")
+//    @NotBlank(message = "Password cannot be blank")
     private String password;
 
+    private transient String newPassword;
+
+    private transient String confirmNewPassword;
+
     @OneToOne
+    @Valid
     private Contact contact;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -52,11 +58,11 @@ public class User {
         this.contact = new Contact();
     }
 
-    public User(User copy) {
-        id = copy.id;
-        username = copy.username;
-        password = copy.password;
-    }
+//    public User(User copy) {
+//        id = copy.id;
+//        username = copy.username;
+//        password = copy.password;
+//    }
 
     public User(long id, String username, String password, Contact contact, List<Contact> contacts) {
         this.id = id;
@@ -113,5 +119,21 @@ public class User {
 
     public void setContacts(List<Contact> contacts) {
         this.contacts = contacts;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public String getConfirmNewPassword() {
+        return confirmNewPassword;
+    }
+
+    public void setConfirmNewPassword(String confirmNewPassword) {
+        this.confirmNewPassword = confirmNewPassword;
     }
 }

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/partials :: head('Home')"></head>
+    <meta charset="UTF-8" />
+    <title>Home</title>
+<body>
+<nav th:replace="/fragments/partials :: navbar"></nav>
+
+
+<div class="jumbotron">
+
+    <div class="container">
+
+        <div class="row">
+
+            <h1>Welcome to remindr!</h1>
+
+            <p>At remindr.life, we're here to remind YOUR life!</p>
+
+            <p><a class="btn btn-primary btn-lg" href="/register" role="button">Create your first remindr</a></p>
+        </div>
+
+    </div>
+</div>
+
+<div th:replace="/fragments/partials :: scripts"></div>
+</body>
+</html>

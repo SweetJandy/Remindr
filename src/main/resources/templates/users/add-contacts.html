@@ -8,15 +8,15 @@
 
     <div class="row">
 
-        <h1>Add a contact</h1>
+        <h1>Add contacts</h1>
 
-        <a class="btn btn-primary" th:href="${authorizationUrl}">Authorize google</a>
+        <a class="btn btn-primary" th:href="${authorizationUrl}">Import your Google contacts</a>
 
-        <p>OR</p>
+        <h4>OR</h4>
 
         <form th:action="@{/contacts/add}" th:method="post" th:object="${contact}">
             <div class="form-group">
-                <label for="firstName">First Name</label>
+                <label for="firstName">First name</label>
                 <input id="firstName" name="firstName" th:field="*{firstName}" class="form-control"/>
                 <div
                     class="alert alert-danger"
@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="lastName">Last Name</label>
+                <label for="lastName">Last name</label>
                 <input id="lastName" name="lastName" th:field="*{lastName}" class="form-control"/>
                 <div
                     class="alert alert-danger"
@@ -42,24 +42,21 @@
                     th:errors="*{phoneNumber}" >
                 </div>
             </div>
+            <!--End of first form-->
 
             <input class="btn btn-primary" type="submit" value="Submit" />
 
         </form>
 
-        <!--<a href="https://accounts.google.com/o/oauth2/auth?client_id=689653849501-epmpae5spm8mvh77ihoiehhk0r1aneb0.apps.googleusercontent.com&redirect_uri=http://localhost:8080/contacts&response_type=token&scope=https://www.googleapis.com/auth/contacts.readonly">Import your Google Contacts</a>-->
-        
+        <a href="/contacts" class="btn btn-danger">Cancel</a>
+
+
     </div>
 
 </div>
 
 <div th:replace="/fragments/partials :: scripts"></div>
-<script src="/scripts/google.js"></script>
-<!--<script src="https://apis.google.com/js/api.js" type="text/javascript"></script>-->
-<!--<script type="text/javascript">-->
-    <!--gapi.load('auth2', function() {-->
-        <!--// Library loaded.-->
-    <!--});-->
-<!--//</script>-->
+<script src="../../static/scripts/google.js"></script>
+<!--<script src="../../static/scripts/show-additional-contact-form.js"></script>-->
 </body>
 </html>

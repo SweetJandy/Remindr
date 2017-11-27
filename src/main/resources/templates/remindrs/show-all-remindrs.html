@@ -1,13 +1,36 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/fragments/partials :: head('Show All Remindrs')"></head>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="/fragments/partials :: head('Show all remindrs')"></head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
 
 <div class="container">
     <div class="row">
-        <h1>Show All Remindrs</h1>
+        <h1>Your remindrs</h1>
+        <div th:each="remindr : ${remindrs}">
 
+            <div class="col-sm-6 col-md-3">
+                <a th:href="@{/remindrs/{id}(id=${remindr.id})}" >
+                    <div class="thumbnail">
+                        <!--<img th:src="${remindr.uploadPath}" alt="event image" />-->
+                        <div class="caption">
+                            <h3 th:text="${remindr.title}"></h3>
+                            <p th:text="${remindr.description}"></p>
+                            <p><a th:href="@{/remindrs/{id}/edit(id=${remindr.id})}"><button class="btn btn-primary" type="submit">Edit</button></a>
+                            </p>
+                            <form method="post" th:action="@{/remindrs/{id}/confirm-delete(id=${remindr.id})}">
+                                <input class="btn btn-danger" type="submit" value="Delete" />
+                            </form>
+                        </div>
+                        <!--<div sec:authorize="isAuthenticated()">-->
+                    <!--</div>-->
+                    </div>
+                </a>
+            </div>
+        </div>
+        <br />
+        <a class="btn btn-primary" href="/profile">Back to profile</a>
+        <a th:href="@{/remindrs/create}" style="color: white;"><button class="btn btn-primary" type="submit" >Create a remindr</button></a>
     </div>
 </div>
 
