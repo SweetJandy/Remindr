@@ -11,12 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -32,6 +31,9 @@ public class RemindrController {
         this.usersRepository = usersRepository;
     }
 
+    private boolean isYourRemindr (User user, long remindrId) {
+        return user.getRemindrs().stream().filter(r -> r.getId() == remindrId).count() > 0;
+    }
 
     @GetMapping("/remindrs/create")
     public String showCreateRemindrForm(Model model) {
@@ -68,7 +70,8 @@ public class RemindrController {
     @GetMapping("/remindrs/add-contacts")
     public String showAddContactsToRemindrs(Model model, Remindr remindr) {
 
-        User user = usersRepository.findOne(1L);
+        // hardcoded
+        User user = usersRepository.findOne(2L);
 
         List<Contact> contacts = user.getContacts();
         model.addAttribute("contacts", contacts);
@@ -79,11 +82,13 @@ public class RemindrController {
 
     @PostMapping("/remindrs/add-contacts")
     public String addContactsToRemindrs (Model model) {
+
+
         Remindr remindr = remindrsRepository.findOne(11L);
         model.addAttribute("remindr", remindr);
         remindrsRepository.save(remindr);
 
-        return "redirect: /remindrs";
+        return "redirect:/remindrs";
     }
 
     @GetMapping("/remindrs")
@@ -125,7 +130,7 @@ public class RemindrController {
 
     @PostMapping("/remindrs/{id}/edit")
     public String editPost(@Valid Remindr remindr, Errors validation, Model model) {
-        User user = usersRepository.findOne(1L);
+        User user = usersRepository.findOne(2L);
         remindr.setUser(user);
 
         if (validation.hasErrors()) {
@@ -139,16 +144,34 @@ public class RemindrController {
         return "redirect:/remindrs";
     }
 
-    @PostMapping("/remindrs/{id}/confirm-delete")
-    public String confirmDeleteRemindr(@PathVariable Long id, Model model) {
-        Iterable<Remindr> remindrs = remindrsRepository.findAll();
-        model.addAttribute("remindrs", remindrs);
+//    @PostMapping("/remindrs/{id}/confirm-delete")
+//    public String confirmDeleteRemindr(@PathVariable Long id, Model model) {
+//        Iterable<Remindr> remindrs = remindrsRepository.findAll();
+//        model.addAttribute("remindrs", remindrs);
+//
+//        return "/remindrs/confirm-delete";
+//    }
+//
+//    @PostMapping("/remindrs/{id}/delete")
+//    public String deleteRemindr(@PathVariable Long id) {
+//        remindrsRepository.delete(id);
+//
+//        return "redirect:/remindrs";
+//    }
 
-        return "/remindrs/confirm-delete";
-    }
+    @RequestMapping(value = "/remindrs/{id}/delete", method = RequestMethod.POST)
+    public String deleteRemindr(@PathVariable long id, HttpServletResponse response) throws IOException {
+        Remindr remindr = remindrsRepository.findOne(id);
 
-    @PostMapping("/remindrs/{id}/delete")
-    public String deleteRemindr(@PathVariable Long id) {
+//        User user = usersRepository.findOne(2L);
+//
+//        if(!isYourRemindr(user, id)) {
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            return "You do not own this remindr.";
+//        }
+
+//        user.getRemindrs().remove(remindrsRepository.findOne(id));
+//        usersRepository.save(user);
         remindrsRepository.delete(id);
 
         return "redirect:/remindrs";
