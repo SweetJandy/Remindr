@@ -69,8 +69,8 @@ public class RemindrController {
     public String showAddContactsToRemindrs(Model model, Remindr remindr) {
 
         User user = usersRepository.findOne(1L);
-
         List<Contact> contacts = user.getContacts();
+
         model.addAttribute("contacts", contacts);
         model.addAttribute("remindr", remindr);
 
