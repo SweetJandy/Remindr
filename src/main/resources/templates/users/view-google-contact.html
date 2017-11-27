@@ -7,16 +7,17 @@
 <div class="container">
 
 	<div class="row">
-
 		<h1>View contact</h1>
 
-		<h2 th:text="${contact.firstName} + ' ' + ${contact.lastName}"></h2>
 
-		<h3 th:text="${contact.phoneNumber}"></h3>
+		<h2 th:text="${contact.get(0).getNames().get(0).getGivenName} + ' ' + ${contact.get(0).getNames().get(0).getFamilyName()}"></h2>
 
-		<h3 th:text="${username}"></h3>
 
-		<a href="/contacts" class="btn btn-primary">View all contacts</a>
+		<h3 th:text="${contact.get(0).getPhoneNumbers().get(0).getValue}"></h3>
+
+		<!--<h3 th:text="${username}"></h3>-->
+
+		<a href="/google-contacts" class="btn btn-primary">View all contacts</a>
 
 	</div>
 

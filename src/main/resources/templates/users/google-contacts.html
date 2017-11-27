@@ -9,10 +9,7 @@
 		<h1>View all contacts</h1>
 
 		<div th:each="contact : ${contacts}">
-			<h4><a th:href="${'/contacts/' + contact.id}"
-				   th:text="${contact.firstName} + ' ' + ${contact.lastName}"></a>
-			</h4>
-			<!--<h4 th:text="${contact.phoneNumber}"></h4>-->
+			<h4><a th:text="${contact.getNames().get(0).getGivenName()} + ' ' + ${contact.getNames().get(0).getFamilyName()}"></a></h4>
 		</div>
 	</div>
 </div>

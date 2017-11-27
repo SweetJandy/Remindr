@@ -84,7 +84,7 @@ public class GooglePeopleController {
 //        people.get(0).getNames().get(0).getFamilyName();
 //        people.get(0).getPhoneNumbers().get(0).getValue();
         model.addAttribute("contacts", people);
-        return "users/contacts";
+        return "users/google-contacts";
     }
 //    @GetMapping("/contacts/{id}")
 //    public String viewIndividualContact(@PathVariable long id, Model viewModel) {
