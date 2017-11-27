@@ -140,7 +140,7 @@ public class UsersController {
     public String showEditProfile(Model model) {
 //        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        User user = usersRepository.findOne(2L);
+        User user = usersRepository.findOne(1L);
         model.addAttribute("user", user);
 
         return "users/edit-profile";
@@ -149,7 +149,7 @@ public class UsersController {
     @PostMapping("/profile/edit")
     public String editProfile (@Valid User user, Errors validation, Model viewModel) {
 
-        User currentUser = usersRepository.findOne(2L);
+        User currentUser = usersRepository.findOne(1L);
 
         boolean validated = PhoneService.validatePhoneNumber(user.getContact().getPhoneNumber());
         if (!validated) {

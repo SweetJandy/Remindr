@@ -36,7 +36,7 @@ public class ContactsController {
 
     @GetMapping("/contacts/{id}")
     public String viewIndividualContact(@PathVariable long id, Model viewModel, HttpServletResponse response) {
-        User user = usersRepository.findOne(2L);
+        User user = usersRepository.findOne(1L);
 
         // use the contacts repository to find one contact by its id
         Contact contact = contactsRepository.findOne(id);
@@ -59,7 +59,7 @@ public class ContactsController {
 
     @GetMapping("/contacts")
     public String viewAllContacts(Model viewModel) {
-        User user = usersRepository.findOne(2L);
+        User user = usersRepository.findOne(1L);
 
 
         viewModel.addAttribute("contacts", user.getContacts());
@@ -80,7 +80,7 @@ public class ContactsController {
     public String addContactForm(@Valid final Contact contact, Errors validation, Model viewModel) {
 
     //hardcoded until security measures are placed.
-        User user = usersRepository.findOne(2L);
+        User user = usersRepository.findOne(1L);
 
 //        returns amount of contacts that are duplicated by phone number
         long duplicates = user.getContacts().stream().filter(c -> c.getPhoneNumber().equals(contact.getPhoneNumber())).count();
@@ -132,7 +132,7 @@ public class ContactsController {
     @PostMapping("/contacts/{id}/edit")
     public String editPost(@Valid Contact contact, Errors validation, Model viewModel) {
 
-        User user = usersRepository.findOne(2L);
+        User user = usersRepository.findOne(1L);
 
 //        returns amount of contacts that are duplicated by phone number
         long duplicates = user.getContacts().stream().filter(c -> c.getPhoneNumber().equals(contact.getPhoneNumber())).count();
@@ -168,7 +168,7 @@ public class ContactsController {
     @RequestMapping(value = "/contacts/{id}/delete", method = RequestMethod.POST)
     public String deleteContact(@PathVariable long id, HttpServletResponse response) throws IOException {
 
-        User user = usersRepository.findOne(2L);
+        User user = usersRepository.findOne(1L);
 
         if(!isInContacts(user, id)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
