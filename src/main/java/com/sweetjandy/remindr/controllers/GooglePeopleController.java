@@ -73,9 +73,15 @@ public class GooglePeopleController {
     }
 
     @GetMapping("/google/contacts")
-    public @ResponseBody List<Person>  viewContacts(@RequestParam(name = "token") String token) throws IOException {
-        return googlePeopleSvc.contacts(token);
+    public String viewContacts(@RequestParam(name = "token") String token) throws IOException {
+        List<Person> contacts = googlePeopleSvc.contacts(token);
 
+        // converting person object to contact objects
+        // save contacts object to db
+        // add contact objects to current user
+        // save user to db
+
+        return "redirect:/contacts";
     }
 }
 
