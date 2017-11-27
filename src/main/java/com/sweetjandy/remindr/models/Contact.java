@@ -24,7 +24,7 @@ public class Contact {
     @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
-    @Column(nullable = false, unique = true, length = 20)
+    @Column(nullable = false, length = 20)
     @NotBlank(message = "Phone number cannot be blank")
 //    @Size(min = 13, message = "Phone number should be 13 characters long")
     private String phoneNumber;
