@@ -4,8 +4,8 @@
         var html = '';
         contacts.forEach(function(contact) {
             html += '<div class="contact">';
-            html += '<h2 id="contact-name">' + contact.firstName + " " + contact.lastName + '</h2>';
-            html += '<h4 id="contact-number">' + contact.phoneNumber + '</h4>';
+            html += '<h4 id="contact-name">' + '<a>' + contact.firstName + " " + contact.lastName + '</a>' + '</h4>';
+            // html += '<h4 id="contact-number">' + contact.phoneNumber + '</h4>';
             html += '</div>';
         });
         console.log(html);

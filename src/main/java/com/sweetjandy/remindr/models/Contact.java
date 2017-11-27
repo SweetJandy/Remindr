@@ -1,5 +1,6 @@
 package com.sweetjandy.remindr.models;
 
+import com.google.api.services.people.v1.model.Name;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;

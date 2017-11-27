@@ -157,4 +157,16 @@ public class ContactsController {
 
         return "redirect:/contacts";
     }
+
+    @GetMapping("/contacts.json")
+    @ResponseBody
+    public Iterable<Contact> viewAllContactsInJSONFormat() {
+        return contactsRepository.findAll();
+    }
+
+    @GetMapping("/contacts/ajax")
+    public String viewAllContactsWithAjax() {
+        return "users/ajax";
+    }
 }
+
