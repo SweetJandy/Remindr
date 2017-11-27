@@ -28,23 +28,4 @@ public class AuthenticationController {
         return "users/login";
     }
 
-    @PostMapping("/login")
-    public String loginUser(@Valid User user, Errors validation, Model viewModel) {
-
-        User auth = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-
-//        User existingUser = usersRepository.findByUsername(user.getUsername());
-
-        if (auth == null || !auth.getPassword().equals(user.getPassword())) {
-            validation.rejectValue(
-                    "password",
-                    "password",
-                    "Username and password combination is incorrect"
-            );
-            viewModel.addAttribute("errors", validation);
-            viewModel.addAttribute("user", user);
-            return "users/login";
-        }
-      return "redirect:/profile";
-    }
 }

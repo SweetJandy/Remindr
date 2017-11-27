@@ -37,23 +37,22 @@
 					<a href="/register">Register</a>
 				</li>
 
-				<!--<li sec:authorize="isAuthenticated()">-->
-				<!--<li role="presentation" class="dropdown">-->
-					<!--<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"-->
-					   <!--aria-expanded="false">-->
-                        <!--<span>Hi, Amy-->
-							<!--&lt;!&ndash;th:text="${#authentication.principal.firstName}">&ndash;&gt;-->
-                        <!--</span>-->
-						<!--<span class="glyphicon glyphicon-user"></span>-->
-						<!--<span class="caret"></span>-->
-					<!--</a>-->
-					<!--<ul class="dropdown-menu">-->
-						<!--<li class="text-center"><a href="/profile">View profile</a></li>-->
-						<!--<li class="text-center"><a href="/remindrs">View your remindrs</a></li>-->
-						<!--<li class="text-center"><a href="/remindrs/create">Create a remindr</a></li>-->
-					<!--</ul>-->
-				<!--</li>-->
 				<li sec:authorize="isAuthenticated()">
+
+				<li role="presentation" class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span>Hi, Amy
+							<!--th:text="${#authentication.principal.firstName}">-->
+                        </span>
+						<span class="glyphicon glyphicon-user"></span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li class="text-center"><a href="/profile">View profile</a></li>
+						<li class="text-center"><a href="/remindrs">View your remindrs</a></li>
+						<li class="text-center"><a href="/remindrs/create">Create a remindr</a></li>
+					</ul>
+				</li>
 					<form th:action="@{/logout}" th:method="post">
 						<button class="btn-link btn" style="margin-top: 8px">Logout
 						</button>
@@ -79,7 +78,7 @@
 </nav>
 
 <div th:fragment="scripts">
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
 			integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
 			crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
