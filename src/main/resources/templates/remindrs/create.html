@@ -3,6 +3,7 @@
 <head th:replace="/fragments/partials :: head('Create a remindr')">
 </head>
 <body>
+        <!--onload="myFunction()">-->
 <nav th:replace="/fragments/partials :: navbar"></nav>
 <div class="container">
     <div class="row">
@@ -65,6 +66,16 @@
 
             <!--&lt;!&ndash;UPLOAD AN IMAGE&ndash;&gt;-->
             <!--<h2>Upload an Image</h2>-->
+            <!--<form action="/fileupload" method="post" enctype="multipart/form-data">-->
+            <!--<div class="form-group">-->
+                <!--<label for="myFile">Upload an event image</label>-->
+                <!--<input type="file" id="myFile" name="myFile" th:field="*{uploadPath}" class="form-control" />-->
+                       <!--&lt;!&ndash;onchange="myFunction()" />&ndash;&gt;-->
+                <!--<input type="submit" value="Upload" class="btn" />-->
+            <!--</div>-->
+            <!--</form>-->
+
+            <!--<p id="demo"></p>-->
 
             <input class="btn btn-primary" type="submit" value="Submit" />
         </form>
@@ -72,5 +83,7 @@
     </div>
 </div>
 <div th:replace="/fragments/partials :: scripts"></div>
+<!--<script src="../../static/scripts/file-upload.js"></script>-->
+
 </body>
 </html>

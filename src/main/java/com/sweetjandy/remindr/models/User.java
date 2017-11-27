@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.*;
 import javax.validation.Valid;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
@@ -28,7 +29,6 @@ public class User {
 
     @Column(nullable = false)
     @JsonIgnore
-//    @NotBlank(message = "Password cannot be blank")
     private String password;
 
     private transient String newPassword;
@@ -41,20 +41,19 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonBackReference
-    private List<Remindr> remindrs ;
+    private List<Remindr> remindrs;
 
-
-    @ManyToMany(cascade = ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "user_contact",
+            name = "users_contacts",
             joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "contacts_id")}
+            inverseJoinColumns = {@JoinColumn(name = "contact_id")}
     )
     private List<Contact> contacts;
 
-
     public User() {
         this.contact = new Contact();
+        this.contacts = new ArrayList<>();
     }
 
 //    public User(User copy) {

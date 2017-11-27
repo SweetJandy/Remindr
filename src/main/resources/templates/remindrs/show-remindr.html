@@ -9,6 +9,7 @@
         <h1>Show remindr</h1>
 
         <h2 th:text="${remindr.title}"></h2>
+            <img th:src="${remindr.uploadPath}" alt="event image" />
 
         <h4>Description:</h4>
         <p th:text="${remindr.description}"></p>
