@@ -8,11 +8,18 @@
 
 	<div class="row">
 
+		<!--people.get(0).getNames().get(0).getGivenName();-->
+		<!--people.get(0).getNames().get(0).getFamilyName();-->
+		<!--people.get(0).getPhoneNumbers().get(0).getValue();-->
 		<h1>View contact</h1>
 
-		<h2 th:text="${contact.firstName} + ' ' + ${contact.lastName}"></h2>
+		<!--<h2 th:text="${contact.firstName} + ' ' + ${contact.lastName}"></h2>-->
 
-		<h3 th:text="${contact.phoneNumber}"></h3>
+		<h2 th:text="${contact.get(0).getNames().get(0).getGivenName} + ' ' + ${contact.get(0).getNames().get(0).getFamilyName()}"></h2>
+
+		<!--<h3 th:text="${contact.phoneNumber}"></h3>-->
+
+		<h3 th:text="${contact.get(0).getPhoneNumbers().get(0).getValue}"></h3>
 
 		<h3 th:text="${username}"></h3>
 

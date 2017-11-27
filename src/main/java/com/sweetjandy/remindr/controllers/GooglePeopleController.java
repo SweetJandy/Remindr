@@ -8,6 +8,7 @@ import com.google.api.services.people.v1.model.Person;
 import com.google.api.services.people.v1.model.PhoneNumber;
 import com.sun.media.jfxmedia.logging.Logger;
 import com.sweetjandy.remindr.models.Contact;
+import com.sweetjandy.remindr.models.User;
 import com.sweetjandy.remindr.services.GooglePeopleService;
 
 import com.sweetjandy.remindr.services.GooglePeopleService;
@@ -77,11 +78,25 @@ public class GooglePeopleController {
     }
 
     @GetMapping("/google/contacts")
-    public @ResponseBody List<Person>  viewContacts(@RequestParam(name = "token") String token) throws IOException {
-        return googlePeopleSvc.contacts(token);
-
+    public String   viewContacts(@RequestParam(name = "token") String token, Model model) throws IOException {
+        List<Person> people = googlePeopleSvc.contacts(token);
+//        people.get(0).getNames().get(0).getGivenName();
+//        people.get(0).getNames().get(0).getFamilyName();
+//        people.get(0).getPhoneNumbers().get(0).getValue();
+        model.addAttribute("contacts", people);
+        return "users/contacts";
     }
-
+//    @GetMapping("/contacts/{id}")
+//    public String viewIndividualContact(@PathVariable long id, Model viewModel) {
+//        User user = usersRepository.findOne(2L);
+//
+//        // use the contacts repository to find one contact by its id
+//        Contact contact = contactsRepository.findOne(id);
+//
+//        Contact usersContact = contactsRepository.findContactFor(user.getId(), contact.getId());
+//        if (usersContact == null) {
+//            return "redirect:/";
+//        }
 //    private List<Contact> personToContacts(List<Person> persons) {
 //        for (Person person: persons) {
 //            Contact contact = new Contact();
