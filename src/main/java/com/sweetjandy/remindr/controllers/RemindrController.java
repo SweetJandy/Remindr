@@ -145,15 +145,18 @@ public class RemindrController {
     @RequestMapping(value = "/remindrs/{id}/delete", method = RequestMethod.POST)
     public String deleteRemindr(@PathVariable long id, HttpServletResponse response) throws IOException {
         Remindr remindr = remindrsRepository.findOne(id);
-//        User user = usersRepository.findOne(2L);
-//
-//        if(!isYourRemindr(user, id)) {
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//            return "You do not own this remindr.";
-//        }
+        User user = usersRepository.findOne(1L);
 
-//        user.getRemindrs().remove(remindrsRepository.findOne(id));
-//        usersRepository.save(user);
+        if(!isYourRemindr(user, id)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "You do not own this remindr.";
+        }
+
+//        Removes from the user's list of remindrs
+        user.getRemindrs().remove(remindrsRepository.findOne(id));
+//        So the db knows you removed the reminder from the user’s list of reminders
+        usersRepository.save(user);
+//        Deletes the remindr from the db
         remindrsRepository.delete(id);
 
         return "redirect:/remindrs";
