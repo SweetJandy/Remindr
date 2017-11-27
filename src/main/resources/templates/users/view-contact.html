@@ -19,7 +19,7 @@
 		<a th:href="@{/contacts/{id}/edit(id=${contact.id})}" class="btn btn-primary">Edit</a>
 
 		<!-- Button trigger modal -->
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal">
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteContactModal">
 			Delete
 		</button>
 
@@ -29,7 +29,7 @@
 
 </div>
 
-<div class="modal fade" tabindex="-1" role="dialog" id="deleteModal">
+<div class="modal fade" tabindex="-1" role="dialog" id="deleteContactModal">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -41,24 +41,13 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<button onclick="confirmDelete()" type="button" data-dismiss="modal" class="btn btn-primary">Confirm delete</button>
+				<button onclick="confirmDeleteContact()" type="button" data-dismiss="modal" class="btn btn-primary">Confirm delete</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <div th:replace="/fragments/partials :: scripts"></div>
-<script th:inline="javascript">
-	function confirmDelete() {
-	    var contactId=[[${contact.id}]];
-        $.ajax({
-            url: '/contacts/' + contactId + '/delete',
-            type: 'POST',
-            success: function(result) {
-                location.href="/contacts";
-			},
-            error: function(result){}
-        });	}
-</script>
+<div th:replace="/fragments/deleteContactModal :: deleteContactModalScript"></div>
 </body>
 </html>
