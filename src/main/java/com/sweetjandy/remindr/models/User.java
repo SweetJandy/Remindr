@@ -31,6 +31,8 @@ public class User {
     @JsonIgnore
     private String password;
 
+    private transient String confirmPassword;
+
     private transient String newPassword;
 
     private transient String confirmNewPassword;
@@ -133,5 +135,13 @@ public class User {
 
     public void setConfirmNewPassword(String confirmNewPassword) {
         this.confirmNewPassword = confirmNewPassword;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

@@ -51,8 +51,8 @@ public class UsersController {
         if (existingUser != null) {
             validation.rejectValue(
                     "username",
-                    "user.username",
-                    "This email is already taken!"
+                    "username",
+                    "This email is already taken."
             );
         }
 
@@ -70,6 +70,14 @@ public class UsersController {
                     "password",
                     "password",
                     "Password cannot be blank"
+            );
+        }
+
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
+            validation.rejectValue(
+                    "confirmPassword",
+                    "confirmPassword",
+                    "Password confirmation does not match"
             );
         }
 
