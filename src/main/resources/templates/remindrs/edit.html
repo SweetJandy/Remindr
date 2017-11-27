@@ -4,11 +4,33 @@
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
 <div class="container">
-    <h1>Edit your remindr</h1>
+    <h1>Edit your remindr event</h1>
     <form th:action="${'/remindrs/'+ remindr.id +'/edit'}" method="post" th:object="${remindr}">
+        <!--TITLE-->
+        <div class="form-group">
+            <label for="title">Event title</label>
+            <input id="title" name="title" th:field="*{title}" class="form-control" type="text"/>
+        </div>
+        <div
+                class="alert alert-danger"
+                th:if="${#fields.hasErrors('title')}"
+                th:errors="*{title}" >
+        </div>
+
+        <!--Description-->
+        <div class="form-group">
+            <label for="description">Event description</label>
+            <textarea class="form-control" rows="3" id="description" name="description" th:field="*{description}"></textarea>
+            <!--<input type="text" id="description" name="description" th:field="*{description}" class="form-control" />-->
+        </div>
+        <div
+                class="alert alert-danger"
+                th:if="${#fields.hasErrors('description')}"
+                th:errors="*{description}" >
+        </div>
         <!--START DATE/TIME-->
         <div class="form-group">
-            <label for="startDateTime">Event start date/time*</label>
+            <label for="startDateTime">Event start date/ time</label>
             <input id="startDateTime" name="startDateTime" class="form-control" type="datetime-local" th:field="*{startDateTime}" />
         </div>
         <div
@@ -19,7 +41,7 @@
 
         <!--END DATE/TIME-->
         <div class="form-group">
-            <label for="endDateTime">Event end date/time*</label>
+            <label for="endDateTime">Event end date/ time</label>
             <input id="endDateTime" name="endDateTime" class="form-control" type="datetime-local" th:field="*{endDateTime}" />
         </div>
         <div
@@ -41,7 +63,7 @@
 
         <!--LOCATION-->
         <div class="form-group">
-            <label for="location">Location*</label>
+            <label for="location">Event location</label>
             <input type="text" id="location" name="location" th:field="*{location}" class="form-control" />
         </div>
         <div
@@ -50,28 +72,6 @@
                 th:errors="*{location}" >
         </div>
 
-        <!--TITLE-->
-        <div class="form-group">
-            <label for="title">Title*</label>
-            <input id="title" name="title" th:field="*{title}" class="form-control" type="text"/>
-        </div>
-        <div
-                class="alert alert-danger"
-                th:if="${#fields.hasErrors('title')}"
-                th:errors="*{title}" >
-        </div>
-
-        <!--Description-->
-        <div class="form-group">
-            <label for="description">Description</label>
-            <textarea class="form-control" rows="3" id="description" name="description" th:field="*{description}"></textarea>
-            <!--<input type="text" id="description" name="description" th:field="*{description}" class="form-control" />-->
-        </div>
-        <div
-                class="alert alert-danger"
-                th:if="${#fields.hasErrors('description')}"
-                th:errors="*{description}" >
-        </div>
 
             <input type="submit" class="btn btn-primary"/>
         </form>
@@ -80,7 +80,6 @@
         <!--&lt;!&ndash;UPLOAD AN IMAGE&ndash;&gt;-->
         <!--<h2>Upload an Image</h2>-->
 
-        <p>* marked fields are required</p>
 </div>
 
 <div th:replace="/fragments/partials :: scripts"></div>

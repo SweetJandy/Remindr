@@ -7,11 +7,11 @@
 <nav th:replace="/fragments/partials :: navbar"></nav>
 <div class="container">
     <div class="row">
-        <h1>Create a remindr</h1>
+        <h1>Create a remindr event</h1>
         <form th:action="@{/remindrs/create}" method="post" th:object="${remindr}">
             <!--TITLE-->
             <div class="form-group">
-                <label for="title">Title</label>
+                <label for="title">Event title</label>
                 <input id="title" name="title" th:field="*{title}" class="form-control" type="text"/>
             </div>
             <div
@@ -22,7 +22,7 @@
 
             <!--Description-->
             <div class="form-group">
-                <label for="description">Description</label>
+                <label for="description">Event description</label>
                 <textarea class="form-control" rows="3" id="description" name="description" th:field="*{description}"></textarea>
             </div>
             <div
@@ -33,7 +33,7 @@
 
             <!--START DATE/TIME-->
             <div class="form-group">
-                <label for="startDateTime">Start Date</label>
+                <label for="startDateTime">Event start date/ time</label>
                 <input id="startDateTime" name="startDateTime" class="form-control" type="datetime-local" th:field="*{startDateTime}" />
             </div>
             <div
@@ -44,7 +44,7 @@
 
             <!--END DATE/TIME-->
             <div class="form-group">
-                <label for="endDateTime">End Date</label>
+                <label for="endDateTime">Event end date/ time</label>
                 <input id="endDateTime" name="endDateTime" class="form-control" type="datetime-local" th:field="*{endDateTime}" />
             </div>
             <div
@@ -55,7 +55,7 @@
 
             <!--LOCATION-->
             <div class="form-group">
-                <label for="location">Location</label>
+                <label for="location">Event location</label>
                 <input type="text" id="location" name="location" th:field="*{location}" class="form-control" />
             </div>
             <div
