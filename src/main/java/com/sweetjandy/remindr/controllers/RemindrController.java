@@ -52,6 +52,7 @@ public class RemindrController {
 
         model.addAttribute("contact", contact);
 
+
         if (validation.hasErrors()) {
             model.addAttribute("errors", validation);
             model.addAttribute("remindr", remindr);
@@ -61,7 +62,28 @@ public class RemindrController {
         model.addAttribute("remindr", remindr);
         remindrsRepository.save(remindr);
 
-        return "redirect:/remindrs";
+        return "redirect:/remindrs/add-contacts";
+    }
+
+    @GetMapping("/remindrs/add-contacts")
+    public String showAddContactsToRemindrs(Model model, Remindr remindr) {
+
+        User user = usersRepository.findOne(1L);
+
+        List<Contact> contacts = user.getContacts();
+        model.addAttribute("contacts", contacts);
+        model.addAttribute("remindr", remindr);
+
+        return "/remindrs/add-contacts";
+    }
+
+    @PostMapping("/remindrs/add-contacts")
+    public String addContactsToRemindrs (Model model) {
+        Remindr remindr = remindrsRepository.findOne(11L);
+        model.addAttribute("remindr", remindr);
+        remindrsRepository.save(remindr);
+
+        return "redirect: /remindrs";
     }
 
     @GetMapping("/remindrs")
