@@ -48,16 +48,6 @@ public class UsersController {
 
         User existingUser = usersRepository.findByUsername(user.getUsername());
 
-        Contact existingPhoneNumber = contactsRepository.findByPhoneNumber(user.getContact().getPhoneNumber());
-
-        if (existingPhoneNumber != null) {
-            validation.rejectValue(
-                    "contact.phoneNumber",
-                    "contact.phoneNumber",
-                    "Phone number is already taken"
-            );
-        }
-
         if (existingUser != null) {
             validation.rejectValue(
                     "username",

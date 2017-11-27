@@ -41,8 +41,9 @@ public class Contact {
 //    private long secretCode;
 
 
-    @ManyToMany(mappedBy = "contacts")
-    private List<User> users;
+//      Previous implementation
+//    @ManyToMany(mappedBy = "contacts")
+//    private List<User> users;
 
     @ManyToMany(cascade = ALL)
     @JoinTable(
@@ -121,13 +122,13 @@ public class Contact {
 //        this.secretCode = secretCode;
 //    }
 
-    public List<User> getUsers() {
-        return users;
-    }
+//    public List<User> getUsers() {
+//        return users;
+//    }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
+//    public void setUsers(List<User> users) {
+//        this.users = users;
+//    }
 
     public List<Remindr> getRemindrs() {
         return remindrs;
@@ -136,4 +137,5 @@ public class Contact {
     public void setRemindrs(List<Remindr> remindrs) {
         this.remindrs = remindrs;
     }
+
 }
