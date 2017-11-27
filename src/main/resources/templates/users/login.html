@@ -22,11 +22,9 @@
 			</div>
 
 			<div class="alert alert-danger" th:if="${param.error}">
-				Invalid Username and Password.
+				"Username and password combination is incorrect"
 			</div>
-			<div class="alert alert-danger" th:if="${param.logout}">
-				You have been logged out.
-			</div>
+
 
 			<input class="btn btn-primary" type="submit" value="Login"/>
 		</form>
