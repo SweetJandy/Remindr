@@ -27,15 +27,15 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
             <ul class="nav navbar-nav navbar-right">
-                <!--<li sec:authorize="!isAuthenticated()">-->
-                <li> <a href="/login">Login</a></li>
-                <!--</li>-->
+                <li sec:authorize="!isAuthenticated()">
+                <a href="/login">Login</a>
+                </li>
 
-                <!--<li sec:authorize="!isAuthenticated()">-->
-                <li><a href="/register">Register</a></li>
-                <!--</li>-->
+                <li sec:authorize="!isAuthenticated()">
+                <a href="/register">Register</a>
+                </li>
 
-                <!--<li sec:authorize="isAuthenticated()">-->
+                <li sec:authorize="isAuthenticated()">
                 <li role="presentation" class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                         <span>Hi, Amy
@@ -50,6 +50,14 @@
                         <li class="text-center"><a href="/remindrs/create">Create a remindr</a></li>
                     </ul>
                 </li>
+                <li sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" th:method="post">
+                    <button class="btn-link btn" style="margin-top: 8px">
+                        Logout
+                    </button>
+                    </form>
+                    <!--<a href="/logout">Logout</a>-->
+                </li>
 
                 <!--<li><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Welcome</a></li>-->
                         <!--,<span th:text="${#authentication.principal.firstName}"><span class="caret"></span></span></a>-->
@@ -58,16 +66,7 @@
                         <!--<li><a href="/profile">View profile</a></li>-->
                     <!--</ul>-->
                 <!--</li>-->
-                
-                <!--<li sec:authorize="isAuthenticated()">-->
-                <li>
-                    <!--<form th:action="@{/logout}" th:method="post">-->
-                    <!--<button class="btn-link btn" style="margin-top: 8px">-->
-                        <!--Logout-->
-                    <!--</button>-->
-                    <!--</form>-->
-                    <a href="/logout">Logout</a>
-                </li>
+
                 <!--</li>-->
             </ul>
 
@@ -76,7 +75,7 @@
 </nav>
 
 <div th:fragment="scripts">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </div>
 </body>

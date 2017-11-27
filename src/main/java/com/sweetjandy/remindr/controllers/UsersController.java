@@ -105,39 +105,39 @@ public class UsersController {
         return "redirect:profile";
     }
 
-    @GetMapping("/login")
-    public String showLoginForm(Model viewModel) {
-
-        viewModel.addAttribute("user", new User());
-        return "users/login";
-    }
-
-    @PostMapping("/login")
-    public String loginUser(@Valid User user, Errors validation, Model viewModel) {
-
-        User existingUser = usersRepository.findByUsername(user.getUsername());
-
-        if (existingUser == null || !existingUser.getPassword().equals(user.getPassword())) {
-            validation.rejectValue(
-                    "password",
-                    "password",
-                    "Username and password combination is incorrect"
-            );
-            viewModel.addAttribute("errors", validation);
-            viewModel.addAttribute("user", user);
-            return "users/login";
-        }
-
-        return "redirect:/profile";
-
-    }
-
-    @GetMapping("/logout")
-    public String logout() {
-
-        return "redirect:/login";
-
-    }
+//    @GetMapping("/login")
+//    public String showLoginForm(Model viewModel) {
+//
+//        viewModel.addAttribute("user", new User());
+//        return "users/login";
+//    }
+//
+//    @PostMapping("/login")
+//    public String loginUser(@Valid User user, Errors validation, Model viewModel) {
+//
+//        User existingUser = usersRepository.findByUsername(user.getUsername());
+//
+//        if (existingUser == null || !existingUser.getPassword().equals(user.getPassword())) {
+//            validation.rejectValue(
+//                    "password",
+//                    "password",
+//                    "Username and password combination is incorrect"
+//            );
+//            viewModel.addAttribute("errors", validation);
+//            viewModel.addAttribute("user", user);
+//            return "users/login";
+//        }
+//
+//        return "redirect:/profile";
+//
+//    }
+//
+//    @GetMapping("/logout")
+//    public String logout() {
+//
+//        return "redirect:/login";
+//
+//    }
 
     @GetMapping("/profile")
     public String profile(Model model) {
