@@ -25,23 +25,24 @@ public class Remindr {
     private long id;
 
     @Column(nullable = false, length = 100)
-    @NotBlank(message = "Remindrs must have a title")
-    @Size(min = 3, message = "The title must be at least 3 character long")
+    @NotBlank(message = "Title cannot be blank")
     private String title;
 
     @Column(nullable = true)
     private String description;
 
     @Column(nullable = false)
-    @NotBlank(message = "Remindrs must have a start date/time")
+    @NotBlank(message = "Remindr events must have a start date/time")
     private String startDateTime;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Remindrs must have a end date/time")
+    @Column(nullable = true)
     private String endDateTime;
 
+    @Column(nullable=true)
+    private String recurrence;
+
     @Column(nullable = false)
-    @NotBlank(message = "Remindrs must have a location")
+    @NotBlank(message = "Remindr events must have a location")
     private String location;
 
     @Column(nullable = true)
@@ -162,5 +163,12 @@ public class Remindr {
 
     public void setUploadPath(String uploadPath) {
         this.uploadPath = uploadPath;
+    }
+    public String getRecurrence() {
+        return recurrence;
+    }
+
+    public void setRecurrence(String recurrence) {
+        this.recurrence = recurrence;
     }
 }

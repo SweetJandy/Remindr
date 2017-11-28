@@ -6,6 +6,7 @@ import com.sweetjandy.remindr.repositories.RemindrsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
 import com.sweetjandy.remindr.services.RemindrService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -47,7 +48,7 @@ public class RemindrController {
     public String createRemindr(@Valid Remindr remindr, Errors validation, Model model) {
 
 
-        User user = usersRepository.findOne(1L);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         remindr.setUser(user);
 
         Contact contact = user.getContact();
@@ -237,7 +238,8 @@ public class RemindrController {
 
     @PostMapping("/remindrs/{id}/edit")
     public String editPost(@Valid Remindr remindr, Errors validation, Model model) {
-        User user = usersRepository.findOne(2L);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         remindr.setUser(user);
 
         if (validation.hasErrors()) {
@@ -255,7 +257,7 @@ public class RemindrController {
     @RequestMapping(value = "/remindrs/{id}/delete", method = RequestMethod.POST)
     public String deleteRemindr(@PathVariable long id, HttpServletResponse response) throws IOException {
         Remindr remindr = remindrsRepository.findOne(id);
-//        User user = usersRepository.findOne(2L);
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal
 //
 //        if(!isYourRemindr(user, id)) {
 //            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
