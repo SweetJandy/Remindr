@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -87,8 +88,8 @@ public class RemindrController {
         List<Contact> contacts = contactsRepository.findByIdIn(contactsId);
         remindr.setContacts(contacts);
 
-        System.out.println(Arrays.toString(contactsId.toArray()));
-        System.out.println(Arrays.toString(contacts.toArray()));
+//        System.out.println(Arrays.toString(contactsId.toArray()));
+//        System.out.println(Arrays.toString(contacts.toArray()));
 
         remindrsRepository.save(remindr);
 
@@ -124,27 +125,46 @@ public class RemindrController {
             currentRemindr.getAlerts().add(newAlert);
         }
 
-//        String[] alertTimesArray = alertTimes.getAlertTimes().split(",");
-//
-//        for (int i = 0; i < alertTimesArray.length-1; i++) {
-//            Alert alert = new Alert();
-////            alert.setId(id);
-//            alert.setRemindr(currentRemindr);
-//
-//            for (AlertTime alertTime1 : AlertTime.values()) {
-//                if (alertTime1.name().equals(alertTimesArray[i])) {
-//                    alert.setAlertTime(alertTime1);
-//                    currentRemindr.getAlerts().add(alert);
-//                    break;
-//                }
-//            }
-//        }
-
         remindrsRepository.save(currentRemindr);
 
         return "redirect:/remindrs";
     }
 
+    @GetMapping("/remindrs/{id}/edit-alerts")
+    public String showEditAlerts (Model model, @PathVariable Long id) {
+//        RemindrAlerts remindrAlerts = new RemindrAlerts();
+//        remindrAlerts.setId(id);
+        Remindr remindr = remindrsRepository.findOne(id);
+//
+        model.addAttribute("remindr", remindr);
+
+        return "/remindrs/edit-alerts";
+    }
+
+
+    @PostMapping("/remindrs/{id}/edit-alerts")
+    public String editAlerts(RemindrAlerts alertTimes, @PathVariable Long id, Model model, @RequestParam(name="alerts")String[] alertValues) {
+
+        Remindr remindr = remindrsRepository.findOne(id);
+        remindr.getAlerts().clear();
+
+        for (String alert : alertValues) {
+            Alert newAlert = new Alert();
+            newAlert.setRemindr(remindr);
+
+            for (AlertTime alertTime : AlertTime.values()) {
+                if (alertTime.name().equalsIgnoreCase(alert)) {
+                    newAlert.setAlertTime(alertTime);
+                }
+            }
+
+            remindr.getAlerts().add(newAlert);
+        }
+
+        remindrsRepository.save(remindr);
+
+        return "redirect:/remindrs/" + remindr.getId();
+    }
 
     @GetMapping("/remindrs")
     public String showAllRemindrs(Model model) {
@@ -168,10 +188,43 @@ public class RemindrController {
         model.addAttribute("remindr", remindr);
         model.addAttribute("remindrId", id);
 
+        // get number of existing alerts for remindr
+        List<Alert> alertList =  remindr.getAlerts();
+        String[] readableAlerts = {"At time of event", "15 minutes before", "30 minutes before", "1 hour before", "1 day before", "1 week before"};
+        List<String> alertsToView = new ArrayList<String>();
+        int numberOfAlerts = alertList.size();
+
+        // convert alerts to choices
+        for (Alert alert : alertList) {
+            switch (alert.getAlertTime().toString()) {
+                case "ZERO":
+                    alertsToView.add(readableAlerts[0]);
+                    break;
+                case "FIFTEEN":
+                    alertsToView.add(readableAlerts[1]);
+                    break;
+                case "THIRTY":
+                    alertsToView.add(readableAlerts[2]);
+                    break;
+                case "HOUR":
+                    alertsToView.add(readableAlerts[3]);
+                    break;
+                case "DAY":
+                    alertsToView.add(readableAlerts[4]);
+                    break;
+                case "WEEK":
+                    alertsToView.add(readableAlerts[5]);
+                    break;
+            }
+        }
+
+        // pass into view
         model.addAttribute("startdate", startDate);
         model.addAttribute("enddate", endDate);
         model.addAttribute("starttime", startTime);
         model.addAttribute("endtime", endTime);
+        model.addAttribute("numberOfAlerts", numberOfAlerts);
+        model.addAttribute("alerts", alertsToView);
 
         return "remindrs/show-remindr";
     }
