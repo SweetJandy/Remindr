@@ -3,7 +3,7 @@ $(document).ready(function() {
 
     $('#surveyForm')
 
-    // Add button click handler
+        // Add button click handler
         .on('click', '.addButton', function() {
             var $template = $('#optionTemplate'),
                 $clone    = $template

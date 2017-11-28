@@ -105,23 +105,39 @@ public class RemindrController {
     }
 
     @PostMapping("/remindrs/{id}/add-alerts")
-    public String addAlertsToRemindrs (RemindrAlerts alertTimes, @PathVariable Long id) {
+    public String addAlertsToRemindrs (RemindrAlerts alertTimes, @PathVariable Long id, Model model, @RequestParam(name="alerts")String[] alertValues) {
+
         Remindr currentRemindr = remindrsRepository.findOne(id);
         currentRemindr.getAlerts().clear();
 
-        for (String alertTime : alertTimes.getAlertTimes().split(",")) {
-            Alert alert = new Alert();
-            alert.setId(id);
+        for (String alert : alertValues) {
+            Alert newAlert = new Alert();
+            newAlert.setRemindr(currentRemindr);
 
-            for (AlertTime alertTime1 : AlertTime.values()) {
-                if (alertTime1.name().equals(alertTime)) {
-                    alert.setAlertTime(alertTime1);
-                    currentRemindr.getAlerts().add(alert);
-                    break;
+            for (AlertTime alertTime : AlertTime.values()) {
+                if (alertTime.name().equalsIgnoreCase(alert)) {
+                    newAlert.setAlertTime(alertTime);
                 }
             }
 
+            currentRemindr.getAlerts().add(newAlert);
         }
+
+//        String[] alertTimesArray = alertTimes.getAlertTimes().split(",");
+//
+//        for (int i = 0; i < alertTimesArray.length-1; i++) {
+//            Alert alert = new Alert();
+////            alert.setId(id);
+//            alert.setRemindr(currentRemindr);
+//
+//            for (AlertTime alertTime1 : AlertTime.values()) {
+//                if (alertTime1.name().equals(alertTimesArray[i])) {
+//                    alert.setAlertTime(alertTime1);
+//                    currentRemindr.getAlerts().add(alert);
+//                    break;
+//                }
+//            }
+//        }
 
         remindrsRepository.save(currentRemindr);
 
