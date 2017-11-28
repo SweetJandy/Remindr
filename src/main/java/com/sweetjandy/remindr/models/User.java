@@ -61,6 +61,7 @@ public class User {
         id = copy.id;
         username = copy.username;
         password = copy.password;
+        contact = copy.contact;
     }
 
     public User(long id, String username, String password, Contact contact, List<Contact> contacts) {

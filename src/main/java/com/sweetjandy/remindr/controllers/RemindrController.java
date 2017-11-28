@@ -104,7 +104,7 @@ public class RemindrController {
 
     @PostMapping("/remindrs/{id}/edit")
     public String editPost(@Valid Remindr remindr, Errors validation, Model model) {
-        User user = usersRepository.findOne(1L);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         remindr.setUser(user);
 
         if (validation.hasErrors()) {
