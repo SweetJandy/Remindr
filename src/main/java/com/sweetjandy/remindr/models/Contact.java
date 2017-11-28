@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
@@ -43,8 +44,8 @@ public class Contact {
 //    private long secretCode;
 
 
-    @ManyToMany(mappedBy = "contacts")
-    private List<User> users;
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "contacts")
+    private List<User> users = new ArrayList<>();
 
     @ManyToMany(cascade = ALL)
     @JoinTable(
@@ -74,6 +75,7 @@ public class Contact {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
+//        this.googleContact = googleContact;
     }
 
     public long getId() {

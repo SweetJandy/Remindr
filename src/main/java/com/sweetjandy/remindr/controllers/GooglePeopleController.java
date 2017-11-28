@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.lang.String;
@@ -36,9 +37,14 @@ public class GooglePeopleController {
     private UsersRepository usersRepository;
 //    private PeopleService peopleService;
 
-    public GooglePeopleController(GooglePeopleService googlePeopleSvc, ContactsRepository contactsRepository) {
+    public GooglePeopleController(
+        GooglePeopleService googlePeopleSvc,
+        ContactsRepository contactsRepository,
+        UsersRepository usersRepository
+    ) {
         this.googlePeopleSvc = googlePeopleSvc;
         this.contactsRepository = contactsRepository;
+        this.usersRepository = usersRepository;
     }
 
 
@@ -85,16 +91,34 @@ public class GooglePeopleController {
 
     @GetMapping("/google/contacts")
     public String viewContacts(@RequestParam(name = "token") String token, Model model) throws IOException {
+        User user = usersRepository.findOne(2L);
+
         List<Person> people = googlePeopleSvc.contacts(token);
-        List<Contact> contacts = null;
+        List<Contact> contacts = new ArrayList<>();
         for (Person person: people) {
-            contacts.add(new Contact(person.getNames().get(0).getGivenName(), person.getNames().get(0).getFamilyName(), person.getPhoneNumbers().get(0).getValue()));
+            String phoneNumber = person.getPhoneNumbers().get(0).getValue();
+            Contact contact = contactsRepository.findByPhoneNumber(phoneNumber);
+
+            //making sure the contact doesn't already exist for the user
+            if (contact == null) {
+                contact = new Contact(
+                    person.getNames().get(0).getGivenName(),
+                    person.getNames().get(0).getFamilyName(),
+                    phoneNumber
+                );
+                //person.getResourceName();
+                contact.getUsers().add(user);
+                contacts.add(contact);
+            }
         }
         contactsRepository.save(contacts);
+        user.getContacts().addAll(contacts);
+        usersRepository.save(user);
+
         model.addAttribute("contacts", contacts);
 
-        return "users/google-contacts";
-        //    return "redirect:/contacts";
+//        return "users/google-contacts";
+            return "redirect:/contacts";
     }
 
 //    @GetMapping("/google/contacts")
