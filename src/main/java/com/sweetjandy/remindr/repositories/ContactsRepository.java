@@ -12,6 +12,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface ContactsRepository extends CrudRepository<Contact, Long> {
-
+    List<Contact> findByIdIn (List<Long> contactsIds);
 }
 

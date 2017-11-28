@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:h="http://www.w3.org/1999/html">
 <head th:replace="/fragments/partials :: head('Create a remindr')">
+<link type="text/css" href="/scripts/cron/jquery-cron.css" rel="stylesheet" />
 </head>
 <body>
         <!--onload="myFunction()">-->
 <nav th:replace="/fragments/partials :: navbar"></nav>
 <div class="container">
     <div class="row">
-        <h1>Create a remindr</h1>
+        <h1>Create a remindr event</h1>
         <form th:action="@{/remindrs/create}" method="post" th:object="${remindr}">
             <!--TITLE-->
             <div class="form-group">
-                <label for="title">Title</label>
-                <input id="title" name="title" th:field="*{title}" class="form-control" type="text"/>
+                <label for="title">Event title</label>
+                <input id="title" name="title" th:field="*{title}" class="form-control" type="text" />
             </div>
             <div
                 class="alert alert-danger"
@@ -20,20 +21,15 @@
                 th:errors="*{title}" >
             </div>
 
-            <!--Description-->
+            <!--DESCRIPTION-->
             <div class="form-group">
-                <label for="description">Description</label>
+                <label for="description">Event description (optional) </label>
                 <textarea class="form-control" rows="3" id="description" name="description" th:field="*{description}"></textarea>
-            </div>
-            <div
-                class="alert alert-danger"
-                th:if="${#fields.hasErrors('description')}"
-                th:errors="*{description}" >
             </div>
 
             <!--START DATE/TIME-->
             <div class="form-group">
-                <label for="startDateTime">Start Date</label>
+                <label for="startDateTime">Event start date/ time </label>
                 <input id="startDateTime" name="startDateTime" class="form-control" type="datetime-local" th:field="*{startDateTime}" />
             </div>
             <div
@@ -44,18 +40,19 @@
 
             <!--END DATE/TIME-->
             <div class="form-group">
-                <label for="endDateTime">End Date</label>
+                <label for="endDateTime">Event end date/ time (optional)</label>
                 <input id="endDateTime" name="endDateTime" class="form-control" type="datetime-local" th:field="*{endDateTime}" />
             </div>
-            <div
-                class="alert alert-danger"
-                th:if="${#fields.hasErrors('endDateTime')}"
-                th:errors="*{endDateTime}" >
+
+            <!--RECURRING EVENT INFO-->
+            <div id='selector' class="form-group">
+                <label for="recurrence">Recurring event (optional) </label>
+                <input class="form-control" name="recurrence" type="hidden" id="recurrence" th:field="*{recurrence}"/>
             </div>
 
             <!--LOCATION-->
             <div class="form-group">
-                <label for="location">Location</label>
+                <label for="location">Event location</label>
                 <input type="text" id="location" name="location" th:field="*{location}" class="form-control" />
             </div>
             <div
@@ -87,6 +84,21 @@
 </div>
 <div th:replace="/fragments/partials :: scripts"></div>
 <!--<script src="../../static/scripts/file-upload.js"></script>-->
+<script type="text/javascript" src="/scripts/cron/jquery-cron.js"></script>
+<script th:inline="javascript" type="text/javascript">
+    $(document).ready(function() {
+        $('#selector').cron({
+            initial: "0 12 * * 5",
+            onChange: function() {
+                $('#recurrence').val($(this).cron("value"));
+            }
+        }); // apply cron with default options
+        var recurrence=[[${remindr.recurrence}]];
+
+        // Updating the value of an existing cron object
+        cron_field.cron("value", recurrence);
+    });
+</script>
 
 </body>
 </html>

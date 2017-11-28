@@ -11,13 +11,13 @@ $(document).ready(function() {
                     .removeClass('hide')
                     .removeAttr('id')
                     .insertBefore($template),
-                $option   = $clone.find('[name="contacts"]');
+                $option   = $clone.find('[name="alerts"]');
         })
 
         // Remove button click handler
         .on('click', '.removeButton', function() {
             var $row    = $(this).parents('.form-group'),
-                $option = $row.find('[name="contacts"]');
+                $option = $row.find('[name="alerts"]');
 
             // Remove element containing the option
             $row.remove();
@@ -31,7 +31,7 @@ $(document).ready(function() {
             // data.options --> The new field options
 
             if (data.field === 'option[]') {
-                if ($('#surveyForm').find(':visible[name="contacts"]').length >= MAX_OPTIONS) {
+                if ($('#surveyForm').find(':visible[name="alerts"]').length >= MAX_OPTIONS) {
                     $('#surveyForm').find('.addButton').attr('disabled', 'disabled');
                 }
             }
@@ -40,7 +40,7 @@ $(document).ready(function() {
         // Called after removing the field
         .on('removed.field.fv', function(e, data) {
             if (data.field === 'option[]') {
-                if ($('#surveyForm').find(':visible[name="contacts"]').length < MAX_OPTIONS) {
+                if ($('#surveyForm').find(':visible[name="alerts"]').length < MAX_OPTIONS) {
                     $('#surveyForm').find('.addButton').removeAttr('disabled');
                 }
             }

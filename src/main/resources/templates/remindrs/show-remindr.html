@@ -6,24 +6,40 @@
     <div class="container">
         <div class="row">
 
-        <h1>Show remindr</h1>
+        <!--<h1>Show remindr</h1>-->
 
         <h2 th:text="${remindr.title}"></h2>
-            <img th:src="${remindr.uploadPath}" alt="event image" />
+        <!--<img th:src="${remindr.uploadPath}" alt="event image" />-->
 
-        <h4>Description:</h4>
+        <h4>Event description</h4>
         <p th:text="${remindr.description}"></p>
 
-        <h4>Start Date/Time:</h4>
+        <h4>Event start date/ time</h4>
         <p th:text="${startdate}"></p>
         <p th:text="${starttime}"></p>
 
-        <h4>End Date/Time:</h4>
+        <h4>Event end date/ time</h4>
         <p th:text="${enddate}"></p>
         <p th:text="${endtime}"></p>
 
-        <h4>Location:</h4>
+        <!--in cron job format-->
+        <h4>Recurring date/ time</h4>
+        <p th:text="${remindr.recurrence}"></p>
+
+        <h4>Event location</h4>
         <p th:text="${remindr.location}"></p>
+
+        <h4>You have attached
+            <span th:text="${numberOfAlerts}"></span>
+            alerts to this remindr:
+        </h4>
+        <ul th:each="alert : ${alerts}">
+            <li th:text = "${alert}">
+            </li>
+        </ul>
+        <button class="btn btn-primary" type="submit">
+            <a th:href="@{/remindrs/{id}/edit-alerts(id=${remindr.id})}" style="color:white;">Edit your alerts</a>
+        </button>
 
         <h4>Created by:
             <span th:text="${remindr.user.contact.FirstName + ' ' + remindr.user.contact.LastName}"></span>
@@ -33,8 +49,8 @@
         <!--<form method="post" th:action="@{/remindrs/{id}/delete(id=${remindr.id})}">-->
             <!--<input class="btn btn-default" type="submit" value="Delete" />-->
         <!--</form>-->
-        <button class="btn btn-primary" type="submit">
-            <a th:href="@{/remindrs/{id}/edit(id=${remindr.id})}">Edit</a>
+        <button class="btn btn-primary"  type="submit">
+            <a th:href="@{/remindrs/{id}/edit(id=${remindr.id})}" style="color:white;">Edit</a>
         </button>
 
         <!-- Button trigger modal -->
@@ -43,7 +59,9 @@
         </button>
         <!--</div>-->
         <br />
-        <button class="btn btn-primary" type="submit" ><a th:href="@{/remindrs}" style="color: white;">Back to remindrs</a></button>
+        <button class="btn btn-primary" type="submit" >
+            <a th:href="@{/remindrs}" style="color:white;">Back to remindrs</a>
+        </button>
         </div>
     </div>
 

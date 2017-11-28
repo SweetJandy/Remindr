@@ -31,6 +31,8 @@ public class User {
     @JsonIgnore
     private String password;
 
+    private transient String confirmPassword;
+
     private transient String newPassword;
 
     private transient String confirmNewPassword;
@@ -56,11 +58,12 @@ public class User {
         this.contacts = new ArrayList<>();
     }
 
-//    public User(User copy) {
-//        id = copy.id;
-//        username = copy.username;
-//        password = copy.password;
-//    }
+    public User(User copy) {
+        id = copy.id;
+        username = copy.username;
+        password = copy.password;
+        contact = copy.contact;
+    }
 
     public User(long id, String username, String password, Contact contact, List<Contact> contacts) {
         this.id = id;
@@ -133,5 +136,13 @@ public class User {
 
     public void setConfirmNewPassword(String confirmNewPassword) {
         this.confirmNewPassword = confirmNewPassword;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

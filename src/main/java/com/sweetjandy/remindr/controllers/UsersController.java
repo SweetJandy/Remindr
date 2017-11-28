@@ -6,6 +6,8 @@ import com.sweetjandy.remindr.repositories.ContactsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
 import com.sweetjandy.remindr.services.PhoneService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -21,16 +23,15 @@ import javax.validation.Valid;
 public class UsersController {
     private UsersRepository usersRepository;
     private ContactsRepository contactsRepository;
-//    private PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
 
     @Autowired
     public UsersController(UsersRepository usersRepository, ContactsRepository contactsRepository
-// ,PasswordEncoder passwordEncoder
-                           ) {
+ ,PasswordEncoder passwordEncoder) {
         this.usersRepository = usersRepository;
         this.contactsRepository = contactsRepository;
-//        this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/register")
@@ -43,16 +44,14 @@ public class UsersController {
     // Errors validation has to be right after the object
     public String registerUser(@Valid User user, Errors validation, Model viewModel) {
 
-//    user.setPassword(passwordEncoder.encode(user.getPassword()));
-//   place the hashing encoder to storing password in a variable
 
         User existingUser = usersRepository.findByUsername(user.getUsername());
 
         if (existingUser != null) {
             validation.rejectValue(
                     "username",
-                    "user.username",
-                    "This email is already taken!"
+                    "username",
+                    "This email is already taken."
             );
         }
 
@@ -73,6 +72,14 @@ public class UsersController {
             );
         }
 
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
+            validation.rejectValue(
+                    "confirmPassword",
+                    "confirmPassword",
+                    "Password confirmation does not match"
+            );
+        }
+
         if (validation.hasErrors()) {
             viewModel.addAttribute("errors", validation);
             viewModel.addAttribute("user", user);
@@ -80,67 +87,35 @@ public class UsersController {
         }
 
 
-//        String hashPassword = passwordEncoder.encode(user.getPassword());
-
         //Brandon's previous code
 //        user.setContact(contact);
 
         user.getContact().setGoogleContact((long) (Math.random() * (double) Long.MAX_VALUE));
         user.getContact().setOutlookContact((long) (Math.random() * (double) Long.MAX_VALUE));
-        contactsRepository.save(user.getContact());
-        user.setPassword(user.getPassword());
-        usersRepository.save(user);
 
+        contactsRepository.save(user.getContact());
+
+//   place the hashing encoder to storing password in a variable
+        String hashPassword = passwordEncoder.encode(user.getPassword());
+
+        user.setPassword(hashPassword);
+        usersRepository.save(user);
         return "redirect:profile";
     }
 
-    @GetMapping("/login")
-    public String showLoginForm(Model viewModel) {
-
-        viewModel.addAttribute("user", new User());
-        return "users/login";
-    }
-
-    @PostMapping("/login")
-    public String loginUser(@Valid User user, Errors validation, Model viewModel) {
-
-        User existingUser = usersRepository.findByUsername(user.getUsername());
-
-        if (existingUser == null || !existingUser.getPassword().equals(user.getPassword())) {
-            validation.rejectValue(
-                    "password",
-                    "password",
-                    "Username and password combination is incorrect"
-            );
-            viewModel.addAttribute("errors", validation);
-            viewModel.addAttribute("user", user);
-            return "users/login";
-        }
-
-        return "redirect:/profile";
-
-    }
-
-    @GetMapping("/logout")
-    public String logout() {
-
-        return "redirect:/login";
-
-    }
 
     @GetMapping("/profile")
     public String profile(Model model) {
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-//        model.addAttribute("user", user);
+        model.addAttribute("user", user);
         return "users/profile";
     }
 
     @GetMapping("/profile/edit")
     public String showEditProfile(Model model) {
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        User user = usersRepository.findOne(1L);
         model.addAttribute("user", user);
 
         return "users/edit-profile";
@@ -149,7 +124,7 @@ public class UsersController {
     @PostMapping("/profile/edit")
     public String editProfile (@Valid User user, Errors validation, Model viewModel) {
 
-        User currentUser = usersRepository.findOne(1L);
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         boolean validated = PhoneService.validatePhoneNumber(user.getContact().getPhoneNumber());
         if (!validated) {
@@ -213,4 +188,3 @@ public class UsersController {
         return "redirect:/profile";
     }
 }
-

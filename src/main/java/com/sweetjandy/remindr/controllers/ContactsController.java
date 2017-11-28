@@ -8,6 +8,7 @@ import com.sweetjandy.remindr.repositories.UsersRepository;
 import com.sweetjandy.remindr.services.GooglePeopleService;
 import com.sweetjandy.remindr.services.PhoneService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -34,12 +35,16 @@ public class ContactsController {
         this.googlePeopleService = googlePeopleService;
     }
 
+    private boolean isInContacts(User user, long contactId) {
+        return user.getContacts().stream().filter(c -> c.getId() == contactId).count() > 0;
+    }
+
     @GetMapping("/contacts/{id}")
     public String viewIndividualContact(@PathVariable long id, Model viewModel, HttpServletResponse response) {
-        User user = usersRepository.findOne(1L);
+        
+    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        // use the contacts repository to find one contact by its id
-        Contact contact = contactsRepository.findOne(id);
+
 
         // send back Http unauthorized if not one of user's contacts (accessing directly from url)
         if(!isInContacts(user, id)) {
@@ -47,11 +52,18 @@ public class ContactsController {
             return "This contact is not in your contact list.";
         }
 
-        // save the result in a variable contact
-        viewModel.addAttribute("contact", contact); // replace null with the variable contact
+
+            // send back Http unauthorized if not one of user's contacts (accessing directly from url)
+            if(!isInContacts(user, id)) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return "This contact is not in your contact list.";
+            }
+
+            // save the result in a variable contact
+            viewModel.addAttribute("contact", contact); // replace null with the variable contact
 //        viewModel.addAttribute("contact", contact);
-        return "users/view-contact";
-    }
+            return "users/view-contact";
+        }
 
     private boolean isInContacts(User user, long contactId) {
         return user.getContacts().stream().filter(c -> c.getId() == contactId).count() > 0;
@@ -59,7 +71,7 @@ public class ContactsController {
 
     @GetMapping("/contacts")
     public String viewAllContacts(Model viewModel) {
-        User user = usersRepository.findOne(1L);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 
         viewModel.addAttribute("contacts", user.getContacts());
@@ -80,7 +92,13 @@ public class ContactsController {
     public String addContactForm(@Valid final Contact contact, Errors validation, Model viewModel) {
 
     //hardcoded until security measures are placed.
-        User user = usersRepository.findOne(1L);
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    Contact existingPhoneNumber = contactsRepository.findByPhoneNumber(contact.getPhoneNumber());
+        // setting to random number to avoid defaulting to 0, since field is unique
+        contact.setGoogleContact((long) (Math.random() * (double) Long.MAX_VALUE));
+        contact.setOutlookContact((long) (Math.random() * (double) Long.MAX_VALUE));
 
 //        returns amount of contacts that are duplicated by phone number
         long duplicates = user.getContacts().stream().filter(c -> c.getPhoneNumber().equals(contact.getPhoneNumber())).count();
@@ -132,7 +150,7 @@ public class ContactsController {
     @PostMapping("/contacts/{id}/edit")
     public String editPost(@Valid Contact contact, Errors validation, Model viewModel) {
 
-        User user = usersRepository.findOne(1L);
+       User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal
 
 //        returns amount of contacts that are duplicated by phone number
         long duplicates = user.getContacts().stream().filter(c -> c.getPhoneNumber().equals(contact.getPhoneNumber())).count();
@@ -168,7 +186,7 @@ public class ContactsController {
     @RequestMapping(value = "/contacts/{id}/delete", method = RequestMethod.POST)
     public String deleteContact(@PathVariable long id, HttpServletResponse response) throws IOException {
 
-        User user = usersRepository.findOne(1L);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal
 
         if(!isInContacts(user, id)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
