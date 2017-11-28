@@ -6,7 +6,7 @@
 
 <div class="container">
 	<div class="row">
-		<h1>View all contacts</h1>
+		<h1>Contacts <a href="/contacts/add" class="btn btn-default"><span class="glyph glyphicon-plus"></span></a></h1>
 
 		<div th:each="contact : ${contacts}">
 			<h4><a th:href="${'/contacts/' + contact.id}"
@@ -15,8 +15,6 @@
 			<!--<h4 th:text="${contact.phoneNumber}"></h4>-->
 		</div>
 	</div>
-
-	<a href="/contacts/add" class="btn btn-primary">Add a contact</a>
 
 </div>
 

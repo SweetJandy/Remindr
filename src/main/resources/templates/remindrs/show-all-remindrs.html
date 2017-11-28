@@ -6,7 +6,7 @@
 
 <div class="container">
     <div class="row">
-        <h1>Your remindrs</h1>
+        <h1>Your remindrs <a th:href="@{/remindrs/create}" class="btn btn-default"><span class="glyph glyphicon-plus"></span></a></h1>
         <div th:each="remindr : ${remindrs}">
 
             <div class="col-sm-6 col-md-3">
@@ -28,7 +28,6 @@
 
     <div class="row">
         <a class="btn btn-primary" href="/profile">Back to profile</a>
-        <a th:href="@{/remindrs/create}" style="color: white;"><button class="btn btn-primary" type="submit" >Create a remindr</button></a>
     </div>
 </div>
 

@@ -14,7 +14,7 @@
         <form th:action="@{/register}" th:method="post" th:object="${user}">
             <div class="form-group">
                 <label for="firstName">First Name</label>
-                <input id="firstName" name="firstName" th:field="*{contact.firstName}" class="form-control"/>
+                <input id="firstName" name="firstName" th:field="*{contact.firstName}" class="form-control"  />
                 <div
                     class="alert alert-danger"
                     th:if="${#fields.hasErrors('contact.firstName')}"
