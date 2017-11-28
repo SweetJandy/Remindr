@@ -1,8 +1,6 @@
 package com.sweetjandy.remindr.controllers;
 
-import com.sweetjandy.remindr.models.Contact;
-import com.sweetjandy.remindr.models.Remindr;
-import com.sweetjandy.remindr.models.User;
+import com.sweetjandy.remindr.models.*;
 import com.sweetjandy.remindr.repositories.ContactsRepository;
 import com.sweetjandy.remindr.repositories.RemindrsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
@@ -12,12 +10,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -28,11 +26,15 @@ public class RemindrController {
     private RemindrService remindrService = new RemindrService();
 
     @Autowired
-    public RemindrController(RemindrsRepository remindrsRepository, UsersRepository usersRepository) {
+    public RemindrController(RemindrsRepository remindrsRepository, UsersRepository usersRepository, ContactsRepository contactsRepository) {
+        this.contactsRepository = contactsRepository;
         this.remindrsRepository = remindrsRepository;
         this.usersRepository = usersRepository;
     }
 
+    private boolean isYourRemindr (User user, long remindrId) {
+        return user.getRemindrs().stream().filter(r -> r.getId() == remindrId).count() > 0;
+    }
 
     @GetMapping("/remindrs/create")
     public String showCreateRemindrForm(Model model) {
@@ -53,17 +55,96 @@ public class RemindrController {
 
         model.addAttribute("contact", contact);
 
+
         if (validation.hasErrors()) {
             model.addAttribute("errors", validation);
             model.addAttribute("remindr", remindr);
             return "/remindrs/create";
         }
 
-        model.addAttribute("remindr", remindr);
         remindrsRepository.save(remindr);
+
+        return "redirect:/remindrs/" + remindr.getId() + "/add-contacts";
+    }
+
+    @GetMapping("/remindrs/{id}/add-contacts")
+    public String showAddContactsToRemindrs(Model model, @PathVariable Long id) {
+
+        User user = usersRepository.findOne(1L);
+        Remindr remindr = remindrsRepository.findOne(id);
+
+        List<Contact> contacts = user.getContacts();
+        model.addAttribute("contacts", contacts);
+        model.addAttribute("remindr", remindr);
+
+        return "/remindrs/add-contacts";
+    }
+
+    @PostMapping("/remindrs/{id}/add-contacts")
+    public String addContactsToRemindrs (Model model, @PathVariable Long id, @RequestParam (name = "contacts") List<Long> contactsId) {
+        Remindr remindr = remindrsRepository.findOne(id);
+
+        List<Contact> contacts = contactsRepository.findByIdIn(contactsId);
+        remindr.setContacts(contacts);
+
+        System.out.println(Arrays.toString(contactsId.toArray()));
+        System.out.println(Arrays.toString(contacts.toArray()));
+
+        remindrsRepository.save(remindr);
+
+        return "redirect:/remindrs/" + remindr.getId() + "/add-alerts";
+    }
+
+    @GetMapping("/remindrs/{id}/add-alerts")
+    public String showAddAlertsToRemindrs (Model model, @PathVariable Long id) {
+        RemindrAlerts remindrAlerts = new RemindrAlerts();
+        remindrAlerts.setId(id);
+
+        model.addAttribute("remindr", remindrAlerts);
+
+        return "/remindrs/add-alerts";
+    }
+
+    @PostMapping("/remindrs/{id}/add-alerts")
+    public String addAlertsToRemindrs (RemindrAlerts alertTimes, @PathVariable Long id, Model model, @RequestParam(name="alerts")String[] alertValues) {
+
+        Remindr currentRemindr = remindrsRepository.findOne(id);
+        currentRemindr.getAlerts().clear();
+
+        for (String alert : alertValues) {
+            Alert newAlert = new Alert();
+            newAlert.setRemindr(currentRemindr);
+
+            for (AlertTime alertTime : AlertTime.values()) {
+                if (alertTime.name().equalsIgnoreCase(alert)) {
+                    newAlert.setAlertTime(alertTime);
+                }
+            }
+
+            currentRemindr.getAlerts().add(newAlert);
+        }
+
+//        String[] alertTimesArray = alertTimes.getAlertTimes().split(",");
+//
+//        for (int i = 0; i < alertTimesArray.length-1; i++) {
+//            Alert alert = new Alert();
+////            alert.setId(id);
+//            alert.setRemindr(currentRemindr);
+//
+//            for (AlertTime alertTime1 : AlertTime.values()) {
+//                if (alertTime1.name().equals(alertTimesArray[i])) {
+//                    alert.setAlertTime(alertTime1);
+//                    currentRemindr.getAlerts().add(alert);
+//                    break;
+//                }
+//            }
+//        }
+
+        remindrsRepository.save(currentRemindr);
 
         return "redirect:/remindrs";
     }
+
 
     @GetMapping("/remindrs")
     public String showAllRemindrs(Model model) {
@@ -105,6 +186,7 @@ public class RemindrController {
     @PostMapping("/remindrs/{id}/edit")
     public String editPost(@Valid Remindr remindr, Errors validation, Model model) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         remindr.setUser(user);
 
         if (validation.hasErrors()) {
@@ -118,16 +200,19 @@ public class RemindrController {
         return "redirect:/remindrs";
     }
 
-    @PostMapping("/remindrs/{id}/confirm-delete")
-    public String confirmDeleteRemindr(@PathVariable Long id, Model model) {
-        Iterable<Remindr> remindrs = remindrsRepository.findAll();
-        model.addAttribute("remindrs", remindrs);
 
-        return "/remindrs/confirm-delete";
-    }
+    @RequestMapping(value = "/remindrs/{id}/delete", method = RequestMethod.POST)
+    public String deleteRemindr(@PathVariable long id, HttpServletResponse response) throws IOException {
+        Remindr remindr = remindrsRepository.findOne(id);
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal
+//
+//        if(!isYourRemindr(user, id)) {
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            return "You do not own this remindr.";
+//        }
 
-    @PostMapping("/remindrs/{id}/delete")
-    public String deleteRemindr(@PathVariable Long id) {
+//        user.getRemindrs().remove(remindrsRepository.findOne(id));
+//        usersRepository.save(user);
         remindrsRepository.delete(id);
 
         return "redirect:/remindrs";

@@ -5,6 +5,7 @@ import com.google.api.services.people.v1.model.ListConnectionsResponse;
 import com.google.api.services.people.v1.model.Name;
 import com.google.api.services.people.v1.model.Person;
 import com.sweetjandy.remindr.models.Contact;
+import com.sweetjandy.remindr.models.User;
 import com.sweetjandy.remindr.services.GooglePeopleService;
 
 import com.sweetjandy.remindr.services.GooglePeopleService;
@@ -73,9 +74,15 @@ public class GooglePeopleController {
     }
 
     @GetMapping("/google/contacts")
-    public @ResponseBody List<Person>  viewContacts(@RequestParam(name = "token") String token) throws IOException {
-        return googlePeopleSvc.contacts(token);
+    public String viewContacts(@RequestParam(name = "token") String token) throws IOException {
+        List<Person> contacts = googlePeopleSvc.contacts(token);
 
+        // converting person object to contact objects
+        // save contacts object to db
+        // add contact objects to current user
+        // save user to db
+
+        return "redirect:/contacts";
     }
 }
 

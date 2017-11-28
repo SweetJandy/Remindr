@@ -47,21 +47,11 @@ public class UsersController {
 
         User existingUser = usersRepository.findByUsername(user.getUsername());
 
-        Contact existingPhoneNumber = contactsRepository.findByPhoneNumber(user.getContact().getPhoneNumber());
-
-        if (existingPhoneNumber != null) {
-            validation.rejectValue(
-                    "contact.phoneNumber",
-                    "contact.phoneNumber",
-                    "Phone number is already taken"
-            );
-        }
-
         if (existingUser != null) {
             validation.rejectValue(
                     "username",
-                    "user.username",
-                    "This email is already taken!"
+                    "username",
+                    "This email is already taken."
             );
         }
 
@@ -79,6 +69,14 @@ public class UsersController {
                     "password",
                     "password",
                     "Password cannot be blank"
+            );
+        }
+
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
+            validation.rejectValue(
+                    "confirmPassword",
+                    "confirmPassword",
+                    "Password confirmation does not match"
             );
         }
 
