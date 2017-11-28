@@ -21,17 +21,15 @@
 				<input id="password" type="password" name="password" class="form-control"/>
 			</div>
 
-			<div
-				class="alert alert-danger"
-				th:if="${#fields.hasErrors('password')}"
-				th:errors="*{password}">
+			<div class="alert alert-danger" th:if="${param.error}">
+				"Username and password combination is incorrect"
 			</div>
 
 
 			<input class="btn btn-primary" type="submit" value="Login"/>
 		</form>
 		<!--<div id="login-invalid-message" class="login-logout" th:if="${param.error}">-->
-			<!--Invalid username or password-->
+			<!--Invalid email or password-->
 		<!--</div>-->
 		<!--<div id="logout-message" class="login-logout" th:if="${param.logout}">-->
 			<!--You have been logged out-->
