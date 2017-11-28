@@ -8,6 +8,7 @@ import com.sweetjandy.remindr.repositories.UsersRepository;
 import com.sweetjandy.remindr.services.GooglePeopleService;
 import com.sweetjandy.remindr.services.PhoneService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 
@@ -34,28 +36,32 @@ public class ContactsController {
     }
 
     @GetMapping("/contacts/{id}")
-    public String viewIndividualContact(@PathVariable long id, Model viewModel) {
-        User user = usersRepository.findOne(2L);
+    public String viewIndividualContact(@PathVariable long id, Model viewModel, HttpServletResponse response) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        // use the contacts repository to find one contact by its id
-        Contact contact = contactsRepository.findOne(id);
 
-        Contact usersContact = contactsRepository.findContactFor(user.getId(), contact.getId());
-        if (usersContact == null) {
-            return "redirect:/";
+            // use the contacts repository to find one contact by its id
+            Contact contact = contactsRepository.findOne(id);
+
+            // send back Http unauthorized if not one of user's contacts (accessing directly from url)
+            if(!isInContacts(user, id)) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return "This contact is not in your contact list.";
+            }
+
+            // save the result in a variable contact
+            viewModel.addAttribute("contact", contact); // replace null with the variable contact
+//        viewModel.addAttribute("contact", contact);
+            return "users/view-contact";
         }
 
-        // save the result in a variable contact
-        viewModel.addAttribute("contact", contact); // replace null with the variable contact
-//        viewModel.addAttribute("contact", contact);
-        return "users/view-contact";
+    private boolean isInContacts(User user, long contactId) {
+        return user.getContacts().stream().filter(c -> c.getId() == contactId).count() > 0;
     }
-
-
 
     @GetMapping("/contacts")
     public String viewAllContacts(Model viewModel) {
-        User user = usersRepository.findOne(2L);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Iterable<Contact> usersContacts = contactsRepository.getContactList(user.getId());
                 if(usersContacts == null) {
@@ -79,7 +85,7 @@ public class ContactsController {
     public String addContactForm(@Valid Contact contact, Errors validation, Model viewModel) {
 
     //hardcoded until security measures are placed.
-        User user = usersRepository.findOne(2L);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 
     Contact existingPhoneNumber = contactsRepository.findByPhoneNumber(contact.getPhoneNumber());
