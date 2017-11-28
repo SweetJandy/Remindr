@@ -1,5 +1,6 @@
 package com.sweetjandy.remindr.controllers;
 
+import com.google.api.services.people.v1.model.Person;
 import com.sweetjandy.remindr.models.Contact;
 import com.sweetjandy.remindr.models.Remindr;
 import com.sweetjandy.remindr.models.User;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 
 
 @Controller
@@ -170,3 +172,28 @@ public class ContactsController {
     }
 }
 
+//    @GetMapping("/google/contacts")
+//    public String  viewContacts(@RequestParam(name = "token") String token, Model model, List<Person> persons) throws IOException {
+//        List<Person> people = googlePeopleSvc.contacts(token);
+////        model.addAttribute("contacts", people);
+////        personToContacts(people);
+//        User user = usersRepository.findOne(1L);
+//
+//        for (Person person: persons) {
+//            Contact contact = new Contact();
+//
+//            //saves contact to database
+//            contact.setUser(user);
+//            contactsRepository.save(contact);
+//            user.getContacts().add(contact);
+//            usersRepository.save(user);
+//        }
+//        model.addAttribute("contacts", people);
+//
+////        return "users/google-contacts";
+//        return "redirect:/contacts";
+//    }
+
+//contact contact = new contact
+//contact.setfirstName(givenName)
+//contact

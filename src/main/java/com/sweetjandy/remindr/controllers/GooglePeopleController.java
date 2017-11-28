@@ -9,6 +9,8 @@ import com.google.api.services.people.v1.model.PhoneNumber;
 import com.sun.media.jfxmedia.logging.Logger;
 import com.sweetjandy.remindr.models.Contact;
 import com.sweetjandy.remindr.models.User;
+import com.sweetjandy.remindr.repositories.ContactsRepository;
+import com.sweetjandy.remindr.repositories.UsersRepository;
 import com.sweetjandy.remindr.services.GooglePeopleService;
 
 import com.sweetjandy.remindr.services.GooglePeopleService;
@@ -30,11 +32,15 @@ import java.lang.String;
 public class GooglePeopleController {
 
     private final GooglePeopleService googlePeopleSvc;
-    private PeopleService peopleService;
+    private ContactsRepository contactsRepository;
+    private UsersRepository usersRepository;
+//    private PeopleService peopleService;
 
-    public GooglePeopleController(GooglePeopleService googlePeopleSvc) {
+    public GooglePeopleController(GooglePeopleService googlePeopleSvc, ContactsRepository contactsRepository) {
         this.googlePeopleSvc = googlePeopleSvc;
+        this.contactsRepository = contactsRepository;
     }
+
 
 //    @GetMapping("/contacts")
 //    public String showAll (Model model) throws IOException {
@@ -53,7 +59,7 @@ public class GooglePeopleController {
 //    }
 
     @GetMapping("/confirm")
-    public String confirm (Model viewModel) throws IOException {
+    public String confirm(Model viewModel) throws IOException {
 
         String authorizationUrl = googlePeopleSvc.setUp();
         viewModel.addAttribute("authorizationUrl", authorizationUrl);
@@ -78,38 +84,77 @@ public class GooglePeopleController {
     }
 
     @GetMapping("/google/contacts")
-    public String   viewContacts(@RequestParam(name = "token") String token, Model model) throws IOException {
+    public String viewContacts(@RequestParam(name = "token") String token, Model model) throws IOException {
         List<Person> people = googlePeopleSvc.contacts(token);
-//        people.get(0).getNames().get(0).getGivenName();
-//        people.get(0).getNames().get(0).getFamilyName();
-//        people.get(0).getPhoneNumbers().get(0).getValue();
-        model.addAttribute("contacts", people);
+        List<Contact> contacts = null;
+        for (Person person: people) {
+            contacts.add(new Contact(person.getNames().get(0).getGivenName(), person.getNames().get(0).getFamilyName(), person.getPhoneNumbers().get(0).getValue()));
+        }
+        contactsRepository.save(contacts);
+        model.addAttribute("contacts", contacts);
+
         return "users/google-contacts";
+        //    return "redirect:/contacts";
     }
-//    @GetMapping("/contacts/{id}")
-//    public String viewIndividualContact(@PathVariable long id, Model viewModel) {
-//        User user = usersRepository.findOne(2L);
+
+//    @GetMapping("/google/contacts")
+//    public String viewContacts(@RequestParam(name = "token") String token, Model model, List<Person> persons) throws IOException {
+//        List<Person> people = googlePeopleSvc.contacts(token);
+////        model.addAttribute("contacts", people);
+////        personToContacts(people);
+////        User user = usersRepository.findOne(1L);
 //
-//        // use the contacts repository to find one contact by its id
-//        Contact contact = contactsRepository.findOne(id);
+//        List<Contact> contacts;
 //
-//        Contact usersContact = contactsRepository.findContactFor(user.getId(), contact.getId());
-//        if (usersContact == null) {
-//            return "redirect:/";
-//        }
+//        for(Person person : people) {
+//            System.out.println(people.get(0).getNames().get(0).getGivenName());
+//            System.out.println(people.get(0).getNames().get(0).getFamilyName());
+//            System.out.println(people.get(0).getPhoneNumbers().get(0).getValue());
+
+//            contacts.add(people.get(0).getNames().get(0).getGivenName(), people.get(0).getNames().get(0).getFamilyName(), people.get(0).getPhoneNumbers().get(0).getValue());
+
+            //saves contact to database
+//            contact.setFirstName(people.get(0).getNames().get(0).getGivenName());
+//            contact.setLastName(people.get(0).getNames().get(0).getFamilyName());
+//            contact.setPhoneNumber(people.get(0).getPhoneNumbers().get(0).getValue());
+
+//            contactsRepository.save(contact);
+//            user.getContacts().add(contact);
+//            usersRepository.save(user);
+        }
+//        model.addAttribute("contacts", people);
+//
+////        return "users/google-contacts";
+//        return "redirect:/contacts";
+//    }
+//}
+
 //    private List<Contact> personToContacts(List<Person> persons) {
+//
+//        User user = new User();
 //        for (Person person: persons) {
 //            Contact contact = new Contact();
-//            List<Name> names = person.getNames();
-//            Name firstName = names.get(3);
-//            Name lastName = names.get(4);
+//
+//            //saves contact to database
+//            contactsRepository.save(contact);
+//            user.getContacts().add(contact);
+//            usersRepository.save(user);
+//
+////            List<Name> names = person.getNames();
+////            Name firstName = names.get(3);
+////            Name lastName = names.get(4);
 ////            List phoneNumbers = person.getPhoneNumbers();
 ////            phoneNumber phoneNumber = phoneNumbers.get(3);
-//            contact.setFirstName(firstName);
-//            contact.setLastName(lastName);
+////            contact.setFirstName(firstName);
+////            contact.setLastName(lastName);
 ////            contact.setPhoneNumber(phoneNumber);
 //        }
+//    return "redirect:/contacts";
+//
 //    }
-}
-
-
+//
+//}
+//
+//contact contact = new contact
+//contact.setfirstName(givenName)
+//contact

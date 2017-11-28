@@ -2,6 +2,7 @@ package com.sweetjandy.remindr.models;
 
 import com.google.api.services.people.v1.model.Name;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -56,6 +57,8 @@ public class Contact {
     public Contact() {
     }
 
+
+
     public Contact(Long id, String firstName, String lastName, String phoneNumber, Long googleContact, Long outlookContact) {
         this.id = id;
         this.firstName = firstName;
@@ -64,6 +67,13 @@ public class Contact {
         this.googleContact = googleContact;
         this.outlookContact = outlookContact;
 //        this.secretCode = secretCode;
+    }
+
+@Autowired
+    public Contact(String firstName, String lastName, String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
     }
 
     public long getId() {
