@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -80,14 +80,20 @@ public class RemindrController {
     }
 
     @PostMapping("/remindrs/{id}/add-contacts")
-    public String addContactsToRemindrs (Model model, @PathVariable Long id, @RequestParam (name = "contacts") List<Long> contactsId) {
+    public String addContactsToRemindrs (Model model, @PathVariable Long id, @RequestParam (name = "contacts") String[] contactIds) {
         Remindr remindr = remindrsRepository.findOne(id);
+        List<Long> list = new ArrayList<Long>();
 
-        List<Contact> contacts = contactsRepository.findByIdIn(contactsId);
+        for(String contactId: contactIds) {
+            if(contactId.equals("")){
+                continue;
+            }
+            list.add(Long.parseLong(contactId));
+        }
+
+        List<Contact> contacts = contactsRepository.findByIdIn(list);
+
         remindr.setContacts(contacts);
-
-        System.out.println(Arrays.toString(contactsId.toArray()));
-        System.out.println(Arrays.toString(contacts.toArray()));
 
         remindrsRepository.save(remindr);
 

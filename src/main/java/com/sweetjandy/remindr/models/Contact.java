@@ -45,12 +45,7 @@ public class Contact {
 //    @ManyToMany(mappedBy = "contacts")
 //    private List<User> users;
 
-    @ManyToMany(cascade = ALL)
-    @JoinTable(
-            name = "contact_remindr",
-            joinColumns = {@JoinColumn(name = "contact_id")},
-            inverseJoinColumns = {@JoinColumn(name = "remindr_id")}
-    )
+    @ManyToMany(cascade = ALL, mappedBy = "contacts")
     private List<Remindr> remindrs;
 
     public Contact() {

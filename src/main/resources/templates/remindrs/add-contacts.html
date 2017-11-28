@@ -7,53 +7,45 @@
 <!--DROPDOWN FOR CONTACTS-->
 <div class="container">
     <h2>Add contacts</h2>
-    <form th:action="@{/remindrs/{id}/add-contacts(id = ${remindr.id})}" method="post" th:object="${remindr}" id="surveyForm">
-        <div class="row">
-            <div class="form-group">
-                <div class="col-xs-8">
-                    <select class="form-control" name="contacts" id="sel1">
-                        <option value="Select a contact">Select a contact</option>
-                        <div th:each="contact : ${contacts}">
-                            <option th:value="${contact.id}" th:text="${contact.firstName + ' ' + contact.lastName + ': ' + contact.phoneNumber}"></option>
-                        </div>
-                    </select>
-                </div>
-                <div class="col-xs-4">
-                    <button type="button" class="btn btn-primary addButton">
-                    <!--<i class="fa fa-plus"></i>-->
-                    +
-                    </button>
-                </div>
-            </div>
-            <!-- The option field template containing an option field and a Remove button -->
-            <div class="form-group hide" id="optionTemplate">
-                <div class="col-xs-8">
-                    <select class="form-control" name="contacts" id="sel1">
-                        <option value="Select a contact">Select a contact</option>
-                        <div th:each="contact : ${contacts}">
-                            <option th:value="${contact.id}" th:text="${contact.firstName + ' ' + contact.lastName + ': ' + contact.phoneNumber}"></option>
-                        </div>
-                    </select>
-                </div>
-                <div class="col-xs-4">
-                    <button type="button" class="btn btn-default removeButton">
-                        <!--<i class="fa fa-minus"></i>-->
-                        -
-                    </button>
-                </div>
-            </div>
+    <div class="row">
+
+        <div class="col-lg-6">
+            <input type="text" placeholder="search" id="searchContacts" class="form-control"/>
         </div>
-        <br />
-        <br />
-        <!--<input class="btn btn-primary" type="submit" value="Next: Add alerts" th:href="@{/remindrs/add-alerts}"/>-->
-        <!--<a href="/remindrs/add-contacts" class="btn btn-primary">Next: Add contacts</a>-->
-        <a th:href="@{/remindrs/{id}/add-alerts(id = ${remindr.id})}" class="btn btn-primary">Skip</a>
+    </div>
+    <form th:action="@{/remindrs/{id}/add-contacts(id = ${remindr.id})}" method="post" th:object="${remindr}" id="surveyForm">
+        <input type="hidden" name="contacts" value=""/>
+        <div class="row contact" th:each="contact : ${contacts}" >
+            <div class="col-lg-6">
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <input type="checkbox" th:value="${contact.id}" name="contacts"/>
+                  </span>
+                    <input type="text" class="form-control" readonly="readonly" th:value="${contact.firstName + ' ' + contact.lastName + ': ' + contact.phoneNumber}"/>
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        </div>
+
+        <a th:href="@{/remindrs/{id}/add-alerts(id = ${remindr.id})}" class="btn btn-primary">Skip for now</a>
         <button class="btn btn-primary">Save</button>
-        <p>(You can add contacts later)</p>
     </form>
 
 </div>
 <div th:replace="/fragments/partials :: scripts"></div>
 <script type="text/javascript" th:src="@{/scripts/add_button.js}"></script>
+<script>
+    $(document).ready(function(){
+       $("#searchContacts").keyup(function(){
+           $(".contact").each(function(){
+              var show = $(this).find("input[type='text']").val().toLowerCase().indexOf($("#searchContacts").val().toLowerCase()) >= 0;
+              if(show){
+                  $(this).show();
+              } else {
+                  $(this).hide();
+              }
+           })
+       })
+    });
+</script>
 </body>
 </html>
