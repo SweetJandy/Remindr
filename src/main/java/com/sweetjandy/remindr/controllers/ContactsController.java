@@ -34,6 +34,10 @@ public class ContactsController {
         this.googlePeopleService = googlePeopleService;
     }
 
+    private boolean isInContacts(User user, long contactId) {
+        return user.getContacts().stream().filter(c -> c.getId() == contactId).count() > 0;
+    }
+
     @GetMapping("/contacts/{id}")
     public String viewIndividualContact(@PathVariable long id, Model viewModel, HttpServletResponse response) {
         User user = usersRepository.findOne(1L);
@@ -51,10 +55,6 @@ public class ContactsController {
         viewModel.addAttribute("contact", contact); // replace null with the variable contact
 //        viewModel.addAttribute("contact", contact);
         return "users/view-contact";
-    }
-
-    private boolean isInContacts(User user, long contactId) {
-        return user.getContacts().stream().filter(c -> c.getId() == contactId).count() > 0;
     }
 
     @GetMapping("/contacts")

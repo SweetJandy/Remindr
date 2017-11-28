@@ -12,42 +12,39 @@
             <input id="title" name="title" th:field="*{title}" class="form-control" type="text"/>
         </div>
         <div
-                class="alert alert-danger"
-                th:if="${#fields.hasErrors('title')}"
-                th:errors="*{title}" >
+            class="alert alert-danger"
+            th:if="${#fields.hasErrors('title')}"
+            th:errors="*{title}" >
         </div>
 
-        <!--Description-->
+        <!--DESCRIPTION-->
         <div class="form-group">
-            <label for="description">Event description</label>
+            <label for="description">Event description (optional) </label>
             <textarea class="form-control" rows="3" id="description" name="description" th:field="*{description}"></textarea>
             <!--<input type="text" id="description" name="description" th:field="*{description}" class="form-control" />-->
         </div>
-        <div
-                class="alert alert-danger"
-                th:if="${#fields.hasErrors('description')}"
-                th:errors="*{description}" >
-        </div>
+
         <!--START DATE/TIME-->
         <div class="form-group">
             <label for="startDateTime">Event start date/ time</label>
             <input id="startDateTime" name="startDateTime" class="form-control" type="datetime-local" th:field="*{startDateTime}" />
         </div>
         <div
-                class="alert alert-danger"
-                th:if="${#fields.hasErrors('startDateTime')}"
-                th:errors="*{startDateTime}" >
+            class="alert alert-danger"
+            th:if="${#fields.hasErrors('startDateTime')}"
+            th:errors="*{startDateTime}" >
         </div>
 
         <!--END DATE/TIME-->
         <div class="form-group">
-            <label for="endDateTime">Event end date/ time</label>
+            <label for="endDateTime">Event end date/ time (optional) </label>
             <input id="endDateTime" name="endDateTime" class="form-control" type="datetime-local" th:field="*{endDateTime}" />
         </div>
-        <div
-                class="alert alert-danger"
-                th:if="${#fields.hasErrors('endDateTime')}"
-                th:errors="*{endDateTime}" >
+
+        <!--RECURRING EVENT INFO-->
+        <div id='selector' class="form-group">
+            <label for="recurrence">Recurring event (optional) </label>
+            <input class="form-control" name="recurrence" type="hidden" id="recurrence" th:field="*{recurrence}"/>
         </div>
 
         <!--&lt;!&ndash;ALERTS&ndash;&gt;-->
@@ -83,5 +80,20 @@
 </div>
 
 <div th:replace="/fragments/partials :: scripts"></div>
+<script type="text/javascript" src="/scripts/cron/jquery-cron.js"></script>
+<script th:inline="javascript" type="text/javascript">
+    $(document).ready(function() {
+        $('#selector').cron({
+            initial: "0 12 * * 5",
+            onChange: function() {
+                $('#recurrence').val($(this).cron("value"));
+            }
+        }); // apply cron with default options
+        var recurrence=[[${remindr.recurrence}]];
+
+        // Updating the value of an existing cron object
+        cron_field.cron("value", recurrence);
+    });
+</script>
 </body>
 </html>

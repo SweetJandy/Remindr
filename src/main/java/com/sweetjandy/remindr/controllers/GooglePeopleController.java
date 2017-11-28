@@ -5,6 +5,7 @@ import com.google.api.services.people.v1.model.ListConnectionsResponse;
 import com.google.api.services.people.v1.model.Name;
 import com.google.api.services.people.v1.model.Person;
 import com.sweetjandy.remindr.models.Contact;
+import com.sweetjandy.remindr.models.User;
 import com.sweetjandy.remindr.services.GooglePeopleService;
 
 import com.sweetjandy.remindr.services.GooglePeopleService;
