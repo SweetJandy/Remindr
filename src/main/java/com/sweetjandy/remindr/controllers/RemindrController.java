@@ -1,8 +1,6 @@
 package com.sweetjandy.remindr.controllers;
 
-import com.sweetjandy.remindr.models.Contact;
-import com.sweetjandy.remindr.models.Remindr;
-import com.sweetjandy.remindr.models.User;
+import com.sweetjandy.remindr.models.*;
 import com.sweetjandy.remindr.repositories.ContactsRepository;
 import com.sweetjandy.remindr.repositories.RemindrsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -26,7 +25,8 @@ public class RemindrController {
     private RemindrService remindrService = new RemindrService();
 
     @Autowired
-    public RemindrController(RemindrsRepository remindrsRepository, UsersRepository usersRepository) {
+    public RemindrController(RemindrsRepository remindrsRepository, UsersRepository usersRepository, ContactsRepository contactsRepository) {
+        this.contactsRepository = contactsRepository;
         this.remindrsRepository = remindrsRepository;
         this.usersRepository = usersRepository;
     }
@@ -61,16 +61,16 @@ public class RemindrController {
             return "/remindrs/create";
         }
 
-        model.addAttribute("remindr", remindr);
         remindrsRepository.save(remindr);
 
-        return "redirect:/remindrs/add-contacts";
+        return "redirect:/remindrs/" + remindr.getId() + "/add-contacts";
     }
 
-    @GetMapping("/remindrs/add-contacts")
-    public String showAddContactsToRemindrs(Model model, Remindr remindr) {
+    @GetMapping("/remindrs/{id}/add-contacts")
+    public String showAddContactsToRemindrs(Model model, @PathVariable Long id) {
 
         User user = usersRepository.findOne(1L);
+        Remindr remindr = remindrsRepository.findOne(id);
 
         List<Contact> contacts = user.getContacts();
         model.addAttribute("contacts", contacts);
@@ -79,14 +79,55 @@ public class RemindrController {
         return "/remindrs/add-contacts";
     }
 
-    @PostMapping("/remindrs/add-contacts")
-    public String addContactsToRemindrs (Model model) {
-        Remindr remindr = remindrsRepository.findOne(11L);
-        model.addAttribute("remindr", remindr);
+    @PostMapping("/remindrs/{id}/add-contacts")
+    public String addContactsToRemindrs (Model model, @PathVariable Long id, @RequestParam (name = "contacts") List<Long> contactsId) {
+        Remindr remindr = remindrsRepository.findOne(id);
+
+        List<Contact> contacts = contactsRepository.findByIdIn(contactsId);
+        remindr.setContacts(contacts);
+
+        System.out.println(Arrays.toString(contactsId.toArray()));
+        System.out.println(Arrays.toString(contacts.toArray()));
+
         remindrsRepository.save(remindr);
 
-        return "redirect: /remindrs";
+        return "redirect:/remindrs/" + remindr.getId() + "/add-alerts";
     }
+
+    @GetMapping("/remindrs/{id}/add-alerts")
+    public String showAddAlertsToRemindrs (Model model, @PathVariable Long id) {
+        RemindrAlerts remindrAlerts = new RemindrAlerts();
+        remindrAlerts.setId(id);
+
+        model.addAttribute("remindr", remindrAlerts);
+
+        return "/remindrs/add-alerts";
+    }
+
+    @PostMapping("/remindrs/{id}/add-alerts")
+    public String addAlertsToRemindrs (RemindrAlerts alertTimes, @PathVariable Long id) {
+        Remindr currentRemindr = remindrsRepository.findOne(id);
+        currentRemindr.getAlerts().clear();
+
+        for (String alertTime : alertTimes.getAlertTimes().split(",")) {
+            Alert alert = new Alert();
+            alert.setId(id);
+
+            for (AlertTime alertTime1 : AlertTime.values()) {
+                if (alertTime1.name().equals(alertTime)) {
+                    alert.setAlertTime(alertTime1);
+                    currentRemindr.getAlerts().add(alert);
+                    break;
+                }
+            }
+
+        }
+
+        remindrsRepository.save(currentRemindr);
+
+        return "redirect:/remindrs";
+    }
+
 
     @GetMapping("/remindrs")
     public String showAllRemindrs(Model model) {
@@ -106,7 +147,6 @@ public class RemindrController {
         String endDate = remindrService.getFinalDate(remindr.getEndDateTime());
         String startTime = remindrService.getTime(remindr.getStartDateTime());
         String endTime = remindrService.getTime(remindr.getEndDateTime());
-
 
         model.addAttribute("remindr", remindr);
         model.addAttribute("remindrId", id);
@@ -128,7 +168,7 @@ public class RemindrController {
 
     @PostMapping("/remindrs/{id}/edit")
     public String editPost(@Valid Remindr remindr, Errors validation, Model model) {
-        User user = usersRepository.findOne(1L);
+        User user = usersRepository.findOne(2L);
         remindr.setUser(user);
 
         if (validation.hasErrors()) {
@@ -146,18 +186,15 @@ public class RemindrController {
     @RequestMapping(value = "/remindrs/{id}/delete", method = RequestMethod.POST)
     public String deleteRemindr(@PathVariable long id, HttpServletResponse response) throws IOException {
         Remindr remindr = remindrsRepository.findOne(id);
-        User user = usersRepository.findOne(1L);
+//        User user = usersRepository.findOne(2L);
+//
+//        if(!isYourRemindr(user, id)) {
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            return "You do not own this remindr.";
+//        }
 
-        if(!isYourRemindr(user, id)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return "You do not own this remindr.";
-        }
-
-//        Removes from the user's list of remindrs
-        user.getRemindrs().remove(remindrsRepository.findOne(id));
-//        So the db knows you removed the reminder from the user’s list of reminders
-        usersRepository.save(user);
-//        Deletes the remindr from the db
+//        user.getRemindrs().remove(remindrsRepository.findOne(id));
+//        usersRepository.save(user);
         remindrsRepository.delete(id);
 
         return "redirect:/remindrs";

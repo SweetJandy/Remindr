@@ -13,6 +13,7 @@ import javax.swing.*;
 import javax.validation.constraints.Size;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -56,11 +57,13 @@ public class Remindr {
     @JsonManagedReference
     private User user;
 
-    @ManyToMany(mappedBy = "remindrs")
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "remindrs")
     private List<Contact> contacts;
 
-
     public Remindr() {
+        alerts = new ArrayList<Alert>();
+        contacts = new ArrayList<Contact>();
+
     }
 
     public Remindr(String title, String description, String endDateTime, String startDateTime, String location, String uploadPath) {
@@ -139,9 +142,11 @@ public class Remindr {
     }
 
     public void setContacts(List<Contact> contacts) {
+        for (Contact contact : contacts) {
+            contact.getRemindrs().add(this);
+        }
         this.contacts = contacts;
     }
-
 
     public List<Alert> getAlerts() {
         return alerts;
