@@ -34,9 +34,11 @@ public class Remindr {
     @NotBlank(message = "Remindr events must have a start date/time")
     private String startDateTime;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Remindr events must have a end date/time")
+    @Column(nullable = true)
     private String endDateTime;
+
+    @Column(nullable=true)
+    private String recurrence;
 
     @Column(nullable = false)
     @NotBlank(message = "Remindr events must have a location")
@@ -155,5 +157,12 @@ public class Remindr {
 
     public void setUploadPath(String uploadPath) {
         this.uploadPath = uploadPath;
+    }
+    public String getRecurrence() {
+        return recurrence;
+    }
+
+    public void setRecurrence(String recurrence) {
+        this.recurrence = recurrence;
     }
 }

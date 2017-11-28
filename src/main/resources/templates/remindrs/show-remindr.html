@@ -9,20 +9,24 @@
         <h1>Show remindr</h1>
 
         <h2 th:text="${remindr.title}"></h2>
-            <img th:src="${remindr.uploadPath}" alt="event image" />
+        <!--<img th:src="${remindr.uploadPath}" alt="event image" />-->
 
-        <h4>Description:</h4>
+        <h4>Event description</h4>
         <p th:text="${remindr.description}"></p>
 
-        <h4>Start Date/Time:</h4>
+        <h4>Event start date/ time</h4>
         <p th:text="${startdate}"></p>
         <p th:text="${starttime}"></p>
 
-        <h4>End Date/Time:</h4>
+        <h4>Event end date/ time</h4>
         <p th:text="${enddate}"></p>
         <p th:text="${endtime}"></p>
 
-        <h4>Location:</h4>
+        <!--in cron job format-->
+        <h4>Recurring date/ time</h4>
+        <p th:text="${remindr.recurrence}"></p>
+
+        <h4>Event location</h4>
         <p th:text="${remindr.location}"></p>
 
         <h4>Created by:

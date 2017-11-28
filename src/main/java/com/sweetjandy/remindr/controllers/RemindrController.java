@@ -70,7 +70,7 @@ public class RemindrController {
     @GetMapping("/remindrs/add-contacts")
     public String showAddContactsToRemindrs(Model model, Remindr remindr) {
 
-        User user = usersRepository.findOne(2L);
+        User user = usersRepository.findOne(1L);
 
         List<Contact> contacts = user.getContacts();
         model.addAttribute("contacts", contacts);
@@ -107,6 +107,7 @@ public class RemindrController {
         String startTime = remindrService.getTime(remindr.getStartDateTime());
         String endTime = remindrService.getTime(remindr.getEndDateTime());
 
+
         model.addAttribute("remindr", remindr);
         model.addAttribute("remindrId", id);
 
@@ -127,7 +128,7 @@ public class RemindrController {
 
     @PostMapping("/remindrs/{id}/edit")
     public String editPost(@Valid Remindr remindr, Errors validation, Model model) {
-        User user = usersRepository.findOne(2L);
+        User user = usersRepository.findOne(1L);
         remindr.setUser(user);
 
         if (validation.hasErrors()) {
