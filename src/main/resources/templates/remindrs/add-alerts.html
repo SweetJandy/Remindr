@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/fragments/partials :: head('Create a remindr')">
+</head>
+<body>
+<nav th:replace="/fragments/partials :: navbar"></nav>
+<!--DROPDOWN FOR CONTACTS-->
+<div class="container">
+    <h2>Add alerts</h2>
+    <form th:action="@{/remindrs/{id}/add-alerts(id = ${remindr.id})}" th:method="POST" id="surveyForm">
+        <input type="hidden" th:field="*{remindr.alertTimes}" />
+        <div class="row">
+            <div class="form-group">
+                <div class="col-xs-8">
+                    <select class="form-control" name="alerts">
+                        <!--<option value="Select a contact" >Select alert</option>-->
+                       <option value="ZERO" selected="selected">At time of event</option>
+                       <option value="FIFTEEN">15 minutes before</option>
+                       <option value="THIRTY">30 minutes before</option>
+                       <option value="HOUR">1 hour before</option>
+                       <option value="DAY">1 day before</option>
+                       <option value="WEEK">1 week before</option>
+                    </select>
+                </div>
+                <div class="col-xs-4">
+                    <button type="button" class="btn btn-primary addButton">
+                        <!--<i class="fa fa-plus"></i>-->
+                        +
+                    </button>
+                </div>
+            </div>
+
+            <!-- The option field template containing an option field and a Remove button -->
+            <div class="form-group hide" id="optionTemplate">
+                <div class="col-xs-8">
+                    <select class="form-control hidden-input" name="alerts">
+                        <!--<option value="Select a contact" disabled>Select alert</option>-->
+                        <option value="ZERO" selected="selected">At time of event</option>
+                        <option value="FIFTEEN">15 minutes before</option>
+                        <option value="THIRTY">30 minutes before</option>
+                        <option value="HOUR">1 hour before</option>
+                        <option value="DAY">1 day before</option>
+                        <option value="WEEK">1 week before</option>
+                    </select>
+                </div>
+                <div class="col-xs-4">
+                    <button type="button" class="btn btn-default removeButton">
+                        <!--<i class="fa fa-minus"></i>-->
+                        -
+                    </button>
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <input class="btn btn-primary" type="submit" value="Submit" th:href="@{/remindrs}"/>
+        <!--<a href="/remindrs/add-contacts" class="btn btn-primary">Next: Add contacts</a>-->
+        <a href="/remindrs" class="btn btn-primary">Skip</a>
+        <p>(You can add alerts later)</p>
+    </form>
+</div>
+<div th:replace="/fragments/partials :: scripts"></div>
+<script type="text/javascript" th:src="@{/scripts/add_button_alerts.js}"></script>
+<script>
+    $(document).ready(function() {
+
+        $("input[type=\"submit\"]").click(function () {
+            var alertTimes = "";
+            $("select:not(.hidden-input)").each(function() {
+                alertTimes += $(this).val() + ","
+            });
+            alertTimes = alertTimes.substring(0, alertTimes.length - 1);
+            $("#alertTimes").val(alertTimes);
+        });
+    });
+</script>
+</body>
+</html>
