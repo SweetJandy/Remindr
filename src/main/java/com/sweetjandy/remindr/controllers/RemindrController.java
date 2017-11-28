@@ -124,27 +124,46 @@ public class RemindrController {
             currentRemindr.getAlerts().add(newAlert);
         }
 
-//        String[] alertTimesArray = alertTimes.getAlertTimes().split(",");
-//
-//        for (int i = 0; i < alertTimesArray.length-1; i++) {
-//            Alert alert = new Alert();
-////            alert.setId(id);
-//            alert.setRemindr(currentRemindr);
-//
-//            for (AlertTime alertTime1 : AlertTime.values()) {
-//                if (alertTime1.name().equals(alertTimesArray[i])) {
-//                    alert.setAlertTime(alertTime1);
-//                    currentRemindr.getAlerts().add(alert);
-//                    break;
-//                }
-//            }
-//        }
-
         remindrsRepository.save(currentRemindr);
 
         return "redirect:/remindrs";
     }
 
+    @GetMapping("/remindrs/{id}/edit-alerts")
+    public String showEditAlerts (Model model, @PathVariable Long id) {
+//        RemindrAlerts remindrAlerts = new RemindrAlerts();
+//        remindrAlerts.setId(id);
+        Remindr remindr = remindrsRepository.findOne(id);
+//
+        model.addAttribute("remindr", remindr);
+
+        return "/remindrs/edit-alerts";
+    }
+
+
+    @PostMapping("/remindrs/{id}/edit-alerts")
+    public String editAlerts(RemindrAlerts alertTimes, @PathVariable Long id, Model model, @RequestParam(name="alerts")String[] alertValues) {
+
+        Remindr remindr = remindrsRepository.findOne(id);
+        remindr.getAlerts().clear();
+
+        for (String alert : alertValues) {
+            Alert newAlert = new Alert();
+            newAlert.setRemindr(remindr);
+
+            for (AlertTime alertTime : AlertTime.values()) {
+                if (alertTime.name().equalsIgnoreCase(alert)) {
+                    newAlert.setAlertTime(alertTime);
+                }
+            }
+
+            remindr.getAlerts().add(newAlert);
+        }
+
+        remindrsRepository.save(remindr);
+
+        return "redirect:/remindrs/" + remindr.getId();
+    }
 
     @GetMapping("/remindrs")
     public String showAllRemindrs(Model model) {

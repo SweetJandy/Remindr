@@ -48,8 +48,9 @@ public class Remindr {
     @Value("${file-upload-path")
     private String uploadPath;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "remindr")
+    @OneToMany(cascade = CascadeType.ALL)
     @JsonBackReference
+    @JoinColumn(name = "remindr_id")
     private List<Alert> alerts;
 
     @ManyToOne

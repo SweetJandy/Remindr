@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
 
-        <h1>Show remindr</h1>
+        <!--<h1>Show remindr</h1>-->
 
         <h2 th:text="${remindr.title}"></h2>
             <img th:src="${remindr.uploadPath}" alt="event image" />
@@ -34,7 +34,7 @@
             </li>
         </ul>
         <button class="btn btn-primary" type="submit">
-            <a th:href="@{/remindrs/{id}/add-alerts(id=${remindr.id})}" style="color:white;">Edit your alerts</a>
+            <a th:href="@{/remindrs/{id}/edit-alerts(id=${remindr.id})}" style="color:white;">Edit your alerts</a>
         </button>
 
         <h4>Created by:

@@ -24,7 +24,6 @@ public class Alert {
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "remindr_id")
     private Remindr remindr;
 
     public Alert(){
