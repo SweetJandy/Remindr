@@ -1,17 +1,17 @@
-- [ ] Users register for an account.
+- [x] Users register for an account.
 - [ ] Users pull existing contacts from Google Contacts API.
 - [ ] Users pull existing contacts from Outlook API.
-- [ ] Users manually input contacts.
+- [x] Users manually input contacts.
 
 
 - [ ] #Users create remindrs.
 - [ ] ##Necessary:
-- [ ] Title
-- [ ] Date (start & end)
-- [ ] Time (start & end time)
-- [ ] Location
-- [ ] Description
-- [ ] Invitees (“remindees”)
+- [x] Title
+- [x] Date (start & end)
+- [x] Time (start & end time)
+- [x] Location
+- [x] Description
+- [x] Invitees (“remindees”)
 - [ ] Upload picture (Filestack API)
 
 
@@ -26,12 +26,12 @@
 - [ ] Remindees receive a text from the remindr Twilio phone number with an invitation to receive remindrs.
 - [ ] Remindees choose to opt in or out. If opted in, recipients will receive remindrs via text from the event creator.
 - [ ] Remindees can choose to create an account in order to view event details, other remindees, and create their own remindrs.
-- [ ] Users can edit their profile.
-- [ ] Users can view all of their remindrs.
-- [ ] Users can view a single remindr.
-- [ ] Users can update remindrs.
-- [ ] Users can delete remindrs.
-- [ ] Users can view all of their contacts.
+- [x] Users can edit their profile.
+- [x] Users can view all of their remindrs.
+- [x] Users can view a single remindr.
+- [x] Users can update remindrs.
+- [x] Users can delete remindrs.
+- [x] Users can view all of their contacts.
 - [ ] Users can view all of the opted-in remindees for a specific event.
 - [ ] Potentially recipients could also choose to add it as a calendar event.
 
