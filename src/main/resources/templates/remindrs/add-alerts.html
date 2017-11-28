@@ -8,6 +8,7 @@
 <div class="container">
     <h2>Add alerts</h2>
     <form th:action="@{/remindrs/{id}/add-alerts(id = ${remindr.id})}" th:method="POST" id="surveyForm">
+        <input type="hidden" name="alerts" value=""/>
         <div class="row">
             <div class="col-lg-6">
                 <div class="input-group">
