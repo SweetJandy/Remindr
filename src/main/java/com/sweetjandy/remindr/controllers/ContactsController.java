@@ -43,14 +43,14 @@ public class ContactsController {
     public String viewIndividualContact(@PathVariable long id, Model viewModel, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
 
         user = usersRepository.findOne(user.getId());
 
         if(!isInContacts(user, id)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "This contact is not in your contact list.";
         }
 
@@ -67,7 +67,7 @@ public class ContactsController {
     public String viewAllContacts(Model viewModel, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
 
@@ -81,7 +81,7 @@ public class ContactsController {
     public String showAddContactsForm(Model viewModel, HttpServletResponse response) throws IOException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
 
@@ -97,7 +97,7 @@ public class ContactsController {
     public String addContactForm(@Valid final Contact contact, Errors validation, Model viewModel, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
 
@@ -148,13 +148,13 @@ public class ContactsController {
     public String editPost(Model model, @PathVariable Long id, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
         user = usersRepository.findOne(user.getId());
 
         if(!isInContacts(user, id)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "This contact is not in your contact list.";
         }
 
@@ -167,13 +167,13 @@ public class ContactsController {
     public String editPost(@Valid Contact contact, Errors validation, Model viewModel, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
         user = usersRepository.findOne(user.getId());
 
         if(!isInContacts(user, contact.getId())) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "This contact is not in your contact list.";
         }
 
@@ -213,13 +213,13 @@ public class ContactsController {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
         user = usersRepository.findOne(user.getId());
 
         if(!isInContacts(user, id)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "This contact is not in your contact list.";
         }
 

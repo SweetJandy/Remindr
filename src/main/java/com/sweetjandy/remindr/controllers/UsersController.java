@@ -108,7 +108,7 @@ public class UsersController {
     public String profile(Model model, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
 
@@ -122,7 +122,7 @@ public class UsersController {
     public String showEditProfile(Model model, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
         user = usersRepository.findOne(user.getId());
@@ -137,7 +137,7 @@ public class UsersController {
 
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (currentUser.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
 
