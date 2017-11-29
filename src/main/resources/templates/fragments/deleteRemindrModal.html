@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/jdbc">
+<head>
+</head>
+<body>
+
+
+<div th:fragment="deleteRemindrModalScript">
+    <script th:inline="javascript">
+        function confirmDeleteRemindr() {
+            var remindrId=[[${remindr.id}]];
+            $.ajax({
+                url: '/remindrs/' + remindrId + '/delete',
+                type: 'POST',
+                success: function(result) {
+                    location.href="/remindrs";
+                },
+                error: function(result){}
+            });	}
+    </script>
+</div>
+</body>
+</html>
