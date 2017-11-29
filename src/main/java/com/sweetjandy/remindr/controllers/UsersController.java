@@ -87,9 +87,6 @@ public class UsersController {
         }
 
 
-        //Brandon's previous code
-//        user.setContact(contact);
-
         user.getContact().setGoogleContact("" + (long) (Math.random() * (double) Long.MAX_VALUE));
         user.getContact().setOutlookContact("" + (long) (Math.random() * (double) Long.MAX_VALUE));
 
@@ -150,6 +147,7 @@ public class UsersController {
             );
         }
 
+
 //        PASSWORD VALIDATION
 //        If current password field is not empty
         if (!user.getPassword().equals("")) {
@@ -202,3 +200,4 @@ public class UsersController {
         return "redirect:/profile";
     }
 }
+

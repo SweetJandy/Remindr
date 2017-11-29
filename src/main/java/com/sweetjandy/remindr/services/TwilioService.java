@@ -25,11 +25,11 @@ public class TwilioService extends HttpServlet {
         Twilio.init(this.twiliosid, this.twiliotoken);
 
         com.twilio.rest.api.v2010.account.Message message = com.twilio.rest.api.v2010.account.Message
-                    .creator(phoneNumberTo, phoneNumberFrom,
-                            "You have been added to a Remindr! Would you like to receive alerts? Reply YES/NO.")
-                    .setMediaUrl(mediaURL)
-                    .setProvideFeedback(true)
-                    .create();
+                .creator(phoneNumberTo, phoneNumberFrom,
+                        "You have been added to a Remindr! Would you like to receive alerts? Reply YES/NO.")
+                .setMediaUrl(mediaURL)
+                .setProvideFeedback(true)
+                .create();
 
         return message.getSid();
 
@@ -38,15 +38,15 @@ public class TwilioService extends HttpServlet {
     public String setResponse (Body body) {
         try {
 
-        com.twilio.twiml.Message message = new com.twilio.twiml.Message
-                .Builder()
-                .body(body)
-                .build();
+            com.twilio.twiml.Message message = new com.twilio.twiml.Message
+                    .Builder()
+                    .body(body)
+                    .build();
 
-        MessagingResponse response = new MessagingResponse
-                .Builder()
-                .message(message)
-                .build();
+            MessagingResponse response = new MessagingResponse
+                    .Builder()
+                    .message(message)
+                    .build();
 
             System.out.println(response.toXml());
             return response.toXml();

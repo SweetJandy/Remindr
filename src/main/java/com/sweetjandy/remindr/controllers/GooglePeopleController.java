@@ -1,9 +1,12 @@
 package com.sweetjandy.remindr.controllers;
 
+import com.google.api.client.util.Key;
 import com.google.api.services.people.v1.PeopleService;
 import com.google.api.services.people.v1.model.ListConnectionsResponse;
 import com.google.api.services.people.v1.model.Name;
 import com.google.api.services.people.v1.model.Person;
+import com.google.api.services.people.v1.model.PhoneNumber;
+import com.sun.media.jfxmedia.logging.Logger;
 import com.sweetjandy.remindr.models.Contact;
 import com.sweetjandy.remindr.models.User;
 import com.sweetjandy.remindr.repositories.ContactsRepository;
@@ -26,6 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.lang.String;
 
 @Controller
 public class GooglePeopleController {

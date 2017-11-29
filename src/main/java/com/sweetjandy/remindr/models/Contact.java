@@ -1,6 +1,7 @@
 package com.sweetjandy.remindr.models;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -54,6 +55,14 @@ public class Contact {
         this.googleContact = googleContact;
         this.outlookContact = outlookContact;
 //        this.secretCode = secretCode;
+    }
+
+    @Autowired
+    public Contact(String firstName, String lastName, String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+//        this.googleContact = googleContact;
     }
 
     public long getId() {
@@ -110,14 +119,6 @@ public class Contact {
 //
 //    public void setSecretCode(long secretCode) {
 //        this.secretCode = secretCode;
-//    }
-
-//    public List<User> getUsers() {
-//        return users;
-//    }
-
-//    public void setUsers(List<User> users) {
-//        this.users = users;
 //    }
 
     public List<Remindr> getRemindrs() {
