@@ -41,7 +41,12 @@ public class Contact {
 //    private long secretCode;
 
 
-    @ManyToMany(cascade = ALL, mappedBy = "contacts")
+    @ManyToMany(cascade = ALL)
+    @JoinTable(
+    name = "contact_remindr",
+    joinColumns = {@JoinColumn(name = "contact_id")},
+    inverseJoinColumns = {@JoinColumn(name = "remindr_id")}
+    )
     private List<Remindr> remindrs;
 
     public Contact() {
