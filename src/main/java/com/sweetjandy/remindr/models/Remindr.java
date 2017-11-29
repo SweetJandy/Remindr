@@ -46,8 +46,11 @@ public class Remindr {
     private String location;
 
     @Column(nullable = true)
-    @Value("${file-upload-path")
+    @Value("${file-upload-path}")
     private String uploadPath;
+
+    @Column(nullable = false)
+    private String timeZone;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JsonBackReference
@@ -177,5 +180,13 @@ public class Remindr {
 
     public void setRecurrence(String recurrence) {
         this.recurrence = recurrence;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+    }
+
+    public String getTimeZone() {
+        return timeZone;
     }
 }

@@ -27,7 +27,7 @@
         <!--START DATE/TIME-->
         <div class="form-group">
             <label for="startDateTime">Event start date/ time</label>
-            <input id="startDateTime" name="startDateTime" class="form-control" type="datetime-local" th:field="*{startDateTime}" />
+            <input id="startDateTime" name="startDateTime" class="form-control" type="datetime-local" th:field="*{startDateTime}" min="2017-01-01T00:00" max="3000-01-01T00:00"/>
         </div>
         <div
             class="alert alert-danger"
@@ -38,7 +38,7 @@
         <!--END DATE/TIME-->
         <div class="form-group">
             <label for="endDateTime">Event end date/ time (optional) </label>
-            <input id="endDateTime" name="endDateTime" class="form-control" type="datetime-local" th:field="*{endDateTime}" />
+            <input id="endDateTime" name="endDateTime" class="form-control" type="datetime-local" th:field="*{endDateTime}" min="2017-01-01T00:00" max="3000-01-01T00:00"/>
         </div>
 
         <!--RECURRING EVENT INFO-->

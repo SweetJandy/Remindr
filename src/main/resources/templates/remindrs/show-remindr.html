@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
 
-        <!--<h1>Show remindr</h1>-->
+        <h1>Show remindr</h1>
 
         <h2 th:text="${remindr.title}"></h2>
         <!--<img th:src="${remindr.uploadPath}" alt="event image" />-->
@@ -29,6 +29,13 @@
         <h4>Event location</h4>
         <p th:text="${remindr.location}"></p>
 
+        <button class="btn btn-primary"  type="submit">
+            <a th:href="@{/remindrs/{id}/edit(id=${remindr.id})}" style="color:white;">Edit</a>
+        </button>
+
+        <!--</div>-->
+        <br />
+
         <h4>You have attached
             <span th:text="${numberOfAlerts}"></span>
             alerts to this remindr:
@@ -49,16 +56,11 @@
         <!--<form method="post" th:action="@{/remindrs/{id}/delete(id=${remindr.id})}">-->
             <!--<input class="btn btn-default" type="submit" value="Delete" />-->
         <!--</form>-->
-        <button class="btn btn-primary"  type="submit">
-            <a th:href="@{/remindrs/{id}/edit(id=${remindr.id})}" style="color:white;">Edit</a>
-        </button>
 
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteRemindrModal">
             Delete
         </button>
-        <!--</div>-->
-        <br />
         <button class="btn btn-primary" type="submit" >
             <a th:href="@{/remindrs}" style="color:white;">Back to remindrs</a>
         </button>
