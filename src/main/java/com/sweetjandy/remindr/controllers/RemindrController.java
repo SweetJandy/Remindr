@@ -43,7 +43,7 @@ public class RemindrController {
     @GetMapping("/remindrs/create")
     public String showCreateRemindrForm(Model model, HttpServletResponse response) {
         if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "Unauthorized";
         }
 
@@ -57,7 +57,7 @@ public class RemindrController {
     public String createRemindr(@Valid Remindr remindr, Errors validation, Model model, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
         user = usersRepository.findOne(user.getId());
@@ -85,13 +85,13 @@ public class RemindrController {
     public String showAddContactsToRemindrs(Model model, @PathVariable Long id, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
         user = usersRepository.findOne(user.getId());
 
         if(!isYourRemindr(user, id)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "You do not own this remindr.";
         }
 
@@ -108,13 +108,13 @@ public class RemindrController {
     public String addContactsToRemindrs (Model model, @PathVariable Long id, @RequestParam (name = "contacts") String[] contactIds, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
         user = usersRepository.findOne(user.getId());
 
         if(!isYourRemindr(user, id)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "You do not own this remindr.";
         }
 
@@ -141,13 +141,13 @@ public class RemindrController {
     public String showAddAlertsToRemindrs (Model model, @PathVariable Long id, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
         user = usersRepository.findOne(user.getId());
 
         if(!isYourRemindr(user, id)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "You do not own this remindr.";
         }
 
@@ -163,13 +163,13 @@ public class RemindrController {
     public String addAlertsToRemindrs (RemindrAlerts alertTimes, @PathVariable Long id, Model model, @RequestParam(name="alerts")String[] alertValues, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
         user = usersRepository.findOne(user.getId());
 
         if(!isYourRemindr(user, id)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "You do not own this remindr.";
         }
 
@@ -209,13 +209,13 @@ public class RemindrController {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
         user = usersRepository.findOne(user.getId());
 
         if(!isYourRemindr(user, id)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "You do not own this remindr.";
         }
 
@@ -233,13 +233,13 @@ public class RemindrController {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
         user = usersRepository.findOne(user.getId());
 
         if(!isYourRemindr(user, id)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "You do not own this remindr.";
         }
 
@@ -268,7 +268,7 @@ public class RemindrController {
     public String showAllRemindrs(Model model, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
 
@@ -284,12 +284,12 @@ public class RemindrController {
     public String showRemindr(@PathVariable Long id, Model model, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
 
         if(!isYourRemindr(user, id)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "You do not own this remindr.";
         }
 
@@ -349,13 +349,13 @@ public class RemindrController {
     public String editPost(Model model, @PathVariable Long id, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
         user = usersRepository.findOne(user.getId());
 
         if(!isYourRemindr(user, id)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "You do not own this remindr.";
         }
 
@@ -368,13 +368,13 @@ public class RemindrController {
     public String editPost(@Valid Remindr remindr, Errors validation, Model model, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
         user = usersRepository.findOne(user.getId());
 
         if(!isYourRemindr(user, remindr.getId())) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "You do not own this remindr.";
         }
 
@@ -396,13 +396,13 @@ public class RemindrController {
     public String deleteRemindr(@PathVariable long id, HttpServletResponse response) throws IOException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
         user = usersRepository.findOne(user.getId());
 
         if(!isYourRemindr(user, id)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "You do not own this remindr.";
         }
 
