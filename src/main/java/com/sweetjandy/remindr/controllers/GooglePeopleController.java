@@ -15,6 +15,7 @@ import com.sweetjandy.remindr.services.GooglePeopleService;
 
 import com.sweetjandy.remindr.services.GooglePeopleService;
 import org.springframework.http.HttpRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -91,7 +92,7 @@ public class GooglePeopleController {
 
     @GetMapping("/google/contacts")
     public String viewContacts(@RequestParam(name = "token") String token, Model model) throws IOException {
-        User user = usersRepository.findOne(2L);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         List<Person> people = googlePeopleSvc.contacts(token);
         List<Contact> contacts = new ArrayList<>();
@@ -102,24 +103,34 @@ public class GooglePeopleController {
             //making sure the contact doesn't already exist for the user
             if (contact == null) {
                 contact = new Contact(
-                    person.getNames().get(0).getGivenName(),
-                    person.getNames().get(0).getFamilyName(),
-                    phoneNumber
+                        person.getNames().get(0).getGivenName(),
+                        person.getNames().get(0).getFamilyName(),
+                        phoneNumber
                 );
-                //person.getResourceName();
-                contact.getUsers().add(user);
+
+//            contacts.add(new Contact(
+//                    person.getNames().get(0).getGivenName(),
+//                    person.getNames().get(0).getFamilyName(),
+//                    person.getPhoneNumbers().get(0).getValue()));
+//        }
+
+
+//                //person.getResourceName();
+// person.getResourceName() is the googlecontact id, but its a string with a few letters at the beginning.
+//                contact.getUsers().add(user);
                 contacts.add(contact);
             }
         }
-        contactsRepository.save(contacts);
-        user.getContacts().addAll(contacts);
-        usersRepository.save(user);
+                contactsRepository.save(contacts);
+                user.getContacts().addAll(contacts);
+                usersRepository.save(user);
 
-        model.addAttribute("contacts", contacts);
+                model.addAttribute("contacts", contacts);
 
 //        return "users/google-contacts";
-            return "redirect:/contacts";
-    }
+                return "redirect:/contacts";
+            }
+        }
 
 //    @GetMapping("/google/contacts")
 //    public String viewContacts(@RequestParam(name = "token") String token, Model model, List<Person> persons) throws IOException {
@@ -145,7 +156,7 @@ public class GooglePeopleController {
 //            contactsRepository.save(contact);
 //            user.getContacts().add(contact);
 //            usersRepository.save(user);
-        }
+
 //        model.addAttribute("contacts", people);
 //
 ////        return "users/google-contacts";

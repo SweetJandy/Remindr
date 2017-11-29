@@ -1,6 +1,5 @@
 package com.sweetjandy.remindr.controllers;
 
-import com.google.api.services.people.v1.model.Person;
 import com.sweetjandy.remindr.models.Contact;
 import com.sweetjandy.remindr.models.Remindr;
 import com.sweetjandy.remindr.models.User;
@@ -16,9 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.List;
 
 
 @Controller
@@ -35,16 +34,21 @@ public class ContactsController {
         this.googlePeopleService = googlePeopleService;
     }
 
+    private boolean isInContacts(User user, long contactId) {
+        return user.getContacts().stream().filter(c -> c.getId() == contactId).count() > 0;
+    }
+
     @GetMapping("/contacts/{id}")
-    public String viewIndividualContact(@PathVariable long id, Model viewModel) {
-        User user = usersRepository.findOne(2L);
+    public String viewIndividualContact(@PathVariable long id, Model viewModel, HttpServletResponse response) {
+        User user = usersRepository.findOne(1L);
 
         // use the contacts repository to find one contact by its id
         Contact contact = contactsRepository.findOne(id);
 
-        Contact usersContact = contactsRepository.findContactFor(user.getId(), contact.getId());
-        if (usersContact == null) {
-            return "redirect:/";
+        // send back Http unauthorized if not one of user's contacts (accessing directly from url)
+        if(!isInContacts(user, id)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "This contact is not in your contact list.";
         }
 
         // save the result in a variable contact
@@ -53,17 +57,12 @@ public class ContactsController {
         return "users/view-contact";
     }
 
-
-
     @GetMapping("/contacts")
     public String viewAllContacts(Model viewModel) {
-        User user = usersRepository.findOne(2L);
+        User user = usersRepository.findOne(1L);
 
-        Iterable<Contact> usersContacts = contactsRepository.getContactList(user.getId());
-                if(usersContacts == null) {
-                    return "redirect:/";
-                }
-        viewModel.addAttribute("contacts", usersContacts);
+
+        viewModel.addAttribute("contacts", user.getContacts());
         return "users/contacts";
     }
 
@@ -78,26 +77,26 @@ public class ContactsController {
     }
 
     @PostMapping("/contacts/add")
-    public String addContactForm(@Valid Contact contact, Errors validation, Model viewModel) {
+    public String addContactForm(@Valid final Contact contact, Errors validation, Model viewModel) {
 
-    //hardcoded until security measures are placed.
-        User user = usersRepository.findOne(2L);
+        //hardcoded until security measures are placed.
+        User user = usersRepository.findOne(1L);
 
+//        returns amount of contacts that are duplicated by phone number
+        long duplicates = user.getContacts().stream().filter(c -> c.getPhoneNumber().equals(contact.getPhoneNumber())).count();
 
-    Contact existingPhoneNumber = contactsRepository.findByPhoneNumber(contact.getPhoneNumber());
-        // setting to random number to avoid defaulting to 0, since field is unique
-        contact.setGoogleContact((long) (Math.random() * (double) Long.MAX_VALUE));
-        contact.setOutlookContact((long) (Math.random() * (double) Long.MAX_VALUE));
-
-        Contact existingPhoneNumberInContacts = contactsRepository.findByPhoneNumber(contact.getPhoneNumber());
-
-        if (existingPhoneNumberInContacts != null) {
+        if (duplicates > 0) {
             validation.rejectValue(
                     "phoneNumber",
                     "phoneNumber",
                     "Phone number is already in your contacts"
             );
+
         }
+
+        // setting to random number to avoid defaulting to 0, since field is unique
+        contact.setGoogleContact((long) (Math.random() * (double) Long.MAX_VALUE));
+        contact.setOutlookContact((long) (Math.random() * (double) Long.MAX_VALUE));
 
         boolean validated = PhoneService.validatePhoneNumber(contact.getPhoneNumber());
         if (!validated) {
@@ -114,9 +113,11 @@ public class ContactsController {
             return "users/add-contacts";
         }
 
-        contact = contactsRepository.save(contact);
-        contactsRepository.addContactToList(user.getId(), contact.getId());
+//        Contact contact1 = contactsRepository.save(contact);
+//        contactsRepository.addContactToList(user.getId(), contact1.getId());
 
+        user.getContacts().add(contact);
+        usersRepository.save(user);
 
         return "redirect:/contacts";
     }
@@ -131,14 +132,18 @@ public class ContactsController {
     @PostMapping("/contacts/{id}/edit")
     public String editPost(@Valid Contact contact, Errors validation, Model viewModel) {
 
-        Contact existingPhoneNumberInContacts = contactsRepository.findByPhoneNumber(contact.getPhoneNumber());
+        User user = usersRepository.findOne(1L);
 
-        if (existingPhoneNumberInContacts != null) {
+//        returns amount of contacts that are duplicated by phone number
+        long duplicates = user.getContacts().stream().filter(c -> c.getPhoneNumber().equals(contact.getPhoneNumber())).count();
+
+        if (duplicates > 0) {
             validation.rejectValue(
                     "phoneNumber",
                     "phoneNumber",
                     "Phone number is already in your contacts"
             );
+
         }
 
         boolean validated = PhoneService.validatePhoneNumber(contact.getPhoneNumber());
@@ -160,40 +165,22 @@ public class ContactsController {
         return "redirect:/contacts";
     }
 
-    @GetMapping("/contacts.json")
-    @ResponseBody
-    public Iterable<Contact> viewAllContactsInJSONFormat() {
-        return contactsRepository.findAll();
+    @RequestMapping(value = "/contacts/{id}/delete", method = RequestMethod.POST)
+    public String deleteContact(@PathVariable long id, HttpServletResponse response) throws IOException {
+
+        User user = usersRepository.findOne(1L);
+
+        if(!isInContacts(user, id)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "This contact is not in your contact list.";
+        }
+
+        user.getContacts().remove(contactsRepository.findOne(id));
+        usersRepository.save(user);
+        contactsRepository.delete(id);
+
+
+        return "redirect:/contacts";
     }
 
-    @GetMapping("/contacts/ajax")
-    public String viewAllContactsWithAjax() {
-        return "users/ajax";
-    }
 }
-
-//    @GetMapping("/google/contacts")
-//    public String  viewContacts(@RequestParam(name = "token") String token, Model model, List<Person> persons) throws IOException {
-//        List<Person> people = googlePeopleSvc.contacts(token);
-////        model.addAttribute("contacts", people);
-////        personToContacts(people);
-//        User user = usersRepository.findOne(1L);
-//
-//        for (Person person: persons) {
-//            Contact contact = new Contact();
-//
-//            //saves contact to database
-//            contact.setUser(user);
-//            contactsRepository.save(contact);
-//            user.getContacts().add(contact);
-//            usersRepository.save(user);
-//        }
-//        model.addAttribute("contacts", people);
-//
-////        return "users/google-contacts";
-//        return "redirect:/contacts";
-//    }
-
-//contact contact = new contact
-//contact.setfirstName(givenName)
-//contact

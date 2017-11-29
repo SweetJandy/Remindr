@@ -1,12 +1,10 @@
 package com.sweetjandy.remindr.models;
 
-import com.google.api.services.people.v1.model.Name;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
@@ -27,7 +25,7 @@ public class Contact {
     @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
-    @Column(nullable = false, unique = true, length = 20)
+    @Column(nullable = false, length = 20)
     @NotBlank(message = "Phone number cannot be blank")
 //    @Size(min = 13, message = "Phone number should be 13 characters long")
     private String phoneNumber;
@@ -44,21 +42,15 @@ public class Contact {
 //    private long secretCode;
 
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "contacts")
-    private List<User> users = new ArrayList<>();
+//      Previous implementation
+//    @ManyToMany(mappedBy = "contacts")
+//    private List<User> users;
 
-    @ManyToMany(cascade = ALL)
-    @JoinTable(
-            name = "contact_remindr",
-            joinColumns = {@JoinColumn(name = "contact_id")},
-            inverseJoinColumns = {@JoinColumn(name = "remindr_id")}
-    )
+    @ManyToMany(cascade = ALL, mappedBy = "contacts")
     private List<Remindr> remindrs;
 
     public Contact() {
     }
-
-
 
     public Contact(Long id, String firstName, String lastName, String phoneNumber, Long googleContact, Long outlookContact) {
         this.id = id;
@@ -70,7 +62,7 @@ public class Contact {
 //        this.secretCode = secretCode;
     }
 
-@Autowired
+    @Autowired
     public Contact(String firstName, String lastName, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -134,13 +126,13 @@ public class Contact {
 //        this.secretCode = secretCode;
 //    }
 
-    public List<User> getUsers() {
-        return users;
-    }
+//    public List<User> getUsers() {
+//        return users;
+//    }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
+//    public void setUsers(List<User> users) {
+//        this.users = users;
+//    }
 
     public List<Remindr> getRemindrs() {
         return remindrs;
@@ -149,4 +141,5 @@ public class Contact {
     public void setRemindrs(List<Remindr> remindrs) {
         this.remindrs = remindrs;
     }
+
 }

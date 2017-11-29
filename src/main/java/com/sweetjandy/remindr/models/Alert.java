@@ -1,11 +1,9 @@
 package com.sweetjandy.remindr.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import java.sql.Time;
-import java.util.Date;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="alerts")
@@ -15,20 +13,24 @@ public class Alert {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Alerts must have a time")
-    private String dateTime;
+//    @Column(nullable = false)
+//    @NotBlank(message = "Alerts must have a time")
+//    private String dateTime;
+
+    @Column(name = "alert_time", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private AlertTime alertTime;
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "remindr_id")
     private Remindr remindr;
 
     public Alert(){
     }
 
-    public Alert(String dateTime,  Remindr remindr) {
-        this.dateTime = dateTime;
+    public Alert(AlertTime alertTime, Remindr remindr) {
+        this.alertTime = alertTime;
         this.remindr = remindr;
     }
     public long getId() {
@@ -39,12 +41,12 @@ public class Alert {
         this.id = id;
     }
 
-    public String getdateTime() {
-        return dateTime;
+    public AlertTime getAlertTime() {
+        return alertTime;
     }
 
-    public void setdateTime(String dateTime) {
-        this.dateTime = dateTime;
+    public void setAlertTime(AlertTime alertTime) {
+        this.alertTime = alertTime;
     }
 
     public Remindr getRemindr() {

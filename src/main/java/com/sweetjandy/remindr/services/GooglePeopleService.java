@@ -34,15 +34,11 @@ public class GooglePeopleService {
 
     public String setUp() throws IOException {
 
-        String scope = "https://www.googleapis.com/auth/contacts";
+        String scope = "https://www.googleapis.com/auth/contacts.readonly";
 
         // Step 1: Authorize -->
         String authorizationUrl =
                 new GoogleBrowserClientRequestUrl(clientId, redirectUrl, Arrays.asList(scope)).build();
-
-        // Point or redirect your user to the authorizationUrl.
-        System.out.println("Go to the following link in your browser:");
-        System.out.println(authorizationUrl);
 
         // Read the authorization code from the standard input stream.
 //        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -85,5 +81,3 @@ public class GooglePeopleService {
         return response.getConnections();
     }
 }
-
-//    person object needs to be converted into contact repository.save

@@ -6,10 +6,14 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
+import javax.swing.*;
 import javax.validation.constraints.Size;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,48 +25,59 @@ public class Remindr {
     private long id;
 
     @Column(nullable = false, length = 100)
-    @NotBlank(message = "Remindrs must have a title")
-    @Size(min = 3, message = "The title must be at least 3 character long")
+    @NotBlank(message = "Title cannot be blank")
     private String title;
 
     @Column(nullable = true)
     private String description;
 
     @Column(nullable = false)
-    @NotBlank(message = "Remindrs must have a start date/time")
+    @NotBlank(message = "Remindr events must have a start date/time")
     private String startDateTime;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Remindrs must have a end date/time")
+    @Column(nullable = true)
     private String endDateTime;
 
+    @Column(nullable=true)
+    private String recurrence;
+
     @Column(nullable = false)
-    @NotBlank(message = "Remindrs must have a location")
+    @NotBlank(message = "Remindr events must have a location")
     private String location;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "remindr")
+    @Column(nullable = true)
+    @Value("${file-upload-path")
+    private String uploadPath;
+
+    @OneToMany(cascade = CascadeType.ALL)
     @JsonBackReference
+    @JoinColumn(name = "remindr_id")
     private List<Alert> alerts;
 
     @ManyToOne
     @JsonManagedReference
     private User user;
 
-    @ManyToMany(mappedBy = "remindrs")
-    //    @JsonIdentityInfo
-    @JsonManagedReference
+    @ManyToMany(cascade = CascadeType.ALL)@JoinTable(
+            name = "contact_remindr",
+            joinColumns = {@JoinColumn(name = "contact_id")},
+            inverseJoinColumns = {@JoinColumn(name = "remindr_id")}
+    )
     private List<Contact> contacts;
 
-
     public Remindr() {
+        alerts = new ArrayList<Alert>();
+        contacts = new ArrayList<Contact>();
+
     }
 
-    public Remindr(String title, String description, String endDateTime, String startDateTime, String location) {
+    public Remindr(String title, String description, String endDateTime, String startDateTime, String location, String uploadPath) {
         this.title = title;
         this.description = description;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.location = location;
+        this.uploadPath = uploadPath;
     }
 
     public long getId() {
@@ -132,9 +147,11 @@ public class Remindr {
     }
 
     public void setContacts(List<Contact> contacts) {
+        for (Contact contact : contacts) {
+            contact.getRemindrs().add(this);
+        }
         this.contacts = contacts;
     }
-
 
     public List<Alert> getAlerts() {
         return alerts;
@@ -144,4 +161,18 @@ public class Remindr {
         this.alerts = alerts;
     }
 
+    public String getUploadPath() {
+        return uploadPath;
+    }
+
+    public void setUploadPath(String uploadPath) {
+        this.uploadPath = uploadPath;
+    }
+    public String getRecurrence() {
+        return recurrence;
+    }
+
+    public void setRecurrence(String recurrence) {
+        this.recurrence = recurrence;
+    }
 }
