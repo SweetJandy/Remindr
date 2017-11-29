@@ -66,8 +66,10 @@ public class RemindrController {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
+
         user = usersRepository.findOne(user.getId());
 
+        usersRepository.findOne(user.getId());
         remindr.setUser(user);
 
         Contact contact = user.getContact();
@@ -82,9 +84,11 @@ public class RemindrController {
             return "/remindrs/create";
         }
 
+        // save timezone to remindr
         remindr.setTimeZone(timezoneValue);
 
         remindrsRepository.save(remindr);
+
 
         return "redirect:/remindrs/" + remindr.getId() + "/add-contacts";
     }
@@ -291,7 +295,11 @@ public class RemindrController {
 
     @GetMapping("/remindrs/{id}")
     public String showRemindr(@PathVariable Long id, Model model, HttpServletResponse response) {
+
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        user = usersRepository.findOne(user.getId());
+
         if (user.getId() == 0) {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
