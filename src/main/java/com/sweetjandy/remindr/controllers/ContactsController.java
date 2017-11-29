@@ -28,8 +28,7 @@ public class ContactsController {
     private final GooglePeopleService googlePeopleService;
 
     @Autowired
-    public ContactsController(ContactsRepository contactsRepository, UsersRepository usersRepository, GooglePeopleService googlePeopleService)
-    {
+    public ContactsController(ContactsRepository contactsRepository, UsersRepository usersRepository, GooglePeopleService googlePeopleService) {
         this.contactsRepository = contactsRepository;
         this.usersRepository = usersRepository;
         this.googlePeopleService = googlePeopleService;
@@ -49,13 +48,19 @@ public class ContactsController {
 
         user = usersRepository.findOne(user.getId());
 
-        if(!isInContacts(user, id)) {
+        if (!isInContacts(user, id)) {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "This contact is not in your contact list.";
         }
 
         // use the contacts repository to find one contact by its id
         Contact contact = contactsRepository.findOne(id);
+
+        // send back Http unauthorized if not one of user's contacts (accessing directly from url)
+        if (!isInContacts(user, id)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "This contact is not in your contact list.";
+        }
 
         // save the result in a variable contact
         viewModel.addAttribute("contact", contact); // replace null with the variable contact
@@ -113,7 +118,6 @@ public class ContactsController {
                     "phoneNumber",
                     "Phone number is already in your contacts"
             );
-
         }
 
         // setting to random number to avoid defaulting to 0, since field is unique
@@ -135,8 +139,6 @@ public class ContactsController {
             return "users/add-contacts";
         }
 
-//        Contact contact1 = contactsRepository.save(contact);
-//        contactsRepository.addContactToList(user.getId(), contact1.getId());
 
         user.getContacts().add(contact);
         usersRepository.save(user);
@@ -153,7 +155,7 @@ public class ContactsController {
         }
         user = usersRepository.findOne(user.getId());
 
-        if(!isInContacts(user, id)) {
+        if (!isInContacts(user, id)) {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "This contact is not in your contact list.";
         }
@@ -172,7 +174,7 @@ public class ContactsController {
         }
         user = usersRepository.findOne(user.getId());
 
-        if(!isInContacts(user, contact.getId())) {
+        if (!isInContacts(user, contact.getId())) {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "This contact is not in your contact list.";
         }
@@ -186,7 +188,6 @@ public class ContactsController {
                     "phoneNumber",
                     "Phone number is already in your contacts"
             );
-
         }
 
         boolean validated = PhoneService.validatePhoneNumber(contact.getPhoneNumber());
@@ -218,7 +219,7 @@ public class ContactsController {
         }
         user = usersRepository.findOne(user.getId());
 
-        if(!isInContacts(user, id)) {
+        if (!isInContacts(user, id)) {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "This contact is not in your contact list.";
         }
@@ -230,5 +231,4 @@ public class ContactsController {
 
         return "redirect:/contacts";
     }
-
 }

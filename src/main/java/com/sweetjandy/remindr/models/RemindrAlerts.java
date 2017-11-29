@@ -20,3 +20,4 @@ public class RemindrAlerts {
         this.alertTimes = alertTimes;
     }
 }
+

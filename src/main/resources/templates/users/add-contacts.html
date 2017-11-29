@@ -17,7 +17,7 @@
         <form th:action="@{/contacts/add}" th:method="post" th:object="${contact}">
             <div class="form-group">
                 <label for="firstName">First name</label>
-                <input id="firstName" name="firstName" th:field="*{firstName}" class="form-control" />
+                <input id="firstName" name="firstName" th:field="*{firstName}" class="form-control"/>
                 <div
                     class="alert alert-danger"
                     th:if="${#fields.hasErrors('firstName')}"
@@ -43,7 +43,9 @@
                 </div>
             </div>
             <!--End of first form-->
+
             <input class="btn btn-primary" type="submit" value="Submit" />
+
         </form>
 
         <a href="/contacts" class="btn btn-danger">Cancel</a>
@@ -55,6 +57,5 @@
 
 <div th:replace="/fragments/partials :: scripts"></div>
 <script src="/scripts/google.js"></script>
-<!--<script src="../../static/scripts/show-additional-contact-form.js"></script>-->
 </body>
 </html>

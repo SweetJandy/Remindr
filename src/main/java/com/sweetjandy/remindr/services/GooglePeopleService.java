@@ -40,15 +40,6 @@ public class GooglePeopleService {
         String authorizationUrl =
                 new GoogleBrowserClientRequestUrl(clientId, redirectUrl, Arrays.asList(scope)).build();
 
-        // Read the authorization code from the standard input stream.
-//        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-//        System.out.println("What is the authorization code?");
-//        String code = in.readLine();
-//        // End of Step 1 <--
-//
-//        // Step 2: Exchange -->
-//        contacts(code);
-
         return authorizationUrl;
 
     }

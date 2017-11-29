@@ -65,6 +65,7 @@ public class Remindr {
     )
     private List<Contact> contacts;
 
+
     public Remindr() {
         alerts = new ArrayList<Alert>();
         contacts = new ArrayList<Contact>();
@@ -152,6 +153,7 @@ public class Remindr {
         }
         this.contacts = contacts;
     }
+
 
     public List<Alert> getAlerts() {
         return alerts;
