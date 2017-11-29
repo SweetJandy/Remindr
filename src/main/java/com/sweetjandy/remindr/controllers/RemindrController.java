@@ -305,8 +305,6 @@ public class RemindrController {
             return "redirect:/login";
         }
 
-        user = usersRepository.findOne(user.getId());
-
         if(!isYourRemindr(user, id)) {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "You do not own this remindr.";

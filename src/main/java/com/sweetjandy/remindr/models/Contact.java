@@ -44,6 +44,9 @@ public class Contact {
     @ManyToMany(cascade = ALL, mappedBy = "contacts")
     private List<Remindr> remindrs;
 
+    @ManyToOne
+    private User user;
+
     public Contact() {
     }
 
@@ -129,4 +132,11 @@ public class Contact {
         this.remindrs = remindrs;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

@@ -136,6 +136,7 @@ public class ContactsController {
         }
 
 
+        contact.setUser(user);
         user.getContacts().add(contact);
         usersRepository.save(user);
 
