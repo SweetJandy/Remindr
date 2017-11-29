@@ -7,14 +7,19 @@ import com.sweetjandy.remindr.repositories.RemindrsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
 import com.sweetjandy.remindr.services.RemindrService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import org.springframework.validation.Validator;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +41,7 @@ public class RemindrController {
         this.alertsRepository = alertsRepository;
     }
 
+
     private boolean isYourRemindr (User user, long remindrId) {
         return user.getRemindrs().stream().filter(r -> r.getId() == remindrId).count() > 0;
     }
@@ -47,14 +53,14 @@ public class RemindrController {
             return "Unauthorized";
         }
 
-
         model.addAttribute("remindr", new Remindr());
 
         return "remindrs/create";
     }
 
     @PostMapping("/remindrs/create")
-    public String createRemindr(@Valid Remindr remindr, Errors validation, Model model, HttpServletResponse response) {
+    public String createRemindr(@Valid Remindr remindr, Errors validation, Model model, HttpServletResponse response, @RequestParam(name="timezone")String timezoneValue) {
+
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -76,6 +82,8 @@ public class RemindrController {
             return "/remindrs/create";
         }
 
+        remindr.setTimeZone(timezoneValue);
+
         remindrsRepository.save(remindr);
 
         return "redirect:/remindrs/" + remindr.getId() + "/add-contacts";
@@ -83,6 +91,7 @@ public class RemindrController {
 
     @GetMapping("/remindrs/{id}/add-contacts")
     public String showAddContactsToRemindrs(Model model, @PathVariable Long id, HttpServletResponse response) {
+
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

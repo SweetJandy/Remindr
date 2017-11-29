@@ -44,6 +44,19 @@
                 <input id="endDateTime" name="endDateTime" class="form-control" type="datetime-local" th:field="*{endDateTime}" min="2017-01-01T00:00" max="3000-01-01T00:00"/>
             </div>
 
+            <!--TIME ZONE LIST-->
+            <div class="form-group">
+                <label for="timeZone">Event Timezone</label>
+                    <select id="timeZone" name="timezone" onchange="this.form.submit();">
+                        <option timeZoneId="3" gmtAdjustment="GMT-10:00" useDaylightTime="0" value="-10">(GMT-10:00) Hawaii</option>
+                        <option timeZoneId="4" gmtAdjustment="GMT-09:00" useDaylightTime="1" value="-9">(GMT-09:00) Alaska</option>
+                        <option timeZoneId="5" gmtAdjustment="GMT-08:00" useDaylightTime="1" value="-8">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
+                        <option timeZoneId="9" gmtAdjustment="GMT-07:00" useDaylightTime="1" value="-7">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
+                        <option timeZoneId="11" gmtAdjustment="GMT-06:00" useDaylightTime="1" value="-6">(GMT-06:00) Central Time (US &amp; Canada)</option>
+                        <option timeZoneId="15" gmtAdjustment="GMT-05:00" useDaylightTime="1" value="-5">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
+                    </select>
+            </div>
+
             <!--RECURRING EVENT INFO-->
             <div id='selector' class="form-group">
                 <label for="recurrence">Recurring event (optional) </label>
