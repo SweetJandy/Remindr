@@ -59,7 +59,7 @@ public class GooglePeopleController {
 
 
         for (Person person : persons) {
-            //created own method name from previous logic by using command-shift-m
+//            //created own method name from previous logic by using command-option-m
             if (hasPhoneNumber(person) && hasName(person) && hasNonEmptyName(person)) {
 
                 final String phoneNumber = formatPhoneNumber(person.getPhoneNumbers().get(0).getValue());
