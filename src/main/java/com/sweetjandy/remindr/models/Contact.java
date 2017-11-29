@@ -1,6 +1,7 @@
 package com.sweetjandy.remindr.models;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -20,20 +21,19 @@ public class Contact {
     @NotBlank(message = "First name cannot be blank")
     private String firstName;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Last name cannot be blank")
+    @Column(nullable = true)
+//    @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
     @Column(nullable = false, length = 20)
     @NotBlank(message = "Phone number cannot be blank")
-//    @Size(min = 13, message = "Phone number should be 13 characters long")
     private String phoneNumber;
 
     @Column(nullable = true, unique = true)
-    private Long googleContact;
+    private String googleContact;
 
     @Column(nullable = true, unique = true)
-    private Long outlookContact;
+    private String outlookContact;
 
 //    @Column(nullable = false, length = 4, unique = true)
 //    @NotBlank(message = "Posts must have a description!")
@@ -41,17 +41,13 @@ public class Contact {
 //    private long secretCode;
 
 
-//      Previous implementation
-//    @ManyToMany(mappedBy = "contacts")
-//    private List<User> users;
-
     @ManyToMany(cascade = ALL, mappedBy = "contacts")
     private List<Remindr> remindrs;
 
     public Contact() {
     }
 
-    public Contact(Long id, String firstName, String lastName, String phoneNumber, Long googleContact, Long outlookContact) {
+    public Contact(Long id, String firstName, String lastName, String phoneNumber, String googleContact, String outlookContact) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -59,6 +55,14 @@ public class Contact {
         this.googleContact = googleContact;
         this.outlookContact = outlookContact;
 //        this.secretCode = secretCode;
+    }
+
+    @Autowired
+    public Contact(String firstName, String lastName, String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+//        this.googleContact = googleContact;
     }
 
     public long getId() {
@@ -93,19 +97,19 @@ public class Contact {
         this.phoneNumber = phoneNumber;
     }
 
-    public Long getGoogleContact() {
+    public String getGoogleContact() {
         return googleContact;
     }
 
-    public void setGoogleContact(Long googleContact) {
+    public void setGoogleContact(String googleContact) {
         this.googleContact = googleContact;
     }
 
-    public Long getOutlookContact() {
+    public String getOutlookContact() {
         return outlookContact;
     }
 
-    public void setOutlookContact(Long outlookContact) {
+    public void setOutlookContact(String outlookContact) {
         this.outlookContact = outlookContact;
     }
 
@@ -115,14 +119,6 @@ public class Contact {
 //
 //    public void setSecretCode(long secretCode) {
 //        this.secretCode = secretCode;
-//    }
-
-//    public List<User> getUsers() {
-//        return users;
-//    }
-
-//    public void setUsers(List<User> users) {
-//        this.users = users;
 //    }
 
     public List<Remindr> getRemindrs() {

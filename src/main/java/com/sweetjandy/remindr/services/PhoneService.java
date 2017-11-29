@@ -18,11 +18,12 @@ public class PhoneService {
 
         return phoneNumber != null && !phoneNumber.equals("") && phoneNumber.charAt(0) == '(' &&
                 phoneNumber.charAt(4) == ')' &&
-                phoneNumber.charAt(8) == '-' &&
-                phoneNumber.length() == 13 &&
+                phoneNumber.charAt(5) == ' ' &&
+                phoneNumber.charAt(9) == '-' &&
+                phoneNumber.length() == 14 &&
                 !isNaN(phoneNumber.substring(1, 4)) &&
-                !isNaN(phoneNumber.substring(5, 8)) &&
-                !isNaN(phoneNumber.substring(9, phoneNumber.length()));
+                !isNaN(phoneNumber.substring(6, 9)) &&
+                !isNaN(phoneNumber.substring(10, phoneNumber.length()));
 
     }
 }

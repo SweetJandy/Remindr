@@ -29,6 +29,7 @@ public class User {
 
     @Column(nullable = false)
     @JsonIgnore
+//    @NotBlank(message = "Password cannot be blank")
     private String password;
 
     private transient String confirmPassword;
@@ -52,6 +53,7 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "contact_id")}
     )
     private List<Contact> contacts;
+
 
     public User() {
         this.contact = new Contact();
