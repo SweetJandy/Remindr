@@ -60,6 +60,7 @@ public class RemindrController {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
+
         user = usersRepository.findOne(user.getId());
 
         remindr.setUser(user);
@@ -283,12 +284,13 @@ public class RemindrController {
     @GetMapping("/remindrs/{id}")
     public String showRemindr(@PathVariable Long id, Model model, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        user = usersRepository.findOne(user.getId());
+
         if (user.getId() == 0) {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
         }
-
-        user = usersRepository.findOne(user.getId());
 
         if(!isYourRemindr(user, id)) {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

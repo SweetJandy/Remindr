@@ -46,12 +46,7 @@ public class User {
     @JsonBackReference
     private List<Remindr> remindrs;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "users_contacts",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "contact_id")}
-    )
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Contact> contacts;
 
 
