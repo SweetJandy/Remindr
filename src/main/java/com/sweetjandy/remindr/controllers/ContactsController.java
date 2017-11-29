@@ -47,24 +47,18 @@ public class ContactsController {
         }
 
         user = usersRepository.findOne(user.getId());
-
+        // send back Http unauthorized if not one of user's contacts (accessing directly from url)
         if (!isInContacts(user, id)) {
-            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return "This contact is not in your contact list.";
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
         }
 
         // use the contacts repository to find one contact by its id
         Contact contact = contactsRepository.findOne(id);
 
-        // send back Http unauthorized if not one of user's contacts (accessing directly from url)
-        if (!isInContacts(user, id)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return "This contact is not in your contact list.";
-        }
 
         // save the result in a variable contact
         viewModel.addAttribute("contact", contact); // replace null with the variable contact
-//        viewModel.addAttribute("contact", contact);
         return "users/view-contact";
     }
 
@@ -83,8 +77,9 @@ public class ContactsController {
     }
 
     @GetMapping("/contacts/add")
-    public String showAddContactsForm(Model viewModel, HttpServletResponse response) throws IOException {
+    public String showAddContactsForm(Model viewModel, HttpServletResponse response, @RequestParam(required=false) Long from) throws IOException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         if (user.getId() == 0) {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "redirect:/login";
@@ -94,12 +89,13 @@ public class ContactsController {
         viewModel.addAttribute("authorizationUrl", authorizationUrl);
 
         viewModel.addAttribute("contact", new Contact());
+        viewModel.addAttribute("from", from);
 
         return "users/add-contacts";
     }
 
     @PostMapping("/contacts/add")
-    public String addContactForm(@Valid final Contact contact, Errors validation, Model viewModel, HttpServletResponse response) {
+    public String addContactForm(@Valid final Contact contact, Errors validation, Model viewModel, HttpServletResponse response, @RequestParam(required=false, name="from") Long from) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -142,6 +138,10 @@ public class ContactsController {
 
         user.getContacts().add(contact);
         usersRepository.save(user);
+
+        if(from != null) {
+            return "redirect:/remindrs/" + from + "/add-contacts";
+        }
 
         return "redirect:/contacts";
     }
