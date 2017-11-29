@@ -147,10 +147,10 @@ public class RemindrController {
 
         remindrsRepository.save(remindr);
 
-        return "redirect:/remindrs/" + remindr.getId() + "/add-alerts";
+        return "redirect:/remindrs/" + remindr.getId() + "/edit-alerts";
     }
 
-    @GetMapping("/remindrs/{id}/add-alerts")
+    @GetMapping("/remindrs/{id}/edit-alerts")
     public String showAddAlertsToRemindrs (Model model, @PathVariable Long id, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
@@ -166,13 +166,31 @@ public class RemindrController {
 
         RemindrAlerts remindrAlerts = new RemindrAlerts();
         remindrAlerts.setId(id);
+        Remindr remindr = remindrsRepository.findOne(id);
+        remindrAlerts.setAlertList(remindr.getAlerts());
+
+        // List of alerts to alertTimes
+        List<Alert> alerts = remindr.getAlerts();
+        List<AlertTime> alertTimes = new ArrayList<>();
+        for(Alert alert: alerts) {
+            alertTimes.add(alert.getAlertTime());
+        }
+
+        remindrAlerts.setAlertTimes("Hello");
+
+        remindrAlerts.ZERO = alertTimes.contains(AlertTime.ZERO);
+        remindrAlerts.FIFTEEN = alertTimes.contains(AlertTime.FIFTEEN);
+        remindrAlerts.THIRTY = alertTimes.contains(AlertTime.THIRTY);
+        remindrAlerts.HOUR = alertTimes.contains(AlertTime.HOUR);
+        remindrAlerts.DAY = alertTimes.contains(AlertTime.DAY);
+        remindrAlerts.WEEK = alertTimes.contains(AlertTime.WEEK);
 
         model.addAttribute("remindr", remindrAlerts);
 
-        return "/remindrs/add-alerts";
+        return "/remindrs/edit-alerts";
     }
 
-    @PostMapping("/remindrs/{id}/add-alerts")
+    @PostMapping("/remindrs/{id}/edit-alerts")
     public String addAlertsToRemindrs (RemindrAlerts alertTimes, @PathVariable Long id, Model model, @RequestParam(name="alerts")String[] alertValues, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
@@ -213,68 +231,6 @@ public class RemindrController {
         remindrsRepository.save(currentRemindr);
 
         return "redirect:/remindrs";
-    }
-
-    @GetMapping("/remindrs/{id}/edit-alerts")
-    public String showEditAlerts (Model model, @PathVariable Long id, HttpServletResponse response) {
-//        RemindrAlerts remindrAlerts = new RemindrAlerts();
-//        remindrAlerts.setId(id);
-
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user.getId() == 0) {
-            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return "redirect:/login";
-        }
-        user = usersRepository.findOne(user.getId());
-
-        if(!isYourRemindr(user, id)) {
-            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return "You do not own this remindr.";
-        }
-
-
-        Remindr remindr = remindrsRepository.findOne(id);
-
-        model.addAttribute("remindr", remindr);
-
-        return "/remindrs/edit-alerts";
-    }
-
-
-    @PostMapping("/remindrs/{id}/edit-alerts")
-    public String editAlerts(RemindrAlerts alertTimes, @PathVariable Long id, Model model, @RequestParam(name="alerts")String[] alertValues, HttpServletResponse response) {
-
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user.getId() == 0) {
-            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return "redirect:/login";
-        }
-        user = usersRepository.findOne(user.getId());
-
-        if(!isYourRemindr(user, id)) {
-            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return "You do not own this remindr.";
-        }
-
-        Remindr remindr = remindrsRepository.findOne(id);
-        remindr.getAlerts().clear();
-
-        for (String alert : alertValues) {
-            Alert newAlert = new Alert();
-            newAlert.setRemindr(remindr);
-
-            for (AlertTime alertTime : AlertTime.values()) {
-                if (alertTime.name().equalsIgnoreCase(alert)) {
-                    newAlert.setAlertTime(alertTime);
-                }
-            }
-
-            remindr.getAlerts().add(newAlert);
-        }
-
-        remindrsRepository.save(remindr);
-
-        return "redirect:/remindrs/" + remindr.getId();
     }
 
     @GetMapping("/remindrs")
