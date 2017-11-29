@@ -70,7 +70,7 @@
 
                     <div class="form-group col-md-6">
                         <label for="username">Email</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Email" th:field="*{username}" />
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Email" readonly="true" th:field="*{username}" />
 
                         <div
                             class="alert alert-danger"
@@ -82,7 +82,7 @@
 
                     <div class="form-group col-md-6">
                         <label for="phoneNumber" class="col-form-label">Cell phone number</label>
-                        <input type="text" class="form-control" id="phoneNumber" placeholder="(xxx)xxx-xxxx" th:field="*{contact.phoneNumber}" />
+                        <input type="text" class="form-control" id="phoneNumber" placeholder="(xxx) xxx-xxxx" th:field="*{contact.phoneNumber}" />
                         <div
                             class="alert alert-danger"
                             th:if="${#fields.hasErrors('contact.phoneNumber')}"

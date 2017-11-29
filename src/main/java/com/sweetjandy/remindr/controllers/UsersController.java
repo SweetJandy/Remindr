@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 
@@ -44,7 +45,6 @@ public class UsersController {
     // Errors validation has to be right after the object
     public String registerUser(@Valid User user, Errors validation, Model viewModel) {
 
-
         User existingUser = usersRepository.findByUsername(user.getUsername());
 
         if (existingUser != null) {
@@ -60,7 +60,7 @@ public class UsersController {
             validation.rejectValue(
                     "contact.phoneNumber",
                     "contact.phoneNumber",
-                    "Invalid format: (xxx)xxx-xxxx"
+                    "Invalid format: (xxx) xxx-xxxx"
             );
         }
 
@@ -90,8 +90,8 @@ public class UsersController {
         //Brandon's previous code
 //        user.setContact(contact);
 
-        user.getContact().setGoogleContact((long) (Math.random() * (double) Long.MAX_VALUE));
-        user.getContact().setOutlookContact((long) (Math.random() * (double) Long.MAX_VALUE));
+        user.getContact().setGoogleContact("" + (long) (Math.random() * (double) Long.MAX_VALUE));
+        user.getContact().setOutlookContact("" + (long) (Math.random() * (double) Long.MAX_VALUE));
 
         contactsRepository.save(user.getContact());
 
@@ -100,21 +100,32 @@ public class UsersController {
 
         user.setPassword(hashPassword);
         usersRepository.save(user);
-        return "redirect:profile";
+        return "redirect:/profile";
     }
 
 
     @GetMapping("/profile")
-    public String profile(Model model) {
+    public String profile(Model model, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getId() == 0) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
+        }
+
+        user = usersRepository.findOne(user.getId());
 
         model.addAttribute("user", user);
         return "users/profile";
     }
 
     @GetMapping("/profile/edit")
-    public String showEditProfile(Model model) {
+    public String showEditProfile(Model model, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getId() == 0) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
+        }
+        user = usersRepository.findOne(user.getId());
 
         model.addAttribute("user", user);
 
@@ -122,19 +133,22 @@ public class UsersController {
     }
 
     @PostMapping("/profile/edit")
-    public String editProfile (@Valid User user, Errors validation, Model viewModel) {
+    public String editProfile (@Valid User user, Errors validation, Model viewModel, HttpServletResponse response) {
 
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (currentUser.getId() == 0) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
+        }
 
         boolean validated = PhoneService.validatePhoneNumber(user.getContact().getPhoneNumber());
         if (!validated) {
             validation.rejectValue(
                     "contact.phoneNumber",
                     "contact.phoneNumber",
-                    "Invalid format: (xxx)xxx-xxxx"
+                    "Invalid format: (xxx) xxx-xxxx"
             );
         }
-
 
 //        PASSWORD VALIDATION
 //        If current password field is not empty

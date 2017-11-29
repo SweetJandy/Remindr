@@ -64,7 +64,7 @@
 
                     <div class="form-group col-md-6">
                         <label for="phoneNumber" class="col-form-label">Cell phone number</label>
-                        <input type="text" class="form-control" id="phoneNumber" placeholder="(xxx)xxx-xxxx" th:field="*{phoneNumber}" />
+                        <input type="text" class="form-control" id="phoneNumber" placeholder="(xxx) xxx-xxxx" th:field="*{phoneNumber}" />
                         <div
                         class="alert alert-danger"
                         th:if="${#fields.hasErrors('phoneNumber')}"

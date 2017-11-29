@@ -40,10 +40,6 @@ public class GooglePeopleService {
         String authorizationUrl =
                 new GoogleBrowserClientRequestUrl(clientId, redirectUrl, Arrays.asList(scope)).build();
 
-        // Point or redirect your user to the authorizationUrl.
-        System.out.println("Go to the following link in your browser:");
-        System.out.println(authorizationUrl);
-
         // Read the authorization code from the standard input stream.
 //        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 //        System.out.println("What is the authorization code?");
@@ -80,7 +76,7 @@ public class GooglePeopleService {
 
         // show all contacts
         ListConnectionsResponse response = peopleService.people().connections().list("people/me")
-                .setPersonFields("names,emailAddresses")
+                .setPersonFields("names,phoneNumbers,emailAddresses")
                 .execute();
         return response.getConnections();
     }

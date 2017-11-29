@@ -7,6 +7,7 @@ import com.sweetjandy.remindr.repositories.RemindrsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
 import com.sweetjandy.remindr.services.RemindrService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -40,17 +41,27 @@ public class RemindrController {
     }
 
     @GetMapping("/remindrs/create")
-    public String showCreateRemindrForm(Model model) {
+    public String showCreateRemindrForm(Model model, HttpServletResponse response) {
+        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "Unauthorized";
+        }
+
+
         model.addAttribute("remindr", new Remindr());
 
         return "remindrs/create";
     }
 
     @PostMapping("/remindrs/create")
-    public String createRemindr(@Valid Remindr remindr, Errors validation, Model model) {
+    public String createRemindr(@Valid Remindr remindr, Errors validation, Model model, HttpServletResponse response) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getId() == 0) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
+        }
+        user = usersRepository.findOne(user.getId());
 
-
-        User user = usersRepository.findOne(1L);
         remindr.setUser(user);
 
         Contact contact = user.getContact();
@@ -71,9 +82,19 @@ public class RemindrController {
     }
 
     @GetMapping("/remindrs/{id}/add-contacts")
-    public String showAddContactsToRemindrs(Model model, @PathVariable Long id) {
+    public String showAddContactsToRemindrs(Model model, @PathVariable Long id, HttpServletResponse response) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getId() == 0) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
+        }
+        user = usersRepository.findOne(user.getId());
 
-        User user = usersRepository.findOne(1L);
+        if(!isYourRemindr(user, id)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "You do not own this remindr.";
+        }
+
         Remindr remindr = remindrsRepository.findOne(id);
 
         List<Contact> contacts = user.getContacts();
@@ -84,7 +105,19 @@ public class RemindrController {
     }
 
     @PostMapping("/remindrs/{id}/add-contacts")
-    public String addContactsToRemindrs (Model model, @PathVariable Long id, @RequestParam (name = "contacts") String[] contactIds) {
+    public String addContactsToRemindrs (Model model, @PathVariable Long id, @RequestParam (name = "contacts") String[] contactIds, HttpServletResponse response) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getId() == 0) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
+        }
+        user = usersRepository.findOne(user.getId());
+
+        if(!isYourRemindr(user, id)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "You do not own this remindr.";
+        }
+
         Remindr remindr = remindrsRepository.findOne(id);
         List<Long> list = new ArrayList<Long>();
 
@@ -105,7 +138,19 @@ public class RemindrController {
     }
 
     @GetMapping("/remindrs/{id}/add-alerts")
-    public String showAddAlertsToRemindrs (Model model, @PathVariable Long id) {
+    public String showAddAlertsToRemindrs (Model model, @PathVariable Long id, HttpServletResponse response) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getId() == 0) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
+        }
+        user = usersRepository.findOne(user.getId());
+
+        if(!isYourRemindr(user, id)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "You do not own this remindr.";
+        }
+
         RemindrAlerts remindrAlerts = new RemindrAlerts();
         remindrAlerts.setId(id);
 
@@ -115,7 +160,18 @@ public class RemindrController {
     }
 
     @PostMapping("/remindrs/{id}/add-alerts")
-    public String addAlertsToRemindrs (RemindrAlerts alertTimes, @PathVariable Long id, Model model, @RequestParam(name="alerts")String[] alertValues) {
+    public String addAlertsToRemindrs (RemindrAlerts alertTimes, @PathVariable Long id, Model model, @RequestParam(name="alerts")String[] alertValues, HttpServletResponse response) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getId() == 0) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
+        }
+        user = usersRepository.findOne(user.getId());
+
+        if(!isYourRemindr(user, id)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "You do not own this remindr.";
+        }
 
         List<Alert> currentAlerts = alertsRepository.findForRemindr(id);
         for (Alert alert : currentAlerts) {
@@ -147,11 +203,25 @@ public class RemindrController {
     }
 
     @GetMapping("/remindrs/{id}/edit-alerts")
-    public String showEditAlerts (Model model, @PathVariable Long id) {
+    public String showEditAlerts (Model model, @PathVariable Long id, HttpServletResponse response) {
 //        RemindrAlerts remindrAlerts = new RemindrAlerts();
 //        remindrAlerts.setId(id);
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getId() == 0) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
+        }
+        user = usersRepository.findOne(user.getId());
+
+        if(!isYourRemindr(user, id)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "You do not own this remindr.";
+        }
+
+
         Remindr remindr = remindrsRepository.findOne(id);
-//
+
         model.addAttribute("remindr", remindr);
 
         return "/remindrs/edit-alerts";
@@ -159,7 +229,19 @@ public class RemindrController {
 
 
     @PostMapping("/remindrs/{id}/edit-alerts")
-    public String editAlerts(RemindrAlerts alertTimes, @PathVariable Long id, Model model, @RequestParam(name="alerts")String[] alertValues) {
+    public String editAlerts(RemindrAlerts alertTimes, @PathVariable Long id, Model model, @RequestParam(name="alerts")String[] alertValues, HttpServletResponse response) {
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getId() == 0) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
+        }
+        user = usersRepository.findOne(user.getId());
+
+        if(!isYourRemindr(user, id)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "You do not own this remindr.";
+        }
 
         Remindr remindr = remindrsRepository.findOne(id);
         remindr.getAlerts().clear();
@@ -183,17 +265,35 @@ public class RemindrController {
     }
 
     @GetMapping("/remindrs")
-    public String showAllRemindrs(Model model) {
-        Iterable<Remindr> remindrs = remindrsRepository.findAll();
+    public String showAllRemindrs(Model model, HttpServletResponse response) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getId() == 0) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
+        }
+
+        user = usersRepository.findOne(user.getId());
+
+        Iterable<Remindr> remindrs = user.getRemindrs();
         model.addAttribute("remindrs", remindrs);
 
         return "/remindrs/show-all-remindrs";
     }
 
     @GetMapping("/remindrs/{id}")
-    public String showRemindr(@PathVariable Long id, Model model) {
-        Remindr remindr = remindrsRepository.findOne(id);
+    public String showRemindr(@PathVariable Long id, Model model, HttpServletResponse response) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getId() == 0) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
+        }
 
+        if(!isYourRemindr(user, id)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "You do not own this remindr.";
+        }
+
+        Remindr remindr = remindrsRepository.findOne(id);
 
         // parse into correct format for displaying in the view
         String startDate = remindrService.getFinalDate(remindr.getStartDateTime());
@@ -246,15 +346,38 @@ public class RemindrController {
     }
 
     @GetMapping("/remindrs/{id}/edit")
-    public String editPost(Model model, @PathVariable Long id) {
+    public String editPost(Model model, @PathVariable Long id, HttpServletResponse response) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getId() == 0) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
+        }
+        user = usersRepository.findOne(user.getId());
+
+        if(!isYourRemindr(user, id)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "You do not own this remindr.";
+        }
+
         model.addAttribute("remindr", remindrsRepository.findOne(id));
 
         return "remindrs/edit";
     }
 
     @PostMapping("/remindrs/{id}/edit")
-    public String editPost(@Valid Remindr remindr, Errors validation, Model model) {
-        User user = usersRepository.findOne(2L);
+    public String editPost(@Valid Remindr remindr, Errors validation, Model model, HttpServletResponse response) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getId() == 0) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
+        }
+        user = usersRepository.findOne(user.getId());
+
+        if(!isYourRemindr(user, remindr.getId())) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "You do not own this remindr.";
+        }
+
         remindr.setUser(user);
 
         if (validation.hasErrors()) {
@@ -271,16 +394,23 @@ public class RemindrController {
 
     @RequestMapping(value = "/remindrs/{id}/delete", method = RequestMethod.POST)
     public String deleteRemindr(@PathVariable long id, HttpServletResponse response) throws IOException {
-        Remindr remindr = remindrsRepository.findOne(id);
-//        User user = usersRepository.findOne(2L);
-//
-//        if(!isYourRemindr(user, id)) {
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//            return "You do not own this remindr.";
-//        }
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getId() == 0) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
+        }
+        user = usersRepository.findOne(user.getId());
 
-//        user.getRemindrs().remove(remindrsRepository.findOne(id));
-//        usersRepository.save(user);
+        if(!isYourRemindr(user, id)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "You do not own this remindr.";
+        }
+
+        Remindr remindr = remindrsRepository.findOne(id);
+
+        user.getRemindrs().remove(remindrsRepository.findOne(id));
+        usersRepository.save(user);
+
         remindrsRepository.delete(id);
 
         return "redirect:/remindrs";

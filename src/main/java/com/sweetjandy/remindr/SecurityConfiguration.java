@@ -42,7 +42,7 @@ public class SecurityConfiguration
                 .logoutSuccessUrl("/login?logout") // append a query string value
                 .and()
                 .authorizeRequests()
-                .antMatchers("/contacts", "/contacts/{id}", "/contacts/add", "/contacts/{id}/edit", "/google/contacts", "/profile", "/profile/edit", "/remindrs", "/remindrs/{id}", "/remindrs/create", "/remindrs/{id}/edit", "/remindrs/{id}/confirm-delete", "/remindrs/{id}/delete") // only authenticated users can look at their contacts, add contacts, edit contacts, retrieve their google contacts, look at their profile, edit their profile, see their reminders, edit a reminder, and delete a reminder.
+                .antMatchers("/contacts", "/contacts/{id}", "/contacts/add", "/contacts/{id}/edit", "/confirm", "/google/contacts", "/profile", "/profile/edit", "/remindrs", "/remindrs/{id}", "/remindrs/create", "/remindrs/{id}/edit", "/remindrs/{id}/confirm-delete", "/remindrs/{id}/delete") // only authenticated users can look at their contacts, add contacts, edit contacts, retrieve their google contacts, look at their profile, edit their profile, see their reminders, edit a reminder, and delete a reminder.
                 .authenticated()
         ;
     }
