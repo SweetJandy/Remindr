@@ -58,10 +58,11 @@ public class Remindr {
     @JsonManagedReference
     private User user;
 
-    @ManyToMany(cascade = CascadeType.ALL)@JoinTable(
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
             name = "contact_remindr",
-            joinColumns = {@JoinColumn(name = "contact_id")},
-            inverseJoinColumns = {@JoinColumn(name = "remindr_id")}
+            joinColumns = {@JoinColumn(name = "remindr_id")},
+            inverseJoinColumns = {@JoinColumn(name = "contact_id")}
     )
     private List<Contact> contacts;
 
