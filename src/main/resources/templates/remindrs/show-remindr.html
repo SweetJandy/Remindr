@@ -14,13 +14,23 @@
         <h4>Event description</h4>
         <p th:text="${remindr.description}"></p>
 
-        <h4>Event start date/ time</h4>
-        <p th:text="${startdate}"></p>
-        <p th:text="${starttime}"></p>
+        <!--START DATE AND TIME-->
+        <div th:if="${startdate} != null">
+            <h4>Event start date/ time</h4>
+            <p th:text="${startdate}"></p>
+        </div>
+        <div th:if="${starttime} != null">
+            <p th:text="${starttime}"></p>
+        </div>
 
+        <!--END DATE AND TIME-->
+        <div th:if="${enddate} != null">
         <h4>Event end date/ time</h4>
-        <p th:text="${enddate}"></p>
-        <p th:text="${endtime}"></p>
+            <p th:text="${enddate}"></p>
+        </div>
+        <div th:if="${endtime} != null">
+            <p th:text="${endtime}"></p>
+        </div>
 
         <!--in cron job format-->
         <h4>Recurring date/ time</h4>
@@ -30,15 +40,16 @@
         <p th:text="${remindr.location}"></p>
 
         <button class="btn btn-primary"  type="submit">
-            <a th:href="@{/remindrs/{id}/edit(id=${remindr.id})}" style="color:white;">Edit</a>
+            <a th:href="@{/remindrs/{id}/edit(id=${remindr.id})}" style="color:white;">Edit event details</a>
         </button>
 
         <!--</div>-->
         <br />
 
+        <!--ALERTS-->
         <h4>You have attached
             <span th:text="${numberOfAlerts}"></span>
-            alerts to this remindr:
+            alert(s) to this remindr:
         </h4>
         <ul th:each="alert : ${alerts}">
             <li th:text = "${alert}">
@@ -47,6 +58,19 @@
         <button class="btn btn-primary" type="submit">
             <a th:href="@{/remindrs/{id}/edit-alerts(id=${remindr.id})}" style="color:white;">Edit your alerts</a>
         </button>
+
+        <!--CONTACTS-->
+        <h4> You have attached
+            <span th:text="${contactSize}"></span>
+            contact(s) to this remindr:
+        </h4>
+        <ul th:each="contact : ${contacts}">
+            <li th:text = "${contact.firstName + ' ' + contact.lastName}"></li>
+        </ul>
+        <button class="btn btn-primary" type="submit">
+            <a th:href="@{/remindrs/{id}/edit-contacts(id=${remindr.id})}" style="color:white;">Edit your contacts</a>
+        </button>
+
 
         <h4>Created by:
             <span th:text="${remindr.user.contact.FirstName + ' ' + remindr.user.contact.LastName}"></span>
