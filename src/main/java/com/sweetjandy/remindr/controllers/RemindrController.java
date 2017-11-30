@@ -6,6 +6,7 @@ import com.sweetjandy.remindr.repositories.ContactsRepository;
 import com.sweetjandy.remindr.repositories.RemindrsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
 import com.sweetjandy.remindr.services.RemindrService;
+import com.sweetjandy.remindr.services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.validation.Validator;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,16 +33,19 @@ public class RemindrController {
     private UsersRepository usersRepository;
     private ContactsRepository contactsRepository;
     private AlertsRepository alertsRepository;
-    private RemindrService remindrService = new RemindrService();
+    private RemindrService remindrService;
+//            = new RemindrService();
+    private ScheduleService scheduleService;
 
     @Autowired
-    public RemindrController(RemindrsRepository remindrsRepository, UsersRepository usersRepository, ContactsRepository contactsRepository, AlertsRepository alertsRepository) {
+    public RemindrController(RemindrsRepository remindrsRepository, UsersRepository usersRepository, ContactsRepository contactsRepository, AlertsRepository alertsRepository, ScheduleService scheduleService, RemindrService remindrService) {
         this.contactsRepository = contactsRepository;
         this.remindrsRepository = remindrsRepository;
         this.usersRepository = usersRepository;
         this.alertsRepository = alertsRepository;
+        this.scheduleService = scheduleService;
+        this.remindrService = remindrService;
     }
-
 
     private boolean isYourRemindr (User user, long remindrId) {
         return user.getRemindrs().stream().filter(r -> r.getId() == remindrId).count() > 0;
@@ -69,7 +74,6 @@ public class RemindrController {
 
         user = usersRepository.findOne(user.getId());
 
-        usersRepository.findOne(user.getId());
         remindr.setUser(user);
 
         Contact contact = user.getContact();
@@ -229,6 +233,12 @@ public class RemindrController {
         }
 
         remindrsRepository.save(currentRemindr);
+        currentRemindr = remindrsRepository.findLastInserted();
+        for (Alert alert : currentRemindr.getAlerts()) {
+            scheduleService.schedule(alert);
+        }
+
+
 
         return "redirect:/remindrs";
     }
@@ -268,12 +278,6 @@ public class RemindrController {
 
         Remindr remindr = remindrsRepository.findOne(id);
 
-        // parse into correct format for displaying in the view
-        String startDate = remindrService.getFinalDate(remindr.getStartDateTime());
-        String endDate = remindrService.getFinalDate(remindr.getEndDateTime());
-        String startTime = remindrService.getTime(remindr.getStartDateTime());
-        String endTime = remindrService.getTime(remindr.getEndDateTime());
-
         model.addAttribute("remindr", remindr);
         model.addAttribute("remindrId", id);
 
@@ -308,10 +312,6 @@ public class RemindrController {
         }
 
         // pass into view
-        model.addAttribute("startdate", startDate);
-        model.addAttribute("enddate", endDate);
-        model.addAttribute("starttime", startTime);
-        model.addAttribute("endtime", endTime);
         model.addAttribute("numberOfAlerts", numberOfAlerts);
         model.addAttribute("alerts", alertsToView);
 

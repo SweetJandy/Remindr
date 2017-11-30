@@ -15,12 +15,10 @@
         <p th:text="${remindr.description}"></p>
 
         <h4>Event start date/ time</h4>
-        <p th:text="${startdate}"></p>
-        <p th:text="${starttime}"></p>
+        <p th:text="${remindr.startDateTime}"></p>
 
         <h4>Event end date/ time</h4>
-        <p th:text="${enddate}"></p>
-        <p th:text="${endtime}"></p>
+        <p th:text="${remindr.endDateTime}"></p>
 
         <!--in cron job format-->
         <h4>Recurring date/ time</h4>

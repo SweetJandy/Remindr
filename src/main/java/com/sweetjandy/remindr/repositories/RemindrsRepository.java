@@ -16,4 +16,7 @@ public interface RemindrsRepository extends CrudRepository<Remindr, Long>{
 
     @Query(value = "SELECT * from remindrs WHERE user_id = ?1", nativeQuery = true)
     List<Remindr> findForUser(long id);
+
+    @Query(value = "select * from remindrs order by id desc limit 1", nativeQuery = true)
+    Remindr findLastInserted();
 }
