@@ -271,6 +271,8 @@ public class RemindrController {
         // parse into correct format for displaying in the view
         String startDate = remindrService.getFinalDate(remindr.getStartDateTime());
         String endDate = remindrService.getFinalDate(remindr.getEndDateTime());
+
+
         String startTime = remindrService.getTime(remindr.getStartDateTime());
         String endTime = remindrService.getTime(remindr.getEndDateTime());
 
