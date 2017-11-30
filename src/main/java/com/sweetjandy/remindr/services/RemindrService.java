@@ -1,26 +1,44 @@
 package com.sweetjandy.remindr.services;
 
+import com.google.common.base.Strings;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RemindrService {
-    public String getYear (String dateTime) { return dateTime.substring(0, 4);
+    private String getYear (String dateTime) {
+        if (!Strings.isNullOrEmpty(dateTime)) {
+            return dateTime.substring(0, 4);
+        }
+
+        return null;
     }
 
-    public String getMonth (String dateTime) {
-        return dateTime.substring(5, 7);
+    private String getMonth (String dateTime) {
+        if (!Strings.isNullOrEmpty(dateTime)) {
+            return dateTime.substring(5, 7);
+        }
+
+        return null;
     }
 
-    public String getDate (String dateTime) {
-        return dateTime.substring(8, 10);
+    private String getDate (String dateTime) {
+        if (!Strings.isNullOrEmpty(dateTime)) {
+            return dateTime.substring(8, 10);
+        }
+
+        return null;
     }
 
     public String getTime (String dateTime) {
-        String twelveHour = convertTo12HrTime(dateTime.substring(11));
-        return twelveHour;
+        if (!Strings.isNullOrEmpty(dateTime)) {
+            return convertTo12HrTime(dateTime.substring(11));
+
+        }
+
+        return null;
     }
 
-    public String convertTo12HrTime (String time) {
+    private String convertTo12HrTime (String time) {
         int indexOfhalf = time.indexOf(":");
 
         String hour = time.substring(0, indexOfhalf);
@@ -57,11 +75,16 @@ public class RemindrService {
 
     public String getFinalDate (String dateTime) {
 
-        String year = getYear(dateTime);
-        String month = getMonth(dateTime);
-        String date = getDate(dateTime);
+        if (!Strings.isNullOrEmpty(dateTime)) {
 
-        return month + '/' + date + '/' + year;
+            String year = getYear(dateTime);
+            String month = getMonth(dateTime);
+            String date = getDate(dateTime);
+
+            return month + '/' + date + '/' + year;
+        }
+
+        return null;
     }
 
 }

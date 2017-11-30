@@ -38,15 +38,15 @@
                 th:errors="*{startDateTime}" >
             </div>
 
-            <!--END DATE/TIME-->
-            <div class="form-group">
-                <label for="endDateTime" style="display:none;" id="enddate-label">Event end date/ time (optional)</label>
-                <input id="endDateTime" name="endDateTime" class="form-control" style="display:none;" type="datetime-local" th:field="*{endDateTime}" min="2017-01-01T00:00" max="3000-01-01T00:00"/>
-            </div>
-
             <!--Click this to toggle optional enddate form-->
             <label for="optional-enddate">Set an end date</label>
             <input id="optional-enddate" type="checkbox" />
+
+            <!--END DATE/TIME-->
+            <!--<div class="form-group">-->
+                <!--<label for="endDateTime" style="display:none;" id="enddate-label">Event end date/ time (optional)</label>-->
+                <input id="endDateTime" name="endDateTime" class="form-control" style="display:none;" type="datetime-local" th:field="*{endDateTime}" min="2017-01-01T00:00" max="3000-01-01T00:00"/>
+            <!--</div>-->
 
             <br />
 
@@ -64,7 +64,7 @@
             <!--TIME ZONE LIST-->
             <div class="form-group">
                 <label for="timeZone">Event Timezone</label>
-                    <select id="timeZone" name="timezone" onchange="this.form.submit();">
+                    <select id="timeZone" name="timezone">
                         <option timeZoneId="3" gmtAdjustment="GMT-10:00" useDaylightTime="0" value="-10">(GMT-10:00) Hawaii</option>
                         <option timeZoneId="4" gmtAdjustment="GMT-09:00" useDaylightTime="1" value="-9">(GMT-09:00) Alaska</option>
                         <option timeZoneId="5" gmtAdjustment="GMT-08:00" useDaylightTime="1" value="-8">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
@@ -120,7 +120,9 @@
                 console.log("It's checked!");
 
                 $("#endDateTime").show();
-                $("#enddate-label").show();
+//                $("#enddate-label").show();
+//                $("#enddate-label").attr("style","display:block;");
+
             } else {
                 console.log("It's not checked!");
                 $("#endDateTime").hide();
