@@ -182,6 +182,7 @@ public class ContactsController {
 
 //        returns amount of contacts that are duplicated by phone number
         long duplicates = user.getContacts().stream().filter(c -> c.getPhoneNumber().equals(contact.getPhoneNumber())).count();
+//        Contact sameContact = contactsRepository.findOne(contact.getId() =
 
         if (duplicates > 0) {
             validation.rejectValue(
