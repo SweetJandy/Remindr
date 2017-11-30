@@ -4,20 +4,36 @@
 </head>
 <body>
 
-
 <div th:fragment="deleteContactModalScript">
-    <script th:inline="javascript">
+	<script th:inline="javascript">
         function confirmDeleteContact() {
             var contactId=[[${contact.id}]];
+
+            //set variable equal to the content inside specified meta tag containing token information.
+            var token = $("meta[name='_csrf']").attr("content");
+            console.log('Contact Id is: ' + contactId);
+            console.log('CSRF Token is: ' + $('#csrf').val());
+
+            //Before ajax request happens, sets X-CSRF-TOKEN value (which the browser uses for session), equal to the token variable.
+            $.ajaxSetup({
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            });
+
             $.ajax({
                 url: '/contacts/' + contactId + '/delete',
                 type: 'POST',
                 success: function(result) {
                     location.href="/contacts";
+                    console.log('location.href: ' + location.href);
                 },
-                error: function(result){}
+                error: function(result){
+                    console.log('data: ' + data);
+                    console.log(result);
+                }
             });	}
-    </script>
+	</script>
 </div>
 </body>
 </html>
