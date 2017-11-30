@@ -77,6 +77,9 @@ public class RemindrController {
 
         model.addAttribute("contact", contact);
 
+        // Time Validation
+        remindr.getEndDateTime();
+
 
         if (validation.hasErrors()) {
             model.addAttribute("errors", validation);
@@ -120,7 +123,7 @@ public class RemindrController {
     }
 
     @PostMapping("/remindrs/{id}/add-contacts")
-    public String addContactsToRemindrs (Model model, @PathVariable Long id, @RequestParam (name = "contacts") String[] contactIds, HttpServletResponse response) {
+    public String addContactsToRemindrs (Model model, @PathVariable Long id, @RequestParam (name = "contacts") String[] contactIds) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -248,12 +251,17 @@ public class RemindrController {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "You do not own this remindr.";
         }
+        Remindr currentRemindr = remindrsRepository.findOne(id);
 
-        return "/remindr/edit-contacts";
+        List<Contact> contacts = user.getContacts();
+        model.addAttribute("contacts", contacts);
+        model.addAttribute("remindr", currentRemindr);
+
+        return "/remindrs/edit-contacts";
     }
 
     @PostMapping("/remindrs/{id}/edit-contacts")
-    public String postEditContacts(@PathVariable Long id) {
+    public String postEditContacts(@PathVariable Long id, Model model, @RequestParam (name = "contacts") String[] contactIds) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (user.getId() == 0) {
@@ -263,7 +271,33 @@ public class RemindrController {
 
         user = usersRepository.findOne(user.getId());
 
+        if(!isYourRemindr(user, id)) {
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "You do not own this remindr.";
+        }
+
         Remindr currentRemindr = remindrsRepository.findOne(id);
+        model.addAttribute("remindr", currentRemindr);
+
+
+        // clear all contacts from this remindr
+        currentRemindr.getContacts().clear();
+
+        List<Long> list = new ArrayList<Long>();
+
+        for (String contactId: contactIds) {
+            if (contactId.equals("")) {
+                continue;
+            }
+            list.add(Long.parseLong(contactId));
+        }
+
+        List<Contact> contacts = contactsRepository.findByIdIn(list);
+
+        currentRemindr.setContacts(contacts);
+        remindrsRepository.save(currentRemindr);
+
+        model.addAttribute("remindr", currentRemindr);
 
         return "redirect:/remindrs/" + currentRemindr.getId();
     }

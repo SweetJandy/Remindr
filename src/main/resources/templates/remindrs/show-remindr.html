@@ -65,7 +65,7 @@
             contact(s) to this remindr:
         </h4>
         <ul th:each="contact : ${contacts}">
-            <li th:text = "${contact.firstName + contact.lastName}"></li>
+            <li th:text = "${contact.firstName + ' ' + contact.lastName}"></li>
         </ul>
         <button class="btn btn-primary" type="submit">
             <a th:href="@{/remindrs/{id}/edit-contacts(id=${remindr.id})}" style="color:white;">Edit your contacts</a>
