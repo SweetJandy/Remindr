@@ -7,16 +7,16 @@
 
 <div th:fragment="deleteContactModalScript">
     <script th:inline="javascript">
-    function confirmDeleteContact() {
-        var contactId=[[${contact.id}]];
-        $.ajax({
-            url: '/contacts/' + contactId + '/delete',
-            type: 'POST',
-            success: function(result) {
-                location.href="/contacts";
-            },
-            error: function(result){}
-        });	}
+        function confirmDeleteContact() {
+            var contactId=[[${contact.id}]];
+            $.ajax({
+                url: '/contacts/' + contactId + '/delete',
+                type: 'POST',
+                success: function(result) {
+                    location.href="/contacts";
+                },
+                error: function(result){}
+            });	}
     </script>
 </div>
 </body>
