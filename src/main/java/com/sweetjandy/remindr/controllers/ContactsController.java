@@ -148,7 +148,7 @@ public class ContactsController {
     }
 
     @GetMapping("/contacts/{id}/edit")
-    public String editPost(Model model, @PathVariable Long id, HttpServletResponse response) {
+    public String editContact(Model model, @PathVariable Long id, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -167,12 +167,8 @@ public class ContactsController {
     }
 
     @PostMapping("/contacts/{id}/edit")
-    public String editPost(@Valid Contact contact, Errors validation, Model viewModel, HttpServletResponse response) {
+    public String editContact(@Valid Contact contact, Errors validation, Model viewModel, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user.getId() == 0) {
-            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return "redirect:/login";
-        }
         user = usersRepository.findOne(user.getId());
 
         if (!isInContacts(user, contact.getId())) {
@@ -181,10 +177,10 @@ public class ContactsController {
         }
 
 //        returns amount of contacts that are duplicated by phone number
-        long duplicates = user.getContacts().stream().filter(c -> c.getPhoneNumber().equals(contact.getPhoneNumber())).count();
-//        Contact sameContact = contactsRepository.findOne(contact.getId() =
+        Contact sameContact = contactsRepository.findOne(contact.getId());
 
-        if (duplicates > 0) {
+
+        if (!sameContact.stillHasSameNumber(contact) && isDuplicated(contact, user)) {
             validation.rejectValue(
                     "phoneNumber",
                     "phoneNumber",
@@ -210,6 +206,10 @@ public class ContactsController {
         contactsRepository.save(contact);
 
         return "redirect:/contacts";
+    }
+
+    private boolean isDuplicated(@Valid Contact contact, User user) {
+        return user.getContacts().stream().filter(c -> c.getPhoneNumber().equals(contact.getPhoneNumber())).count() > 0;
     }
 
     @RequestMapping(value = "/contacts/{id}/delete", method = RequestMethod.POST)

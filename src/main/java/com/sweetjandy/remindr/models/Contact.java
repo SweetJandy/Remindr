@@ -139,4 +139,8 @@ public class Contact {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public boolean stillHasSameNumber(Contact myself) {
+        return phoneNumber.equals(myself.phoneNumber);
+    }
 }
