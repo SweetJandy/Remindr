@@ -54,21 +54,19 @@ public class ScheduleService {
         } catch (SchedulerException se) {
             System.out.println("Unable to start scheduler service");
         }
-//        AppSetup appSetup = new AppSetup();
-//        EntityManagerFactory factory = appSetup.getEntityManagerFactory();
-//        this.service = new AppointmentService(factory.createEntityManager());
-
-//        Iterable<Alert> allAlerts = alertsRepository.findAll();
-//        for(Alert alert : allAlerts) {
-//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-//            Date date1 = simpleDateFormat.parse(alert.getRemindr().getStartDateTime());
-//            if(date1.after(new Date())){
-//                schedule(alert);
-//            }
-//
-//        }
 
         this.appointmentUtility = appointmentUtility;
+
+        Iterable<Alert> allAlerts = alertsRepository.findAll();
+        for(Alert alert : allAlerts) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            Date date1 = simpleDateFormat.parse(alert.getRemindr().getStartDateTime());
+            if(date1.after(new Date())){
+                schedule(alert);
+            }
+
+        }
+
 
     }
 
