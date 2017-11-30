@@ -205,6 +205,7 @@ public class ContactsController {
             viewModel.addAttribute("contact", contact);
             return "users/edit-contact";
         }
+        contact.setUser(user);
         contactsRepository.save(contact);
 
         return "redirect:/contacts";
