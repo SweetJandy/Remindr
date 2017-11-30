@@ -103,10 +103,20 @@ public class UsersController {
 
         user.setPassword(hashPassword);
         usersRepository.save(newUser);
+        authenticate(newUser);
         return "redirect:/profile";
     }
 
-
+    private void authenticate(User newUser) {
+        UserDetails userDetails = new UserWithRoles(newUser, Collections.emptyList());
+        Authentication auth = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                userDetails.getPassword(),
+                userDetails.getAuthorities()
+        );
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(auth);
+    }
 
     @GetMapping("/profile")
     public String profile(Model model, HttpServletResponse response) {
