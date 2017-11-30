@@ -2,11 +2,16 @@ package com.sweetjandy.remindr.controllers;
 
 import com.sweetjandy.remindr.models.Contact;
 import com.sweetjandy.remindr.models.User;
+import com.sweetjandy.remindr.models.UserWithRoles;
 import com.sweetjandy.remindr.repositories.ContactsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
 import com.sweetjandy.remindr.services.PhoneService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Collections;
 
 
 @Controller
@@ -43,7 +49,7 @@ public class UsersController {
 
     @PostMapping("/register")
     // Errors validation has to be right after the object
-    public String registerUser(@Valid User user, Errors validation, Model viewModel) {
+    public String registerUser(@Valid User user, Errors validation, Model viewModel, @ModelAttribute User newUser) {
 
         User existingUser = usersRepository.findByUsername(user.getUsername());
 
@@ -96,10 +102,21 @@ public class UsersController {
         String hashPassword = passwordEncoder.encode(user.getPassword());
 
         user.setPassword(hashPassword);
-        usersRepository.save(user);
+        usersRepository.save(newUser);
+        authenticate(newUser);
         return "redirect:/profile";
     }
 
+    private void authenticate(User newUser) {
+        UserDetails userDetails = new UserWithRoles(newUser, Collections.emptyList());
+        Authentication auth = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                userDetails.getPassword(),
+                userDetails.getAuthorities()
+        );
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(auth);
+    }
 
     @GetMapping("/profile")
     public String profile(Model model, HttpServletResponse response) {
