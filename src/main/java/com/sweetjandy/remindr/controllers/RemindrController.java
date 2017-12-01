@@ -47,6 +47,7 @@ public class RemindrController {
         this.remindrService = remindrService;
     }
 
+
     private boolean isYourRemindr (User user, long remindrId) {
         return user.getRemindrs().stream().filter(r -> r.getId() == remindrId).count() > 0;
     }
@@ -81,6 +82,9 @@ public class RemindrController {
 
         model.addAttribute("contact", contact);
 
+        // Time Validation
+        remindr.getEndDateTime();
+
 
         if (validation.hasErrors()) {
             model.addAttribute("errors", validation);
@@ -91,6 +95,7 @@ public class RemindrController {
         // save timezone to remindr
         remindr.setTimeZone(timezoneValue);
 
+        // SAVE REMINDR
         remindrsRepository.save(remindr);
 
 
@@ -239,7 +244,6 @@ public class RemindrController {
         }
 
 
-
         return "redirect:/remindrs";
     }
 
@@ -278,6 +282,12 @@ public class RemindrController {
 
         Remindr remindr = remindrsRepository.findOne(id);
 
+        // parse into correct format for displaying in the view
+        String startDate = remindrService.getFinalDate(remindr.getStartDateTime());
+        String endDate = remindrService.getFinalDate(remindr.getEndDateTime());
+        String startTime = remindrService.getTime(remindr.getStartDateTime());
+        String endTime = remindrService.getTime(remindr.getEndDateTime());
+
         model.addAttribute("remindr", remindr);
         model.addAttribute("remindrId", id);
 
@@ -311,7 +321,25 @@ public class RemindrController {
             }
         }
 
-        // pass into view
+        // CONTACTS
+        List<Contact> contacts = remindr.getContacts();
+        int contactSize = contacts.size();
+
+
+        // PASSING INTO VIEW
+        // REMINDR
+        model.addAttribute("remindr", remindr);
+        model.addAttribute("remindrId", id);
+        // CONTACTS
+        model.addAttribute("contacts", contacts);
+        model.addAttribute("contactSize", contactSize);
+
+        // TIME FORMATTING
+        model.addAttribute("startdate", startDate);
+        model.addAttribute("enddate", endDate);
+        model.addAttribute("starttime", startTime);
+        model.addAttribute("endtime", endTime);
+        // ALERTS
         model.addAttribute("numberOfAlerts", numberOfAlerts);
         model.addAttribute("alerts", alertsToView);
 
