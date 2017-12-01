@@ -1,42 +1,28 @@
 package com.sweetjandy.remindr.models;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "appointments")
 public class Appointment {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
+
   public Long id;
 
-  @Column(name = "name")
   private String name;
 
-  @Column(name = "phoneNumber")
   private String phoneNumber;
 
-  @Column(name = "delta")
   private int delta;
 
-  @Column(name = "date")
   private String date;
 
-  @Column(name = "timeZone")
   private String timeZone;
-
 
   private String compositeId;
 
-  public Appointment() {}
+  private String title;
 
-  public Appointment(String name, String phoneNumber, int delta, String date, String timeZone) {
-    this.name = name;
-    this.phoneNumber = phoneNumber;
-    this.delta = delta;
-    this.date = date;
-    this.timeZone = timeZone;
-  }
+  private String description;
+
+  private String sender;
+
+  public Appointment() {}
 
   public Long getId() {
     return id;
@@ -69,7 +55,7 @@ public class Appointment {
   }
 
   public String getDate() {
-    return TimeZoneConverter.getDateFromUTC(this.date, this.timeZone);
+    return this.date;
   }
 
   public void setDate(String date) {
@@ -90,5 +76,29 @@ public class Appointment {
 
   public void setCompositeId(String compositeId) {
     this.compositeId = compositeId;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public String getSender() {
+    return sender;
+  }
+
+  public void setSender(String sender) {
+    this.sender = sender;
   }
 }

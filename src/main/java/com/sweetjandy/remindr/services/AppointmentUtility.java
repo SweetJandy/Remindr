@@ -6,13 +6,16 @@ import com.sweetjandy.remindr.models.Contact;
 import com.sweetjandy.remindr.models.Appointment;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Service;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -52,9 +55,12 @@ public class AppointmentUtility {
         Appointment appointment = new Appointment();
         appointment.setCompositeId(alert.getId() + "_" + contact.getId());
 
-        appointment.setName(contact.getFirstName() + " " + contact.getLastName());
+        appointment.setName(contact.getFirstName());
         appointment.setPhoneNumber(formatPhoneNumberToTwilio(contact.getPhoneNumber()));
         appointment.setDelta(convertAlertTimeToInt(alert.getAlertTime()));
+        appointment.setTitle(alert.getRemindr().getTitle());
+        appointment.setDescription(alert.getRemindr().getDescription());
+        appointment.setSender(alert.getRemindr().getUser().getContact().getFirstName() + " " + alert.getRemindr().getUser().getContact().getLastName());
         try {
             appointment.setDate(convertDate(alert.getRemindr().getStartDateTime(), alert.getRemindr().getTimeZone()));
         } catch (ParseException e) {
@@ -67,18 +73,15 @@ public class AppointmentUtility {
 
     private String convertDate(String date, String timeZone) throws ParseException {
 
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-//        Date date1 = simpleDateFormat.parse(date);
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm");
         DateTime date1 = formatter.parseDateTime(date);
         DateTimeZone dtZone = DateTimeZone.forID(timeZone);
         date1.withZone(dtZone);
 
-        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("MM-dd-yyyy hh:mma");
-        DateTimeFormatter formatter1 = DateTimeFormat.forPattern("MM-dd-yyyy hh:mma");
+        DateTimeFormatter formatter1 = DateTimeFormat.forPattern("MM-dd-yyyy h:mma");
         formatter1.withZoneUTC();
 
-        return formatter1.print(date1.toDateTime(DateTimeZone.UTC));
+        return formatter1.print(date1);
     }
 
 
@@ -86,6 +89,16 @@ public class AppointmentUtility {
         String dbFormat = phoneNumber.replaceAll("[^0-9]", "");
         String correctFormat = "+1" + dbFormat;
         return correctFormat;
+    }
+
+    public Date prepareTriggerDate(Appointment appointment) throws ParseException {
+        DateTimeZone zone = DateTimeZone.forID(appointment.getTimeZone());
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("MM-dd-yyyy h:mma");
+
+        DateTime dt = formatter.withZone(zone).parseDateTime(appointment.getDate());
+        Date finalDate = dt.minusMinutes(appointment.getDelta()).toDate();
+        System.out.println(dt.toString(formatter.withZone(zone)));
+        return finalDate;
     }
 
 }

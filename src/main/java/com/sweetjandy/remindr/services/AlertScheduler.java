@@ -6,12 +6,15 @@ import com.twilio.Twilio;
 import com.twilio.exception.TwilioException;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.io.IOException;
+import java.util.Date;
 
 public class AlertScheduler implements Job {
 
@@ -37,14 +40,22 @@ public class AlertScheduler implements Job {
             if (appointment != null) {
                 String name = appointment.getName();
                 String phoneNumber = appointment.getPhoneNumber();
-                String date = appointment.getDate();
-                String messageBody = "Just a quick remindr, " + name + ", on " + date + " you have an event!";
+                String dateTime = appointment.getDate();
+                String[] dateAndTime = dateTime.split(" ");
+                String date = dateAndTime[0];
+                String time = dateAndTime[1];
+                String title = appointment.getTitle();
+                String description = appointment.getDescription();
+                String sender = appointment.getSender();
+
+                DateTimeFormatter formatter = DateTimeFormat.forPattern("MM-dd-yyyy hh:mma");
+
+                String messageBody = "Hi " + name + ", just a quick remindr for " + sender + "'s '" + title + "' on " + date + " at " + time + ".";
 
                 try {
                     Message message = Message
                             .creator(new PhoneNumber(phoneNumber), new PhoneNumber(twilioNumber), messageBody)
                             .create();
-                    System.out.println("Message sent! Message SID: " + message.getSid());
                 } catch(TwilioException e) {
                     e.printStackTrace();
                 }

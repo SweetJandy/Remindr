@@ -61,7 +61,6 @@ public class ScheduleService {
 
         }
 
-
     }
 
     public void schedule(Alert alert) {
@@ -71,6 +70,8 @@ public class ScheduleService {
                 scheduleJob(appointment);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
+            } catch (ParseException p) {
+                p.printStackTrace();
             }
         }
     }
@@ -79,16 +80,10 @@ public class ScheduleService {
 
     }
 
-    private void scheduleJob(Appointment appointment) throws JsonProcessingException {
+    private void scheduleJob(Appointment appointment) throws JsonProcessingException, ParseException {
 
         String appointmentId = appointment.getCompositeId();
-
-        DateTimeZone zone = DateTimeZone.forID(appointment.getTimeZone());
-        DateTime dt;
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("MM-dd-yyyy hh:mma");
-        formatter = formatter.withZone(zone);
-        dt = formatter.parseDateTime(appointment.getDate());
-        Date finalDate = dt.minusMinutes(appointment.getDelta()).toDate();
+        Date finalDate = appointmentUtility.prepareTriggerDate(appointment);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String appointmentJson = objectMapper.writeValueAsString(appointment);
@@ -107,5 +102,6 @@ public class ScheduleService {
             System.out.println("Unable to schedule the Job");
         }
     }
+
 
 }
