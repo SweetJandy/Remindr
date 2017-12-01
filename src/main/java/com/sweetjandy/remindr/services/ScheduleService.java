@@ -3,16 +3,8 @@ package com.sweetjandy.remindr.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sweetjandy.remindr.models.Alert;
-import com.sweetjandy.remindr.models.AlertTime;
-import com.sweetjandy.remindr.models.Contact;
 import com.sweetjandy.remindr.repositories.AlertsRepository;
-import com.sweetjandy.remindr.repositories.UsersRepository;
-import com.twilio.appointmentreminders.models.Appointment;
-import com.twilio.appointmentreminders.models.AppointmentService;
-import com.twilio.appointmentreminders.util.AppSetup;
-import com.twilio.appointmentreminders.util.AppointmentScheduler;
-import com.twilio.appointmentreminders.models.AppointmentService;
-import com.twilio.appointmentreminders.util.AppSetup;
+import com.sweetjandy.remindr.models.Appointment;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -22,19 +14,12 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
@@ -44,6 +29,15 @@ public class ScheduleService {
     private Scheduler scheduler;
     private AppointmentService service;
     private AppointmentUtility appointmentUtility;
+
+    @Value("${twilio-account-sid}")
+    private String twilioSid;
+
+    @Value("${twilio-auth-token}")
+    private String twilioToken;
+
+    @Value("${twilio-number}")
+    private String twilioNumber;
 
     public ScheduleService (AlertsRepository alertsRepository, AppointmentUtility appointmentUtility) throws ParseException {
         try {
@@ -101,7 +95,8 @@ public class ScheduleService {
 
         JobDetail job =
                 newJob(AlertScheduler.class).withIdentity("Appointment_J_" + appointmentId)
-                        .usingJobData("appointment", appointmentJson).build();
+                        .usingJobData("appointment", appointmentJson).usingJobData("twilioAccountSid", twilioSid).usingJobData("twilioAuthToken", twilioToken).usingJobData("twilioNumber", twilioNumber)
+                        .build();
 
         Trigger trigger =
                 newTrigger().withIdentity("Appointment_T_" + appointmentId).startAt(finalDate).build();

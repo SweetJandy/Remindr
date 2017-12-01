@@ -3,7 +3,7 @@ package com.sweetjandy.remindr.services;
 import com.sweetjandy.remindr.models.Alert;
 import com.sweetjandy.remindr.models.AlertTime;
 import com.sweetjandy.remindr.models.Contact;
-import com.twilio.appointmentreminders.models.Appointment;
+import com.sweetjandy.remindr.models.Appointment;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
