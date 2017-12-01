@@ -61,7 +61,7 @@ public class Remindr {
     @JsonManagedReference
     private User user;
 
-    @ManyToMany(cascade = CascadeType.DETACH)@JoinTable
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)@JoinTable
             (name = "contact_remindr",
                     joinColumns = {@JoinColumn(name = "remindr_id")},
                     inverseJoinColumns = {@JoinColumn(name = "contact_id")}
