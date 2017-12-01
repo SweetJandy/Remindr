@@ -91,17 +91,6 @@
 			<artifactId>quartz</artifactId>
 			<version>2.2.1</version>
 		</dependency>
-
-		<dependency>
-			<groupId>com.twilio.appointmentreminders</groupId>
-			<artifactId>twilio-appointment-reminders</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>4.3.8.Final</version>
-		</dependency>
 	</dependencies>
 
 	<build>

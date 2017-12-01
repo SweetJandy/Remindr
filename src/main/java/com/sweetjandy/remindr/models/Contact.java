@@ -22,7 +22,6 @@ public class Contact {
     private String firstName;
 
     @Column(nullable = true)
-//    @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
     @Column(nullable = false, length = 20)
@@ -143,4 +142,15 @@ public class Contact {
     public boolean stillHasSameNumber(Contact myself) {
         return phoneNumber.equals(myself.phoneNumber);
     }
+
+    @Override
+    public boolean equals(Object object) {
+        Contact contact = (Contact) object;
+        if(this.getId() == contact.getId() || this.getPhoneNumber().equals(contact.getPhoneNumber())){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

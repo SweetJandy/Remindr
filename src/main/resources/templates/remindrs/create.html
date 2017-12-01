@@ -63,7 +63,7 @@
             <!--TIME ZONE LIST-->
             <div class="form-group">
                 <label for="timeZone">Event Timezone</label>
-                    <select id="timeZone" name="timezone" onchange="this.form.submit();">
+                    <select id="timeZone" name="timezone">
                         <option timeZoneId="3" gmtAdjustment="GMT-10:00" useDaylightTime="0" value="US/Hawaii">(GMT-10:00) Hawaii</option>
                         <option timeZoneId="4" gmtAdjustment="GMT-09:00" useDaylightTime="1" value="US/Alaska">(GMT-09:00) Alaska</option>
                         <option timeZoneId="5" gmtAdjustment="GMT-08:00" useDaylightTime="1" value="US/Pacific">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
@@ -100,7 +100,7 @@
         <div class="row">
             <input class="btn btn-primary" type="submit" value="Next" th:href="@{/remindrs/add-contacts}"/>
             <!--<a href="/remindrs/add-contacts" class="btn btn-primary">Next: Add contacts</a>-->
-            <a href="/remindrs" class="btn btn-danger">Cancel</a>
+            <a href="/remindrs" class="btn btn-primary">Cancel</a>
         </div>
         </form>
     </div>
@@ -134,7 +134,7 @@
             var isItChecked = $('#optional-recurring').prop('checked');
 
             if (isItChecked) {
-                console.log("It's checked!");
+//                console.log("It's checked!");
 
                 // if it's checked, show the cron field
                 $('#selector').cron({
@@ -155,7 +155,7 @@
                 $("#selector").show();
 
             } else {
-                console.log("It's not checked!");
+//                console.log("It's not checked!");
 
                 $("#selector").hide();
                 $("#recurring-label").hide();

@@ -71,7 +71,7 @@ public class AppointmentUtility {
         return appointment;
     }
 
-    private String convertDate(String date, String timeZone) throws ParseException {
+    public String convertDate(String date, String timeZone) throws ParseException {
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm");
         DateTime date1 = formatter.parseDateTime(date);
