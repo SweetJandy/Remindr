@@ -1,5 +1,8 @@
 package com.sweetjandy.remindr;
 
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -15,8 +18,8 @@ public class SpringbootRemindrApplication extends SpringBootServletInitializer {
 
     }
 
-
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+
         return application.sources(SpringbootRemindrApplication.class);
     }
 }

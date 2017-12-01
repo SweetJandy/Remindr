@@ -22,6 +22,7 @@
         <div th:if="${starttime} != null">
             <p th:text="${starttime}"></p>
         </div>
+        <!--<p th:text="${remindr.startDateTime}"></p>-->
 
         <!--END DATE AND TIME-->
         <div th:if="${enddate} != null">
@@ -31,6 +32,7 @@
         <div th:if="${endtime} != null">
             <p th:text="${endtime}"></p>
         </div>
+        <!--<p th:text="${remindr.endDateTime}"></p>-->
 
         <!--in cron job format-->
         <h4>Recurring date/ time</h4>
@@ -47,9 +49,9 @@
         <br />
 
         <!--ALERTS-->
-        <h4>You have attached
+        <h4>You have
             <span th:text="${numberOfAlerts}"></span>
-            alert(s) to this remindr:
+            alert(s) on this remindr:
         </h4>
         <ul th:each="alert : ${alerts}">
             <li th:text = "${alert}">
