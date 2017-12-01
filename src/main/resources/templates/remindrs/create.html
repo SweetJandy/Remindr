@@ -12,7 +12,7 @@
             <!--TITLE-->
             <div class="form-group">
                 <label for="title">Event title</label>
-                <input id="title" name="title" th:field="*{title}" class="form-control" type="text" />
+                <input id="title" name="title" th:field="*{title}" class="form-control" type="text" required="required"/>
             </div>
             <div
                 class="alert alert-danger"
@@ -29,7 +29,7 @@
             <!--START DATE/TIME-->
             <div class="form-group">
                 <label for="startDateTime">Event start date/ time </label>
-                <input id="startDateTime" name="startDateTime" class="form-control" type="datetime-local" th:field="*{startDateTime}" min="2017-01-01T00:00" max="3000-01-01T00:00"/>
+                <input id="startDateTime" name="startDateTime" class="form-control" type="datetime-local" th:field="*{startDateTime}" required="required"/>
             </div>
             <div
                 class="alert alert-danger"
@@ -44,10 +44,13 @@
             <!--END DATE/TIME-->
             <!--<div class="form-group">-->
                 <!--<label for="endDateTime" style="display:none;" id="enddate-label">Event end date/ time (optional)</label>-->
-                <input id="endDateTime" name="endDateTime" class="form-control" style="display:none;" type="datetime-local" th:field="*{endDateTime}" min="2017-01-01T00:00" max="3000-01-01T00:00"/>
+                <input id="endDateTime" name="endDateTime" class="form-control" style="display:none;" type="datetime-local" th:field="*{endDateTime}"/>
             <!--</div>-->
-
-            <br />
+            <div
+                    class="alert alert-danger"
+                    th:if="${#fields.hasErrors('endDateTime')}"
+                    th:errors="*{endDateTime}" >
+            </div>
 
             <!--Click this to toggle optional recurring form-->
             <label for="optional-recurring">Recurring event</label>
@@ -125,6 +128,7 @@
             } else {
                 console.log("It's not checked!");
                 $("#endDateTime").hide();
+                $("#endDateTime").val('');
                 $("#enddate-label").hide();
             }
         });

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RemindrService {
-    private String getYear (String dateTime) {
+    public String getYear (String dateTime) {
         if (!Strings.isNullOrEmpty(dateTime)) {
             return dateTime.substring(0, 4);
         }
@@ -13,7 +13,7 @@ public class RemindrService {
         return null;
     }
 
-    private String getMonth (String dateTime) {
+    public String getMonth (String dateTime) {
         if (!Strings.isNullOrEmpty(dateTime)) {
             return dateTime.substring(5, 7);
         }
@@ -21,7 +21,7 @@ public class RemindrService {
         return null;
     }
 
-    private String getDate (String dateTime) {
+    public String getDate (String dateTime) {
         if (!Strings.isNullOrEmpty(dateTime)) {
             return dateTime.substring(8, 10);
         }
@@ -30,24 +30,27 @@ public class RemindrService {
     }
 
     public String getTime (String dateTime) {
+
         if (!Strings.isNullOrEmpty(dateTime)) {
-            return convertTo12HrTime(dateTime.substring(11));
+            return dateTime.substring(11);
 
         }
 
         return null;
     }
 
-    private String convertTo12HrTime (String time) {
-        int indexOfhalf = time.indexOf(":");
+    public String convertTo12HrTime (String time) {
+        if (!Strings.isNullOrEmpty(time)) {
 
-        String hour = time.substring(0, indexOfhalf);
-        String minutes = time.substring(indexOfhalf+1);
+            int indexOfhalf = time.indexOf(":");
 
-        String append = "";
+            String hour = time.substring(0, indexOfhalf);
+            String minutes = time.substring(indexOfhalf+1);
+
+            String append = "";
 
         // check if it's before noon
-        if ((Integer.parseInt(hour) <= 11) && (Integer.parseInt(minutes) <= 59)) {
+        if (!Strings.isNullOrEmpty(time) && Integer.parseInt(hour) <= 11 && (Integer.parseInt(minutes) <= 59)) {
 
             append = "AM";
 
@@ -61,7 +64,7 @@ public class RemindrService {
             return hour + ":" + minutes + " " + append;
 
         // check if it's after noon
-        } else if ((Integer.parseInt(hour) >= 12) && (Integer.parseInt(minutes) <= 59)) {
+        } else if (!Strings.isNullOrEmpty(time) && (Integer.parseInt(hour) >= 12) && (Integer.parseInt(minutes) <= 59)) {
 
             if (Integer.parseInt(minutes) <= 59) {
                 append = "PM";
@@ -70,7 +73,8 @@ public class RemindrService {
             return (Integer.parseInt(hour) - 12) + ":" + minutes + " " + append;
         }
 
-        return "";
+        }
+        return null;
     }
 
     public String getFinalDate (String dateTime) {
