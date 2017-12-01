@@ -97,7 +97,6 @@ public class AppointmentUtility {
 
         DateTime dt = formatter.withZone(zone).parseDateTime(appointment.getDate());
         Date finalDate = dt.minusMinutes(appointment.getDelta()).toDate();
-        System.out.println(dt.toString(formatter.withZone(zone)));
         return finalDate;
     }
 
