@@ -62,6 +62,7 @@ public class AppointmentUtility {
         appointment.setTitle(alert.getRemindr().getTitle());
         appointment.setDescription(alert.getRemindr().getDescription());
         appointment.setSender(alert.getRemindr().getUser().getContact().getFirstName() + " " + alert.getRemindr().getUser().getContact().getLastName());
+        appointment.setLocation(alert.getRemindr().getLocation());
         try {
             appointment.setDate(convertDate(alert.getRemindr().getStartDateTime(), alert.getRemindr().getTimeZone()));
         } catch (ParseException e) {

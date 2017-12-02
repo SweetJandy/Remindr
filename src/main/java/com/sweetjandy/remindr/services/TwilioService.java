@@ -51,11 +51,15 @@ public class TwilioService extends HttpServlet {
         PhoneNumber phoneNumberTo = new PhoneNumber(contact.getPhoneNumber());
         PhoneNumber phoneNumberFrom = new PhoneNumber(twilioNumber);
 
+        String location = remindr.getLocation();
+        String description = remindr.getDescription();
+
+
         Message message = null;
         try {
             message = Message
                     .creator(phoneNumberTo, phoneNumberFrom,
-                            remindr.getUser().getContact().getFirstName() + " " + remindr.getUser().getContact().getLastName() + " has invited you to '" + remindr.getTitle() + "' on " + date + " at " + time + ". Accept reminders for this event? Reply yes/no.")
+                            remindr.getUser().getContact().getFirstName() + " " + remindr.getUser().getContact().getLastName() + " has invited you to '" + remindr.getTitle() + "' at " + location + " on " + date + " at " + time + ".\nDetails: " + description + "\nAccept reminders for this event? Reply yes/no.")
     //                .setMediaUrl(mediaURL)
                     .setProvideFeedback(true)
                     .create();

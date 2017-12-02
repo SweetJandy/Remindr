@@ -4,6 +4,7 @@ package com.sweetjandy.remindr.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.engine.internal.Cascade;
 import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,7 +62,7 @@ public class Remindr {
     @JsonManagedReference
     private User user;
 
-    @OneToMany(mappedBy = "remindr")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "remindr")
     private List<RemindrContact> remindrContacts;
 
 
