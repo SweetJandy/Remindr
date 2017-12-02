@@ -41,7 +41,7 @@ public class Contact {
 //    private long secretCode;
 
 
-    @ManyToMany(cascade = ALL, mappedBy = "contacts")
+    @ManyToMany(cascade = CascadeType.DETACH, mappedBy = "contacts")
     private List<Remindr> remindrs;
 
     @ManyToOne

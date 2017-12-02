@@ -167,7 +167,7 @@ public class ContactsController {
     }
 
     @PostMapping("/contacts/{id}/edit")
-    public String editContact(@Valid Contact contact, Errors validation, Model viewModel, HttpServletResponse response) {
+    public String editContact(@PathVariable long id, @Valid Contact contact, Errors validation, Model viewModel) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         user = usersRepository.findOne(user.getId());
 
@@ -177,10 +177,10 @@ public class ContactsController {
         }
 
 //        returns amount of contacts that are duplicated by phone number
-        Contact sameContact = contactsRepository.findOne(contact.getId());
+        Contact existingContact = contactsRepository.findOne(id);
 
 
-        if (!sameContact.stillHasSameNumber(contact) && isDuplicated(contact, user)) {
+        if (!existingContact.stillHasSameNumber(contact) && isDuplicated(contact, user)) {
             validation.rejectValue(
                     "phoneNumber",
                     "phoneNumber",
@@ -202,8 +202,12 @@ public class ContactsController {
             viewModel.addAttribute("contact", contact);
             return "users/edit-contact";
         }
-        contact.setUser(user);
-        contactsRepository.save(contact);
+
+        existingContact.setFirstName(contact.getFirstName());
+        existingContact.setLastName(contact.getLastName());
+        existingContact.setPhoneNumber(contact.getPhoneNumber());
+
+        contactsRepository.save(existingContact);
 
         return "redirect:/contacts";
     }
