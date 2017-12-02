@@ -8,6 +8,15 @@
 
         <h1>Show remindr</h1>
 
+
+        <img th:src="${remindr.uploadPath}" width="200" alt="event image" id="image-preview"/>
+        <a class="btn btn-primary" id="add-pic">Edit picture</a>
+        <a class="btn btn-primary" id="choose-another" style="display: none">Choose another</a>
+        <form th:action="@{/remindrs/{id}/edit-pic(id = ${remindr.id})}" method="post">
+            <input type="hidden" id="pic-input" name="pic-input" th:value="${remindr.uploadPath}" />
+            <button class="btn btn-primary" style="display:none" id="upload-pic">Upload</button>
+        </form>
+
         <h2 th:text="${remindr.title}"></h2>
         <!--<img th:src="${remindr.uploadPath}" alt="event image" />-->
 
@@ -114,5 +123,51 @@
 </div><!-- /.modal -->
 
 <div th:replace="/fragments/partials :: scripts"></div>
-<div th:replace="/fragments/deleteRemindrModal :: deleteRemindrModalScript"></div></body>
+<div th:replace="/fragments/deleteRemindrModal :: deleteRemindrModalScript"></div>
+<script>
+$(document).ready(function(){
+
+    $("#add-pic").click(openPicker);
+    $("#choose-another").click(openPicker);
+
+    var fsClient = filestack.init('AjqlwAL0oTqy2FzYw5Eylz');
+
+    function openPicker (event) {
+        console.log(event);
+
+        fsClient.pick({
+            fromSources:["local_file_system","url","imagesearch","facebook","instagram","googledrive","dropbox","webcam"],
+            accept:["image/*"],
+            maxFiles:1,
+            transformations:{
+                crop:{      force:true},
+                circle:true,
+                rotate:true},
+            maxSize:1000000
+        }).then(function(response) {
+            // declare this function to handle response
+            function handleFilestack (response) {
+                console.log(response);
+                $("#pic-input").val(response.filesUploaded[0].url);
+                $("#image-preview").attr(
+                    {
+                        "src":response.filesUploaded[0].url,
+                        "width": "200"
+                    });
+                $("#add-pic").attr("style","display: none");
+                $("#upload-pic").attr("style","display:inline-block");
+                $("#choose-another").attr("style","display:inline-block");
+                console.log(response.filesUploaded[0].url);
+            }
+
+            handleFilestack(response);
+
+
+//            $("#submit-pic").removeAtt("Hidden");
+        });
+    }
+
+});
+</script>
+</body>
 </html>
