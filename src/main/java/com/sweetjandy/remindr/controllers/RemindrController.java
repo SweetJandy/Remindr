@@ -484,10 +484,10 @@ public class RemindrController {
     @GetMapping("/remindrs/{id}/edit")
     public String editPost(Model model, @PathVariable Long id, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user.getId() == 0) {
-            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return "redirect:/login";
-        }
+//        if (user.getId() == 0) {
+//            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            return "redirect:/login";
+//        }
         user = usersRepository.findOne(user.getId());
 
         if(!isYourRemindr(user, id)) {
@@ -501,20 +501,9 @@ public class RemindrController {
     }
 
     @PostMapping("/remindrs/{id}/edit")
-    public String editPost(@Valid Remindr remindr, Errors validation, Model model, HttpServletResponse response) {
+    public String editPost(@Valid Remindr remindr, Errors validation, @PathVariable Long id, Model model, HttpServletResponse response, @RequestParam(name="timezone")String timezoneValue) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user.getId() == 0) {
-            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return "redirect:/login";
-        }
         user = usersRepository.findOne(user.getId());
-
-        if(!isYourRemindr(user, remindr.getId())) {
-            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return "You do not own this remindr.";
-        }
-
-        remindr.setUser(user);
 
         if (validation.hasErrors()) {
             model.addAttribute("errors", validation);
@@ -522,9 +511,19 @@ public class RemindrController {
             return "/remindrs/edit";
         }
 
+        if(!isYourRemindr(user, remindr.getId())) {
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "You do not own this remindr.";
+        }
+
+        remindr.setTimeZone(timezoneValue);
+        remindr.setId(id);
+        remindr.setUser(user);
+
+
         remindrsRepository.save(remindr);
 
-        return "redirect:/remindrs";
+        return "redirect:/remindrs/{id}";
     }
 
 

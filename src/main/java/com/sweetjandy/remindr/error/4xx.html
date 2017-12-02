@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:h="http://www.w3.org/1999/html">
+<head th:replace="/fragments/partials :: head('Ooops, error')">
+    <link type="text/css" href="/scripts/cron/jquery-cron.css" rel="stylesheet" />
+</head>
+<body>
+<!--onload="myFunction()">-->
+<nav th:replace="/fragments/partials :: navbar"></nav>
+<th:block th:switch="${error}">
+    <div th:case="'Not Found'">
+        <h1>Page not found!</h1>
+    </div>
+    <div th:case="'Forbidden'">
+        <h1>You don't have permission to view this page.</h1>
+    </div>
+</th:block>
+<div th:replace="/fragments/partials :: scripts"></div>
+</body>
+</html>

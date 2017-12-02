@@ -4,18 +4,33 @@
 </head>
 <body>
 
-
 <div th:fragment="deleteRemindrModalScript">
     <script th:inline="javascript">
         function confirmDeleteRemindr() {
             var remindrId=[[${remindr.id}]];
+
+            //set variable equal to the content inside specified meta tag containing token information.
+            var token = $("meta[name='_csrf']").attr("content");
+            console.log('Remindr Id is: ' + remindrId);
+            console.log('CSRF Token is: ' + $('#csrf').val());
+
+            //Before ajax request happens, sets X-CSRF-TOKEN value (which the browser uses for session), equal to the token variable.
+            $.ajaxSetup({
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            });
             $.ajax({
                 url: '/remindrs/' + remindrId + '/delete',
                 type: 'POST',
                 success: function(result) {
                     location.href="/remindrs";
+                    console.log('location.href: ' + location.href);
                 },
-                error: function(result){}
+                error: function(result){
+                    console.log('data: ' + data);
+                    console.log(result);
+                }
             });	}
     </script>
 </div>
