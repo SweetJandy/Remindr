@@ -1,5 +1,12 @@
 package com.sweetjandy.remindr.controllers;
+import com.sweetjandy.remindr.models.Contact;
+import com.sweetjandy.remindr.models.InviteStatus;
+import com.sweetjandy.remindr.models.RemindrContact;
+import com.sweetjandy.remindr.repositories.ContactsRepository;
+import com.sweetjandy.remindr.services.AppointmentUtility;
+import com.sweetjandy.remindr.services.PhoneService;
 import com.sweetjandy.remindr.services.TwilioService;
+import com.twilio.rest.chat.v1.service.channel.Invite;
 import com.twilio.twiml.Body;
 import com.twilio.twiml.MessagingResponse;
 import org.springframework.stereotype.Controller;
@@ -21,9 +28,13 @@ import static ognl.DynamicSubscript.all;
 public class TwilioController {
 
     private final TwilioService twilioSvc;
+    private ContactsRepository contactsRepository;
+    private PhoneService phoneService;
 
-    public TwilioController(TwilioService twilioservice) {
+    public TwilioController(TwilioService twilioservice, ContactsRepository contactsRepository, PhoneService phoneService) {
         this.twilioSvc = twilioservice;
+        this.contactsRepository = contactsRepository;
+        this.phoneService = phoneService;
     }
 
 //    @GetMapping ("/sendSMS")
@@ -40,20 +51,39 @@ public class TwilioController {
         @RequestParam Map<String, String> allRequestParams, ModelMap model
     ) {
 
+        String phoneNumber = allRequestParams.get("From");
+        phoneNumber = phoneService.formatPhoneNumber(phoneNumber);
+        Contact contact = contactsRepository.findByPhoneNumber(phoneNumber);
+
         String bodyParam = allRequestParams.get("Body");
 
         Body body = new Body("Sorry, try again.");
-        Body optIn = new Body("Congratulations! You have opted in to receive remindrs. Text STOP to opt out at any time.");
-        Body optOut = new Body("You have opted out of the Remindr.");
+        Body optOut = new Body("No problem. We won't send you any reminders.");
+        Body noInvites = new Body("Sorry, you don't have any event invites.");
+
+        String response = twilioSvc.setResponse(body);
 
         if (bodyParam.equalsIgnoreCase("yes") || bodyParam.equalsIgnoreCase("y")) {
-
-            return twilioSvc.setResponse(optIn);
-        } else if (bodyParam.equalsIgnoreCase("no") || bodyParam.equalsIgnoreCase("stop") || bodyParam.equalsIgnoreCase("n")){
-            return twilioSvc.setResponse(optOut);
+            // if they don't have any invites
+            if(contact.getPending() == null) {
+                response = twilioSvc.setResponse(noInvites);
+            } else {
+                Body optIn = new Body("Thanks, we'll send you reminders for '" + contact.getPending().getTitle() + "'.");
+                response = twilioSvc.setResponse(optIn);
+                RemindrContact remindrContact = contact.getRemindrContacts().stream().filter(r -> r.getRemindr().equals(contact.getPending())).findFirst().get();
+                remindrContact.setInviteStatus(InviteStatus.ACCEPTED);
+                contact.setPending(null);
+                contactsRepository.save(contact);
+            }
+        } else if (bodyParam.equalsIgnoreCase("no") || bodyParam.equalsIgnoreCase("n")){
+            response = twilioSvc.setResponse(optOut);
+            RemindrContact remindrContact = contact.getRemindrContacts().stream().filter(r -> r.getRemindr().equals(contact.getPending())).findFirst().get();
+            remindrContact.setInviteStatus(InviteStatus.DECLINED);
+            contact.setPending(null);
+            contactsRepository.save(contact);
         }
 
-        return twilioSvc.setResponse(body);
+        return response;
 
     }
 

@@ -26,12 +26,14 @@ public class ContactsController {
     private final ContactsRepository contactsRepository;
     private final UsersRepository usersRepository;
     private final GooglePeopleService googlePeopleService;
+    private PhoneService phoneService;
 
     @Autowired
-    public ContactsController(ContactsRepository contactsRepository, UsersRepository usersRepository, GooglePeopleService googlePeopleService) {
+    public ContactsController(ContactsRepository contactsRepository, UsersRepository usersRepository, GooglePeopleService googlePeopleService, PhoneService phoneService) {
         this.contactsRepository = contactsRepository;
         this.usersRepository = usersRepository;
         this.googlePeopleService = googlePeopleService;
+        this.phoneService = phoneService;
     }
 
     private boolean isInContacts(User user, long contactId) {
@@ -120,7 +122,7 @@ public class ContactsController {
         contact.setGoogleContact("" + (long) (Math.random() * (double) Long.MAX_VALUE));
         contact.setOutlookContact("" + (long) (Math.random() * (double) Long.MAX_VALUE));
 
-        boolean validated = PhoneService.validatePhoneNumber(contact.getPhoneNumber());
+        boolean validated = phoneService.validatePhoneNumber(contact.getPhoneNumber());
         if (!validated) {
             validation.rejectValue(
                     "phoneNumber",
@@ -188,7 +190,7 @@ public class ContactsController {
             );
         }
 
-        boolean validated = PhoneService.validatePhoneNumber(contact.getPhoneNumber());
+        boolean validated = phoneService.validatePhoneNumber(contact.getPhoneNumber());
         if (!validated) {
             validation.rejectValue(
                     "phoneNumber",

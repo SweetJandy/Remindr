@@ -31,14 +31,15 @@ public class UsersController {
     private UsersRepository usersRepository;
     private ContactsRepository contactsRepository;
     private PasswordEncoder passwordEncoder;
+    private PhoneService phoneService;
 
 
     @Autowired
-    public UsersController(UsersRepository usersRepository, ContactsRepository contactsRepository
- ,PasswordEncoder passwordEncoder) {
+    public UsersController(UsersRepository usersRepository, ContactsRepository contactsRepository,PasswordEncoder passwordEncoder, PhoneService phoneService) {
         this.usersRepository = usersRepository;
         this.contactsRepository = contactsRepository;
         this.passwordEncoder = passwordEncoder;
+        this.phoneService = phoneService;
     }
 
     @GetMapping("/register")
@@ -61,7 +62,7 @@ public class UsersController {
             );
         }
 
-        boolean validated = PhoneService.validatePhoneNumber(user.getContact().getPhoneNumber());
+        boolean validated = phoneService.validatePhoneNumber(user.getContact().getPhoneNumber());
         if (!validated) {
             validation.rejectValue(
                     "contact.phoneNumber",
@@ -155,7 +156,7 @@ public class UsersController {
             return "redirect:/login";
         }
 
-        boolean validated = PhoneService.validatePhoneNumber(user.getContact().getPhoneNumber());
+        boolean validated = phoneService.validatePhoneNumber(user.getContact().getPhoneNumber());
         if (!validated) {
             validation.rejectValue(
                     "contact.phoneNumber",

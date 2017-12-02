@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
@@ -40,11 +41,18 @@ public class Contact {
 //    private long secretCode;
 
 
-    @ManyToMany(cascade = ALL, mappedBy = "contacts")
-    private List<Remindr> remindrs;
+    @OneToMany(mappedBy = "contact")
+    private List<RemindrContact> remindrContacts;
 
     @ManyToOne
     private User user;
+
+//    @Column(nullable = true)
+    @ManyToOne
+    private Remindr pending; // the contact's last pending remindr
+
+    @Column(nullable = false)
+    private boolean stop;
 
     public Contact() {
     }
@@ -124,11 +132,25 @@ public class Contact {
 //    }
 
     public List<Remindr> getRemindrs() {
+
+        List<Remindr> remindrs = new ArrayList<>();
+        for(RemindrContact remindrContact: getRemindrContacts()) {
+            remindrs.add(remindrContact.getRemindr());
+        }
+
         return remindrs;
     }
 
     public void setRemindrs(List<Remindr> remindrs) {
-        this.remindrs = remindrs;
+
+        List<RemindrContact> remindrContacts = new ArrayList<>();
+        for(Remindr remindr: remindrs) {
+            RemindrContact remindrContact = new RemindrContact();
+            remindrContact.setContact(this);
+            remindrContact.setRemindr(remindr);
+            remindrContacts.add(remindrContact);
+        }
+        setRemindrContacts(remindrContacts);
     }
 
     public User getUser() {
@@ -143,6 +165,14 @@ public class Contact {
         return phoneNumber.equals(myself.phoneNumber);
     }
 
+
+    public Remindr getPending() {
+        return pending;
+    }
+
+    public void setPending(Remindr pending) {
+        this.pending = pending;
+    }
     @Override
     public boolean equals(Object object) {
         Contact contact = (Contact) object;
@@ -153,4 +183,19 @@ public class Contact {
         }
     }
 
+    public boolean isStop() {
+        return stop;
+    }
+
+    public void setStop(boolean stop) {
+        this.stop = stop;
+    }
+
+    public List<RemindrContact> getRemindrContacts() {
+        return remindrContacts;
+    }
+
+    public void setRemindrContacts(List<RemindrContact> remindrContacts) {
+        this.remindrContacts = remindrContacts;
+    }
 }

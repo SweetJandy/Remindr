@@ -138,7 +138,7 @@ public class RemindrController {
         }
         user = usersRepository.findOne(user.getId());
 
-        if(!isYourRemindr(user, id)) {
+            if(!isYourRemindr(user, id)) {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "You do not own this remindr.";
         }
@@ -157,9 +157,14 @@ public class RemindrController {
         List<Contact> contacts = contactsRepository.findByIdIn(list);
 
         List<Contact> newContacts = new ArrayList<>();
+
         for(Contact contact : contacts) {
-            if(!remindr.getContacts().contains(contact)){
-                newContacts.add(contact);
+        //if a contact's pending remindr is not the current remindr, or if the contact has no pending remindrs, or if the pending invite is for the current event and haven't responded yet
+            if(contact.getPending() == null || !contact.getPending().equals(remindr) || contact.getRemindrContacts().stream().filter(r -> r.getRemindr().equals(contact.getPending())).findFirst().get().getInviteStatus() == null){
+
+                if(!contact.isStop()) {
+                    newContacts.add(contact); //sends invite
+                }
             }
         }
 

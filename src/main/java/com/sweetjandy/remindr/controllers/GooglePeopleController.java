@@ -8,6 +8,7 @@ import com.sweetjandy.remindr.repositories.ContactsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
 import com.sweetjandy.remindr.services.GooglePeopleService;
 
+import com.sweetjandy.remindr.services.PhoneService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,12 +27,14 @@ public class GooglePeopleController {
     private PeopleService peopleService;
     private UsersRepository usersRepository;
     private ContactsRepository contactsRepository;
+    private PhoneService phoneService;
 
-    public GooglePeopleController(GooglePeopleService googlePeopleSvc, UsersRepository usersRepository, ContactsRepository contactsRepository) {
+    public GooglePeopleController(GooglePeopleService googlePeopleSvc, UsersRepository usersRepository, ContactsRepository contactsRepository, PhoneService phoneService) {
 
         this.googlePeopleSvc = googlePeopleSvc;
         this.usersRepository = usersRepository;
         this.contactsRepository = contactsRepository;
+        this.phoneService = phoneService;
     }
 
     @GetMapping("/confirm")
@@ -62,7 +65,7 @@ public class GooglePeopleController {
 //            //created own method name from previous logic by using command-option-m
             if (hasPhoneNumber(person) && hasName(person) && hasNonEmptyName(person)) {
 
-                final String phoneNumber = formatPhoneNumber(person.getPhoneNumbers().get(0).getValue());
+                final String phoneNumber = phoneService.formatPhoneNumber(person.getPhoneNumbers().get(0).getValue());
                 if (isNotDuplicated(user, phoneNumber)) {
                     Contact contact = new Contact();
                     contact.setFirstName(person.getNames().get(0).getGivenName());
@@ -97,22 +100,6 @@ public class GooglePeopleController {
         return person.getPhoneNumbers() != null && person.getPhoneNumbers().size() > 0;
     }
 
-    String formatPhoneNumber(String phoneNumber) {
-        String correctFormat = phoneNumber.replaceAll("[^0-9]", "");
-
-        if (correctFormat.length() == 10 || (correctFormat.length() == 11 && correctFormat.charAt(0) == '1')) {
-            if (correctFormat.length() == 11) {
-                correctFormat = correctFormat.substring(1, correctFormat.length());
-            }
-
-            correctFormat = "(" + correctFormat.substring(0, 3) + ") " + correctFormat.substring(3, 6) + "-" + correctFormat.substring(6, correctFormat.length());
-
-            return correctFormat;
-        } else {
-            return null;
-        }
-
-    }
 
 }
 

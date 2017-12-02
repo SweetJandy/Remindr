@@ -27,7 +27,6 @@ import static org.quartz.TriggerBuilder.newTrigger;
 public class ScheduleService {
 
     private Scheduler scheduler;
-    private AppointmentService service;
     private AppointmentUtility appointmentUtility;
 
     @Value("${twilio-account-sid}")

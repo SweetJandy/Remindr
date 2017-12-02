@@ -1,9 +1,6 @@
 package com.sweetjandy.remindr.services;
 
-import com.sweetjandy.remindr.models.Alert;
-import com.sweetjandy.remindr.models.AlertTime;
-import com.sweetjandy.remindr.models.Contact;
-import com.sweetjandy.remindr.models.Appointment;
+import com.sweetjandy.remindr.models.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
@@ -44,7 +41,11 @@ public class AppointmentUtility {
 
         List<Contact> contacts = alert.getRemindr().getContacts();
         for(Contact contact : contacts) {
-            appointmentList.add(convertAlertAndContactToAppointment(alert, contact));
+            //if they did not text stop and they have opted in
+            if(!contact.isStop() && contact.getRemindrContacts().stream().filter(r -> r.getRemindr().equals(alert.getRemindr())).findFirst().get().getInviteStatus() == InviteStatus.ACCEPTED){
+                appointmentList.add(convertAlertAndContactToAppointment(alert, contact));
+            }
+
         }
 
         return appointmentList;

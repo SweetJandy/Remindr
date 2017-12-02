@@ -61,18 +61,13 @@ public class Remindr {
     @JsonManagedReference
     private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)@JoinTable
-            (name = "contact_remindr",
-                    joinColumns = {@JoinColumn(name = "remindr_id")},
-                    inverseJoinColumns = {@JoinColumn(name = "contact_id")}
-            )
-    private List<Contact> contacts;
-
+    @OneToMany(mappedBy = "remindr")
+    private List<RemindrContact> remindrContacts;
 
 
     public Remindr() {
         alerts = new ArrayList<Alert>();
-        contacts = new ArrayList<Contact>();
+        remindrContacts = new ArrayList<RemindrContact>();
 
     }
 
@@ -148,14 +143,30 @@ public class Remindr {
     }
 
     public List<Contact> getContacts() {
+
+        List<Contact> contacts = new ArrayList<>();
+        for(RemindrContact remindrContact: getRemindrContacts()) {
+            contacts.add(remindrContact.getContact());
+        }
+
         return contacts;
     }
 
     public void setContacts(List<Contact> contacts) {
-        for (Contact contact : contacts) {
-            contact.getRemindrs().add(this);
+//        for (Contact contact : contacts) {
+//            contact.getRemindrs().add(this);
+//        }
+//        this.contacts = contacts;
+
+        // converting contacts into remindrContacts
+        List<RemindrContact> remindrContacts = new ArrayList<>();
+        for(Contact contact: contacts) {
+            RemindrContact remindrContact = new RemindrContact();
+            remindrContact.setContact(contact);
+            remindrContact.setRemindr(this);
+            remindrContacts.add(remindrContact);
         }
-        this.contacts = contacts;
+        setRemindrContacts(remindrContacts);
     }
 
 
@@ -188,5 +199,23 @@ public class Remindr {
 
     public String getTimeZone() {
         return timeZone;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        Remindr remindr = (Remindr) object;
+        if(this.getId() == remindr.getId()){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public List<RemindrContact> getRemindrContacts() {
+        return remindrContacts;
+    }
+
+    public void setRemindrContacts(List<RemindrContact> remindrContacts) {
+        this.remindrContacts = remindrContacts;
     }
 }
