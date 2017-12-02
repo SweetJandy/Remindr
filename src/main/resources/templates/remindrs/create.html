@@ -29,7 +29,7 @@
             <!--START DATE/TIME-->
             <div class="form-group">
                 <label for="startDateTime">Event start date/ time </label>
-                <input id="startDateTime" name="startDateTime" class="form-control" type="datetime-local" th:field="*{startDateTime}" required="required"/>
+                <input id="startDateTime" name="startDateTime" class="form-control" type="datetime-local" th:field="*{startDateTime}" required="required" min="2017-06-01T00:00" max="3000-01-01T00:00"/>
             </div>
             <div
                 class="alert alert-danger"
@@ -44,7 +44,7 @@
             <!--END DATE/TIME-->
             <!--<div class="form-group">-->
                 <!--<label for="endDateTime" style="display:none;" id="enddate-label">Event end date/ time (optional)</label>-->
-                <input id="endDateTime" name="endDateTime" class="form-control" style="display:none;" type="datetime-local" th:field="*{endDateTime}"/>
+                <input id="endDateTime" name="endDateTime" class="form-control" style="display:none;" type="datetime-local" th:field="*{endDateTime}" min="2017-06-01T00:00" max="3000-01-01T00:00"/>
             <!--</div>-->
             <div
                     class="alert alert-danger"
@@ -113,6 +113,7 @@
 <script type="text/javascript" src="/scripts/cron/jquery-cron.js"></script>
 <script th:inline="javascript" type="text/javascript">
     $(document).ready(function() {
+        $("#endDateTime").val('');
 
         // check if the checkbox is checked (say that five times fast!!)
         $("#optional-enddate").click(function () {
