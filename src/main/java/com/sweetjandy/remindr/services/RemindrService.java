@@ -64,13 +64,16 @@ public class RemindrService {
             return hour + ":" + minutes + " " + append;
 
         // check if it's after noon
-        } else if (!Strings.isNullOrEmpty(time) && (Integer.parseInt(hour) >= 12) && (Integer.parseInt(minutes) <= 59)) {
+        } else if (!Strings.isNullOrEmpty(time) && (Integer.parseInt(hour) > 12) && (Integer.parseInt(minutes) <= 59)) {
 
             if (Integer.parseInt(minutes) <= 59) {
                 append = "PM";
             }
 
             return (Integer.parseInt(hour) - 12) + ":" + minutes + " " + append;
+        } else if (!Strings.isNullOrEmpty(time) && (Integer.parseInt(hour) == 12)) {
+
+            return "12:00 PM";
         }
 
         }
