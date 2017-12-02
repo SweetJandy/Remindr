@@ -7,7 +7,7 @@ import com.sweetjandy.remindr.repositories.ContactsRepository;
 import com.sweetjandy.remindr.repositories.RemindrsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
 import com.sweetjandy.remindr.services.RemindrService;
-import com.sweetjandy.remindr.services.ScheduleService;
+//import com.sweetjandy.remindr.services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.RegEx;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.validation.Validator;
@@ -38,15 +39,17 @@ public class RemindrController {
     private AlertsRepository alertsRepository;
     private RemindrService remindrService;
 //            = new RemindrService();
-    private ScheduleService scheduleService;
+//    private ScheduleService scheduleService;
 
     @Autowired
-    public RemindrController(RemindrsRepository remindrsRepository, UsersRepository usersRepository, ContactsRepository contactsRepository, AlertsRepository alertsRepository, ScheduleService scheduleService, RemindrService remindrService) {
+    public RemindrController(RemindrsRepository remindrsRepository, UsersRepository usersRepository, ContactsRepository contactsRepository, AlertsRepository alertsRepository,
+//                             ScheduleService scheduleService,
+                             RemindrService remindrService) {
         this.contactsRepository = contactsRepository;
         this.remindrsRepository = remindrsRepository;
         this.usersRepository = usersRepository;
         this.alertsRepository = alertsRepository;
-        this.scheduleService = scheduleService;
+//        this.scheduleService = scheduleService;
         this.remindrService = remindrService;
     }
 
@@ -383,11 +386,11 @@ public class RemindrController {
         remindrsRepository.save(currentRemindr);
         currentRemindr = remindrsRepository.findLastInserted();
         for (Alert alert : currentRemindr.getAlerts()) {
-            scheduleService.schedule(alert);
+//            scheduleService.schedule(alert);
         }
 
 
-        return "redirect:/remindrs";
+        return "redirect:/remindrs/" + id;
     }
 
     @GetMapping("/remindrs")
@@ -495,7 +498,7 @@ public class RemindrController {
     }
 
     @GetMapping("/remindrs/{id}/edit")
-    public String editPost(Model model, @Valid Remindr remindr, Errors validation, @PathVariable Long id, HttpServletResponse response, @RequestParam ("startDateTime") String startDateTime, @RequestParam("endDateTime") String endDateTime, @RequestParam(name="timezone")String timezoneValue) {
+    public String editPost(Model model, @Valid Remindr remindr, Errors validation, @PathVariable Long id, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        if (user.getId() == 0) {
 //            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -510,159 +513,167 @@ public class RemindrController {
 
         model.addAttribute("remindr", remindrsRepository.findOne(id));
 
-
-//        // check for empty date and time
-//        if (Strings.isNullOrEmpty(startDateTime)) {
-//            validation.rejectValue(
-//                    "startDateTime",
-//                    "remindr.startDateTime",
-//                    "The date cannot be empty"
-//            );
-//            return "/remindrs/create";
-//        }
-//
-//
-//        Date curTime = new Date();
-//
-//        String startDateMonth = remindrService.getMonth(startDateTime);
-//        String startDateDay = remindrService.getDate(startDateTime);
-//        String startDateYear = remindrService.getYear(startDateTime);
-//        String startTime = remindrService.getTime(startDateTime);
-//
-//        // start date
-//        Calendar start = Calendar.getInstance();
-//        start.set(Calendar.YEAR, Integer.parseInt(startDateYear));
-//        start.set(Calendar.MONTH, Integer.parseInt(startDateMonth)-1);
-//        start.set(Calendar.DAY_OF_MONTH, Integer.parseInt(startDateDay));
-//        start.set(Calendar.HOUR_OF_DAY, Integer.parseInt(startTime.substring(0,2)));
-//        start.set(Calendar.MINUTE, Integer.parseInt(startTime.substring(3)));
-//
-//        Date userStartTime = start.getTime();
-//
-//        if (!curTime.before(userStartTime)) {
-//            validation.rejectValue(
-//                    "startDateTime",
-//                    "remindr.startDateTime",
-//                    "Event can't be in the past"
-//            );
-//        }
-//
-//
-//
-//        if (!Strings.isNullOrEmpty(endDateTime)) {
-//
-//            // TIME VALIDATION
-//
-//            String endDateMonth = remindrService.getMonth(endDateTime);
-//            String endDateDay = remindrService.getDate(endDateTime);
-//            String endDateYear = remindrService.getYear(endDateTime);
-//
-//            startTime = remindrService.getTime(startDateTime);
-//            String endTime = remindrService.getTime(endDateTime);
-//
-//            // remove colon
-//            startTime = startTime.replace(":", "");
-//            endTime = endTime.replace(":", "");
-//
-//            // check if end date is before start date
-//            if (
-//                    (endDateYear != null && startDateYear != null) &&
-//                            (Integer.parseInt(endDateYear) - Integer.parseInt(startDateYear) < 0)) {
-//                validation.rejectValue(
-//                        "endDateTime",
-//                        "remindr.endDateTime",
-//                        "The end date can't be before the start date"
-//                );
-//
-//                return "remindrs/create";
-//            } else if (
-//                    (endDateYear != null && startDateYear != null) &&
-//                            (Integer.parseInt(endDateYear) - Integer.parseInt(startDateYear)) == 0) {
-//
-//                // if can't validate with year, validate with MONTH
-//                if (
-//                        (endDateMonth != null && startDateMonth != null) &&
-//                                (Integer.parseInt(endDateMonth) - Integer.parseInt(endDateYear) < 0)) {
-//                    validation.rejectValue(
-//                            "endDateTime",
-//                            "remindr.endDateTime",
-//                            "The end date can't be before the start date"
-//                    );
-//
-//                    return "remindrs/create";
-//                } else if (
-//                        (endDateMonth != null && startDateMonth != null) &&
-//                                Integer.parseInt(endDateMonth) - Integer.parseInt(startDateMonth) == 0) {
-//
-//                    // if can't validate with month, validate with day
-//                    if (
-//                            (endDateDay != null && startDateDay != null) &&
-//                                    (Integer.parseInt(endDateDay) - Integer.parseInt(endDateDay) < 0)) {
-//                        validation.rejectValue(
-//                                "endDateTime",
-//                                "remindr.endDateTime",
-//                                "The end date can't be before the start date"
-//                        );
-//                        return "remindrs/create";
-//                    } else if ((endDateDay != null && startDateDay != null) &&
-//                            (Integer.parseInt(endDateDay) - Integer.parseInt(endDateDay) == 0)) {
-//                        if (Integer.parseInt(endTime) - Integer.parseInt(startTime) < 0) {
-//
-//                            validation.rejectValue(
-//                                    "endDateTime",
-//                                    "remindr.endDateTime",
-//                                    "The end date/time can't be before the start date"
-//                            );
-//                            return "remindrs/create";
-//                        }
-//                    }
-//
-//                }
-//
-//            }
-//
-//            // end date
-//            Calendar end = Calendar.getInstance();
-//            end.set(Calendar.YEAR, Integer.parseInt(endDateYear));
-//            end.set(Calendar.MONTH, Integer.parseInt(endDateDay));
-//            end.set(Calendar.DAY_OF_MONTH, Integer.parseInt(endDateMonth));
-//            Date userEndTime = end.getTime();
-//
-//
-//            if (!curTime.before(userEndTime)) {
-//                validation.rejectValue(
-//                        "endDateTime",
-//                        "remindr.endDateTime",
-//                        "Event can't be in the past"
-//                );
-//            }
-//
-//            return "/remindrs/create";
-//
-//        }
-//
-//
-//        if (validation.hasErrors()) {
-//            model.addAttribute("errors", validation);
-//            model.addAttribute("remindr", remindr);
-//            return "/remindrs/create";
-//        }
-
-
-        // save timezone to remindr
-        remindr.setTimeZone(timezoneValue);
-
-        // SAVE REMINDR
-        remindrsRepository.save(remindr);
-
-
         return "remindrs/edit";
     }
 
     @PostMapping("/remindrs/{id}/edit")
-    public String editPost(@Valid Remindr remindr, Errors validation, @PathVariable Long id, Model model, HttpServletResponse response, @RequestParam(name="timezone")String timezoneValue) {
+    public String editPost(@Valid Remindr remindr,
+                           Errors validation,
+                           @PathVariable Long id,
+                           Model model,
+                           HttpServletResponse response,
+                           @RequestParam(name="timezone")String timezoneValue,
+                           @RequestParam(name="startDateTime") String startDateTime,
+                           @RequestParam(name="endDateTime") String endDateTime,
+                           @RequestParam(name="title") String title,
+                           @RequestParam(name="description") String description,
+                           @RequestParam(name="location") String location)
+
+    {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         user = usersRepository.findOne(user.getId());
+
+        if (!isYourRemindr(user, remindr.getId())) {
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "/remindrs/edit";
+        }
+
+
+
+        // TIME VALIDATION
+        // check for empty date and time
+        if (Strings.isNullOrEmpty(startDateTime)) {
+            validation.rejectValue(
+                    "startDateTime",
+                    "remindr.startDateTime",
+                    "The date cannot be empty"
+            );
+            return "/remindrs/edit";
+        }
+
+        remindr = remindrsRepository.findOne(id);
+        model.addAttribute("remindr", remindr);
+
+
+        Date curTime = new Date();
+
+        String startDateMonth = remindrService.getMonth(startDateTime);
+        String startDateDay = remindrService.getDate(startDateTime);
+        String startDateYear = remindrService.getYear(startDateTime);
+        String startTime = remindrService.getTime(startDateTime);
+
+        // start date
+        Calendar start = Calendar.getInstance();
+        start.set(Calendar.YEAR, Integer.parseInt(startDateYear));
+        start.set(Calendar.MONTH, Integer.parseInt(startDateMonth) - 1);
+        start.set(Calendar.DAY_OF_MONTH, Integer.parseInt(startDateDay));
+        start.set(Calendar.HOUR_OF_DAY, Integer.parseInt(startTime.substring(0, 2)));
+        start.set(Calendar.MINUTE, Integer.parseInt(startTime.substring(3)));
+
+        Date userStartTime = start.getTime();
+
+        if (!curTime.before(userStartTime)) {
+            validation.rejectValue(
+                    "startDateTime",
+                    "remindr.startDateTime",
+                    "Event can't be in the past"
+            );
+            return "/remindrs/edit";
+        }
+
+        if (!Strings.isNullOrEmpty(endDateTime)) {
+
+            // TIME VALIDATION
+
+            String endDateMonth = remindrService.getMonth(endDateTime);
+            String endDateDay = remindrService.getDate(endDateTime);
+            String endDateYear = remindrService.getYear(endDateTime);
+
+            startTime = remindrService.getTime(startDateTime);
+            String endTime = remindrService.getTime(endDateTime);
+
+            // remove colon
+            startTime = startTime.replace(":", "");
+            endTime = endTime.replace(":", "");
+
+            // check if end date is before start date
+            if (
+                    (endDateYear != null && startDateYear != null) &&
+                            (Integer.parseInt(endDateYear) - Integer.parseInt(startDateYear) < 0)) {
+                validation.rejectValue(
+                        "endDateTime",
+                        "remindr.endDateTime",
+                        "The end date can't be before the start date"
+                );
+
+                return "/remindrs/edit";
+            } else if (
+                    (endDateYear != null && startDateYear != null) &&
+                            (Integer.parseInt(endDateYear) - Integer.parseInt(startDateYear)) == 0) {
+
+                // if can't validate with year, validate with MONTH
+                if (
+                        (endDateMonth != null && startDateMonth != null) &&
+                                (Integer.parseInt(endDateMonth) - Integer.parseInt(endDateMonth) < 0)) {
+                    validation.rejectValue(
+                            "endDateTime",
+                            "remindr.endDateTime",
+                            "The end date can't be before the start date"
+                    );
+
+                    return "/remindrs/edit";
+                } else if (
+                        (endDateMonth != null && startDateMonth != null) &&
+                                (Integer.parseInt(endDateMonth) - Integer.parseInt(startDateMonth) == 0)
+                        ) {
+
+                    // if can't validate with month, validate with day
+                    if (
+                            (endDateDay != null && startDateDay != null) &&
+                                    (Integer.parseInt(endDateDay) - Integer.parseInt(endDateDay) < 0)) {
+                        validation.rejectValue(
+                                "endDateTime",
+                                "remindr.endDateTime",
+                                "The end date can't be before the start date"
+                        );
+                        return "/remindrs/edit";
+                    } else if ((endDateDay != null && startDateDay != null) &&
+                            (Integer.parseInt(endDateDay) - Integer.parseInt(endDateDay) == 0)) {
+                        if (Integer.parseInt(endTime) - Integer.parseInt(startTime) < 0) {
+
+                            validation.rejectValue(
+                                    "endDateTime",
+                                    "remindr.endDateTime",
+                                    "The end date/time can't be before the start date"
+                            );
+                            return "/remindrs/edit";
+                        }
+                    }
+
+                }
+            }
+            // end date
+            Calendar end = Calendar.getInstance();
+            end.set(Calendar.YEAR, Integer.parseInt(endDateYear));
+            end.set(Calendar.MONTH, Integer.parseInt(endDateMonth)-1);
+            end.set(Calendar.DAY_OF_MONTH, Integer.parseInt(endDateDay));
+            start.set(Calendar.HOUR_OF_DAY, Integer.parseInt(startTime.substring(0, 2)));
+            start.set(Calendar.MINUTE, Integer.parseInt(startTime.substring(3)));
+            Date userEndTime = end.getTime();
+
+
+            if (!curTime.before(userEndTime)) {
+                validation.rejectValue(
+                        "endDateTime",
+                        "remindr.endDateTime",
+                        "Event can't be in the past"
+                );
+                return "/remindrs/edit";
+            }
+
+            remindr.setEndDateTime(endDateTime);
+        }
+
 
         if (validation.hasErrors()) {
             model.addAttribute("errors", validation);
@@ -670,19 +681,23 @@ public class RemindrController {
             return "/remindrs/edit";
         }
 
-        if(!isYourRemindr(user, remindr.getId())) {
-            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return "You do not own this remindr.";
+        if (!Strings.isNullOrEmpty(description)) {
+            remindr.setDescription(description);
         }
 
-        remindr.setTimeZone(timezoneValue);
-        remindr.setId(id);
-        remindr.setUser(user);
+        // save timezone to remindr
+            remindr.setId(id);
+            remindr.setUser(user);
+            remindr.setTitle(title);
+            remindr.setStartDateTime(startDateTime);
+            remindr.setTimeZone(timezoneValue);
+            remindr.setLocation(location);
+            remindr.setUploadPath(remindrsRepository.findOne(id).getUploadPath());
 
+        // SAVE REMINDR
+            remindrsRepository.save(remindr);
+            return "redirect:/remindrs/{id}";
 
-        remindrsRepository.save(remindr);
-
-        return "redirect:/remindrs/{id}";
     }
 
     @PostMapping("/remindrs/{id}/edit-pic")
