@@ -34,7 +34,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-public class RemindrController {
+public class
+RemindrController {
     private RemindrsRepository remindrsRepository;
     private UsersRepository usersRepository;
     private ContactsRepository contactsRepository;
@@ -167,7 +168,7 @@ public class RemindrController {
                 // if can't validate with year, validate with MONTH
                 if (
                         (endDateMonth != null && startDateMonth != null) &&
-                        (Integer.parseInt(endDateMonth) - Integer.parseInt(endDateMonth) < 0)) {
+                        (Integer.parseInt(endDateMonth) - Integer.parseInt(startDateMonth) < 0)) {
                     validation.rejectValue(
                             "endDateTime",
                             "remindr.endDateTime",
@@ -183,7 +184,7 @@ public class RemindrController {
                     // if can't validate with month, validate with day
                     if (
                             (endDateDay != null && startDateDay != null) &&
-                                    (Integer.parseInt(endDateDay) - Integer.parseInt(endDateDay) < 0)) {
+                                    (Integer.parseInt(endDateDay) - Integer.parseInt(startDateDay) < 0)) {
                         validation.rejectValue(
                                 "endDateTime",
                                 "remindr.endDateTime",
@@ -191,7 +192,7 @@ public class RemindrController {
                         );
                         return "remindrs/create";
                     } else if ((endDateDay != null && startDateDay != null) &&
-                            (Integer.parseInt(endDateDay) - Integer.parseInt(endDateDay) == 0)) {
+                            (Integer.parseInt(endDateDay) - Integer.parseInt(startDateDay) == 0)) {
                         if (Integer.parseInt(endTime) - Integer.parseInt(startTime) < 0) {
 
                             validation.rejectValue(
@@ -225,8 +226,6 @@ public class RemindrController {
                 );
                 return "remindrs/create";
             }
-
-            return "/remindrs/create";
 
         }
 
@@ -521,7 +520,7 @@ public class RemindrController {
     }
 
     @GetMapping("/remindrs/{id}/edit")
-    public String editPost(Model model, @Valid Remindr remindr, Errors validation, @PathVariable Long id, HttpServletResponse response, @RequestParam ("startDateTime") String startDateTime, @RequestParam("endDateTime") String endDateTime, @RequestParam(name="timezone")String timezoneValue) {
+    public String editPost(Model model, @Valid Remindr remindr, Errors validation, @PathVariable Long id, HttpServletResponse response) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user.getId() == 0) {
             // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -535,13 +534,6 @@ public class RemindrController {
         }
 
         model.addAttribute("remindr", remindrsRepository.findOne(id));
-
-
-        // save timezone to remindr
-        remindr.setTimeZone(timezoneValue);
-
-        // SAVE REMINDR
-        remindrsRepository.save(remindr);
 
 
         return "remindrs/edit";
@@ -648,7 +640,7 @@ public class RemindrController {
                 // if can't validate with year, validate with MONTH
                 if (
                         (endDateMonth != null && startDateMonth != null) &&
-                                (Integer.parseInt(endDateMonth) - Integer.parseInt(endDateMonth) < 0)) {
+                                (Integer.parseInt(endDateMonth) - Integer.parseInt(startDateMonth) < 0)) {
                     validation.rejectValue(
                             "endDateTime",
                             "remindr.endDateTime",
@@ -664,7 +656,7 @@ public class RemindrController {
                     // if can't validate with month, validate with day
                     if (
                             (endDateDay != null && startDateDay != null) &&
-                                    (Integer.parseInt(endDateDay) - Integer.parseInt(endDateDay) < 0)) {
+                            (Integer.parseInt(endDateDay) - Integer.parseInt(startDateDay) < 0)) {
                         validation.rejectValue(
                                 "endDateTime",
                                 "remindr.endDateTime",
@@ -672,7 +664,8 @@ public class RemindrController {
                         );
                         return "/remindrs/edit";
                     } else if ((endDateDay != null && startDateDay != null) &&
-                            (Integer.parseInt(endDateDay) - Integer.parseInt(endDateDay) == 0)) {
+                            (Integer.parseInt(endDateDay) - Integer.parseInt(startDateDay) == 0))
+                    {
                         if (Integer.parseInt(endTime) - Integer.parseInt(startTime) < 0) {
 
                             validation.rejectValue(
