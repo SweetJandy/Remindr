@@ -1,10 +1,10 @@
 package com.sweetjandy.remindr.controllers;
-import com.sweetjandy.remindr.models.Contact;
-import com.sweetjandy.remindr.models.InviteStatus;
-import com.sweetjandy.remindr.models.RemindrContact;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.sweetjandy.remindr.models.*;
 import com.sweetjandy.remindr.repositories.ContactsRepository;
 import com.sweetjandy.remindr.services.AppointmentUtility;
 import com.sweetjandy.remindr.services.PhoneService;
+import com.sweetjandy.remindr.services.ScheduleService;
 import com.sweetjandy.remindr.services.TwilioService;
 import com.twilio.rest.chat.v1.service.channel.Invite;
 import com.twilio.twiml.Body;
@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -30,11 +31,15 @@ public class TwilioController {
     private final TwilioService twilioSvc;
     private ContactsRepository contactsRepository;
     private PhoneService phoneService;
+    private ScheduleService scheduleService;
+    private AppointmentUtility appointmentUtility;
 
-    public TwilioController(TwilioService twilioservice, ContactsRepository contactsRepository, PhoneService phoneService) {
+    public TwilioController(TwilioService twilioservice, ContactsRepository contactsRepository, PhoneService phoneService, ScheduleService scheduleService, AppointmentUtility appointmentUtility) {
         this.twilioSvc = twilioservice;
         this.contactsRepository = contactsRepository;
         this.phoneService = phoneService;
+        this.scheduleService = scheduleService;
+        this.appointmentUtility = appointmentUtility;
     }
 
 //    @GetMapping ("/sendSMS")
@@ -49,7 +54,7 @@ public class TwilioController {
     @ResponseBody
     public String replySMS(
         @RequestParam Map<String, String> allRequestParams, ModelMap model
-    ) {
+    ) throws JsonProcessingException, ParseException {
 
         String phoneNumber = allRequestParams.get("From");
         phoneNumber = phoneService.formatPhoneNumber(phoneNumber);
@@ -72,8 +77,14 @@ public class TwilioController {
                 response = twilioSvc.setResponse(optIn);
                 RemindrContact remindrContact = contact.getRemindrContacts().stream().filter(r -> r.getRemindr().equals(contact.getPending())).findFirst().get();
                 remindrContact.setInviteStatus(InviteStatus.ACCEPTED);
-                contact.setPending(null);
                 contactsRepository.save(contact);
+
+                for(Alert alert : contact.getPending().getAlerts()) {
+                    Appointment appointment = appointmentUtility.convertAlertAndContactToAppointment(alert, contact);
+                    scheduleService.scheduleJob(appointment);
+                }
+
+                contact.setPending(null);
             }
         } else if (bodyParam.equalsIgnoreCase("no") || bodyParam.equalsIgnoreCase("n")){
             response = twilioSvc.setResponse(optOut);

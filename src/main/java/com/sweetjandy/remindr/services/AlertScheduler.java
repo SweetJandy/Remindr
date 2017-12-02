@@ -26,7 +26,6 @@ public class AlertScheduler implements Job {
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
 
         String appointmentJson = dataMap.getString("appointment");
-
         String twilioAccountSid = dataMap.getString("twilioAccountSid");
         String twilioAuthToken = dataMap.getString("twilioAuthToken");
         String twilioNumber = dataMap.getString("twilioNumber");

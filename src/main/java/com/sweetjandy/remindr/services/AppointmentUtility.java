@@ -42,7 +42,8 @@ public class AppointmentUtility {
         List<Contact> contacts = alert.getRemindr().getContacts();
         for(Contact contact : contacts) {
             //if they did not text stop and they have opted in
-            if(!contact.isStop() && contact.getRemindrContacts().stream().filter(r -> r.getRemindr().equals(alert.getRemindr())).findFirst().get().getInviteStatus() == InviteStatus.ACCEPTED){
+            if(!contact.isStop() && contact.getRemindrContacts().stream().filter(r -> r.getRemindr().equals(alert.getRemindr())).findFirst().get().getInviteStatus() == InviteStatus.ACCEPTED) {
+
                 appointmentList.add(convertAlertAndContactToAppointment(alert, contact));
             }
 

@@ -6,6 +6,7 @@ import com.sweetjandy.remindr.models.Remindr;
 import com.sweetjandy.remindr.repositories.ContactsRepository;
 import com.twilio.exception.ApiException;
 import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.rest.api.v2010.account.MessageCreator;
 import com.twilio.twiml.Body;
 import com.twilio.twiml.MessagingResponse;
 import com.twilio.twiml.TwiMLException;
@@ -53,17 +54,22 @@ public class TwilioService extends HttpServlet {
 
         String location = remindr.getLocation();
         String description = remindr.getDescription();
+        String mediaURL = remindr.getUploadPath();
 
 
         Message message = null;
         try {
-            message = Message
+            MessageCreator creator = Message
                     .creator(phoneNumberTo, phoneNumberFrom,
-                            remindr.getUser().getContact().getFirstName() + " " + remindr.getUser().getContact().getLastName() + " has invited you to '" + remindr.getTitle() + "' at " + location + " on " + date + " at " + time + ".\nDetails: " + description + "\nAccept reminders for this event? Reply yes/no.")
-    //                .setMediaUrl(mediaURL)
-                    .setProvideFeedback(true)
+                            remindr.getUser().getContact().getFirstName() + " " + remindr.getUser().getContact().getLastName() + " has invited you to '" + remindr.getTitle() + "' at " + location + " on " + date + " at " + time + ".\nDetails: " + description + "\nAccept reminders for this event? Reply yes/no.");
+            if(mediaURL != null && !mediaURL.equals("")) {
+                creator = creator.setMediaUrl(mediaURL);
+            }
+                    message = creator.setProvideFeedback(true)
                     .create();
                 response = message.getSid();
+                contact.setPending(remindr);
+                contactsRepository.save(contact);
         } catch (ApiException e) {
             if(e.getCode() == 21610){
                 contact.setStop(true);
