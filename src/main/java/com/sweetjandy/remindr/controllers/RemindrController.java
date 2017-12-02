@@ -550,7 +550,8 @@ RemindrController {
                            @RequestParam(name="endDateTime") String endDateTime,
                            @RequestParam(name="title") String title,
                            @RequestParam(name="description") String description,
-                           @RequestParam(name="location") String location)
+                           @RequestParam(name="location") String location,
+                           @RequestParam (name="pic-input") String url)
 
     {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -722,12 +723,12 @@ RemindrController {
             remindr.setStartDateTime(startDateTime);
             remindr.setTimeZone(timezoneValue);
             remindr.setLocation(location);
-            remindr.setUploadPath(remindrsRepository.findOne(id).getUploadPath());
+            remindr.setUploadPath(url);
 
 
         // SAVE REMINDR
         remindrsRepository.save(remindr);
-        return "redirect:/remindrs/{id}";
+        return "redirect:/remindrs/" + id;
 
     }
 
@@ -746,7 +747,7 @@ RemindrController {
         remindr.setUploadPath(url);
         remindrsRepository.save(remindr);
 
-        return "redirect:/remindrs/{id}";
+        return "redirect:/remindrs/create";
     }
 
 
