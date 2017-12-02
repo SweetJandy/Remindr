@@ -71,6 +71,7 @@ public class GooglePeopleController {
                     contact.setFirstName(person.getNames().get(0).getGivenName());
                     contact.setLastName(person.getNames().get(0).getFamilyName());
                     contact.setPhoneNumber(phoneNumber);
+                    contact.setGoogleContact(person.getResourceName());
                     contacts.add(contact);
                     contact.setUser(user);
                 }

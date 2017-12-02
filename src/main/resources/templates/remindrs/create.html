@@ -56,8 +56,11 @@
                 <!--<label for="endDateTime" style="display:none;" id="enddate-label">Event end date/ time (optional)</label>-->
                 <input id="endDateTime" name="endDateTime" class="form-control" style="display:none;" type="datetime-local" th:field="*{endDateTime}" min="2017-01-01T00:00" max="3000-01-01T00:00"/>
             <!--</div>-->
-
-            <br />
+            <div
+                    class="alert alert-danger"
+                    th:if="${#fields.hasErrors('endDateTime')}"
+                    th:errors="*{endDateTime}" >
+            </div>
 
             <!--TIME ZONE LIST-->
             <div class="form-group">
@@ -83,6 +86,11 @@
                 th:errors="*{location}" >
             </div>
 
+            <!--UPLOAD AN IMAGE-->
+            <input id="pic-input" th:field="*{uploadPath}" class="hidden" />
+            <a class="btn btn-primary" id="add-pic">Attach an Image</a>
+            <img id="image-preview" style="display:block" />
+
             <!--&lt;!&ndash;UPLOAD AN IMAGE&ndash;&gt;-->
             <!--<h2>Upload an Image</h2>-->
             <!--<form action="/fileupload" method="post" enctype="multipart/form-data">-->
@@ -105,10 +113,11 @@
     </div>
 </div>
 <div th:replace="/fragments/partials :: scripts"></div>
-<!--<script src="../../static/scripts/file-upload.js"></script>-->
+<script src="../../static/scripts/file-upload.js"></script>
 <script type="text/javascript" src="/scripts/cron/jquery-cron.js"></script>
 <script th:inline="javascript" type="text/javascript">
     $(document).ready(function() {
+        $("#endDateTime").val('');
 
         // check if the checkbox is checked (say that five times fast!!)
         $("#optional-enddate").click(function () {
@@ -124,6 +133,7 @@
             } else {
                 console.log("It's not checked!");
                 $("#endDateTime").hide();
+                $("#endDateTime").val('');
                 $("#enddate-label").hide();
             }
         });
@@ -133,7 +143,6 @@
             var isItChecked = $('#optional-recurring').prop('checked');
 
             if (isItChecked) {
-//                console.log("It's checked!");
 
                 // if it's checked, show the cron field
                 $('#selector').cron({
@@ -154,15 +163,53 @@
                 $("#selector").show();
 
             } else {
-//                console.log("It's not checked!");
 
                 $("#selector").hide();
                 $("#recurring-label").hide();
             }
         });
 
+
+    ///////////////
+    // FILESTACK //
+    ///////////////
+    $("#add-pic").click(openPicker);
+    var fsClient = filestack.init('AjqlwAL0oTqy2FzYw5Eylz');
+
+    function openPicker (event) {
+        console.log(event);
+//        $("#add-pic").attr("Hidden", "hidden");
+
+        fsClient.pick({
+            fromSources:["local_file_system","url","imagesearch","facebook","instagram","googledrive","dropbox"],
+            accept:["image/*"],
+            maxFiles:1,
+            transformations:{
+                crop:true,
+                circle:true,
+                rotate:true},
+            maxSize:1000000
+        }).then(function(response) {
+            // declare this function to handle response
+            function handleFilestack (response) {
+                console.log(response);
+                $("#pic-input").val(response.filesUploaded[0].url);
+                $("#image-preview").attr(
+                    {
+                        "src":response.filesUploaded[0].url,
+                        "width": "200"
+                    });
+                console.log(response.filesUploaded[0].url);
+            }
+
+            handleFilestack(response);
+
+
+//            $("#submit-pic").removeAtt("Hidden");
+        });
+    }
+
     });
 </script>
-
 </body>
 </html>

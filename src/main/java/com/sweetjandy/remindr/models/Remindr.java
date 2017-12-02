@@ -154,10 +154,6 @@ public class Remindr {
     }
 
     public void setContacts(List<Contact> contacts) {
-//        for (Contact contact : contacts) {
-//            contact.getRemindrs().add(this);
-//        }
-//        this.contacts = contacts;
 
         // converting contacts into remindrContacts
         List<RemindrContact> remindrContacts = new ArrayList<>();

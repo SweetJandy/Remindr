@@ -46,7 +46,17 @@
             <label for="recurrence">Recurring event (optional) </label>
             <input class="form-control" name="recurrence" type="hidden" id="recurrence" th:field="*{recurrence}"/>
         </div>
-
+        <div class="form-group">
+            <label for="timeZone">Event Timezone</label>
+            <select id="timeZone" name="timezone">
+                <option timeZoneId="3" gmtAdjustment="GMT-10:00" useDaylightTime="0" value="-10">(GMT-10:00) Hawaii</option>
+                <option timeZoneId="4" gmtAdjustment="GMT-09:00" useDaylightTime="1" value="-9">(GMT-09:00) Alaska</option>
+                <option timeZoneId="5" gmtAdjustment="GMT-08:00" useDaylightTime="1" value="-8">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
+                <option timeZoneId="9" gmtAdjustment="GMT-07:00" useDaylightTime="1" value="-7">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
+                <option timeZoneId="11" gmtAdjustment="GMT-06:00" useDaylightTime="1" value="-6">(GMT-06:00) Central Time (US &amp; Canada)</option>
+                <option timeZoneId="15" gmtAdjustment="GMT-05:00" useDaylightTime="1" value="-5">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
+            </select>
+        </div>
         <!--&lt;!&ndash;ALERTS&ndash;&gt;-->
         <!--<div class="form-group">-->
         <!--<label for="endDateTime">Set a remindr*</label>-->
