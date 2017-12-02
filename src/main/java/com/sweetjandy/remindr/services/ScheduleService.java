@@ -27,7 +27,6 @@ import static org.quartz.TriggerBuilder.newTrigger;
 public class ScheduleService {
 
     private Scheduler scheduler;
-    private AppointmentService service;
     private AppointmentUtility appointmentUtility;
 
     @Value("${twilio-account-sid}")
@@ -80,7 +79,7 @@ public class ScheduleService {
 
     }
 
-    private void scheduleJob(Appointment appointment) throws JsonProcessingException, ParseException {
+    public void scheduleJob(Appointment appointment) throws JsonProcessingException, ParseException {
 
         String appointmentId = appointment.getCompositeId();
         Date finalDate = appointmentUtility.prepareTriggerDate(appointment);

@@ -8,6 +8,7 @@ import com.sweetjandy.remindr.repositories.RemindrsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
 import com.sweetjandy.remindr.services.RemindrService;
 import com.sweetjandy.remindr.services.ScheduleService;
+import com.sweetjandy.remindr.services.TwilioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.validation.Validator;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.*;
 import java.text.SimpleDateFormat;
 import java.text.SimpleDateFormat;
@@ -37,17 +39,18 @@ public class RemindrController {
     private ContactsRepository contactsRepository;
     private AlertsRepository alertsRepository;
     private RemindrService remindrService;
-//            = new RemindrService();
     private ScheduleService scheduleService;
+    private TwilioService twilioService;
 
     @Autowired
-    public RemindrController(RemindrsRepository remindrsRepository, UsersRepository usersRepository, ContactsRepository contactsRepository, AlertsRepository alertsRepository, ScheduleService scheduleService, RemindrService remindrService) {
+    public RemindrController(RemindrsRepository remindrsRepository, UsersRepository usersRepository, ContactsRepository contactsRepository, AlertsRepository alertsRepository, ScheduleService scheduleService, RemindrService remindrService, TwilioService twilioService) {
         this.contactsRepository = contactsRepository;
         this.remindrsRepository = remindrsRepository;
         this.usersRepository = usersRepository;
         this.alertsRepository = alertsRepository;
         this.scheduleService = scheduleService;
         this.remindrService = remindrService;
+        this.twilioService = twilioService;
     }
 
 
@@ -91,7 +94,6 @@ public class RemindrController {
         String fullName = contact.getFirstName() + contact.getLastName();
 
         model.addAttribute("contact", contact);
-
 
 
 //        // check for empty date and time
@@ -293,11 +295,34 @@ public class RemindrController {
             list.add(Long.parseLong(contactId));
         }
 
+//        old and new contacts
         List<Contact> contacts = contactsRepository.findByIdIn(list);
+
+        List<Contact> newContacts = new ArrayList<>();
+
+        for(Contact contact : contacts) {
+        //if a contact's pending remindr is not the current remindr, or if the contact has no pending remindrs, or if the pending invite is for the current event and haven't responded yet
+            if(contact.getPending() == null || !contact.getPending().equals(remindr) || contact.getRemindrContacts().stream().filter(r -> r.getRemindr().equals(contact.getPending())).findFirst().get().getInviteStatus() == null){
+
+                if(!contact.isStop()) {
+                    newContacts.add(contact); //sends invite
+                }
+            }
+        }
 
         remindr.setContacts(contacts);
 
         remindrsRepository.save(remindr);
+
+        for(Contact newContact : newContacts) {
+            try {
+                twilioService.sendInitialSMS(remindr, newContact);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+
 
         return "redirect:/remindrs/" + remindr.getId() + "/edit-alerts";
     }
@@ -497,10 +522,10 @@ public class RemindrController {
     @GetMapping("/remindrs/{id}/edit")
     public String editPost(Model model, @Valid Remindr remindr, Errors validation, @PathVariable Long id, HttpServletResponse response, @RequestParam ("startDateTime") String startDateTime, @RequestParam("endDateTime") String endDateTime, @RequestParam(name="timezone")String timezoneValue) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if (user.getId() == 0) {
-//            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//            return "redirect:/login";
-//        }
+        if (user.getId() == 0) {
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
+        }
         user = usersRepository.findOne(user.getId());
 
         if(!isYourRemindr(user, id)) {
@@ -662,17 +687,21 @@ public class RemindrController {
     @PostMapping("/remindrs/{id}/edit")
     public String editPost(@Valid Remindr remindr, Errors validation, @PathVariable Long id, Model model, HttpServletResponse response, @RequestParam(name="timezone")String timezoneValue) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getId() == 0) {
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "redirect:/login";
+        }
         user = usersRepository.findOne(user.getId());
+
+        if(!isYourRemindr(user, remindr.getId())) {
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "You do not own this remindr.";
+        }
 
         if (validation.hasErrors()) {
             model.addAttribute("errors", validation);
             model.addAttribute("remindr", remindr);
             return "/remindrs/edit";
-        }
-
-        if(!isYourRemindr(user, remindr.getId())) {
-            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return "You do not own this remindr.";
         }
 
         remindr.setTimeZone(timezoneValue);

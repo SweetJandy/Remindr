@@ -4,7 +4,7 @@
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
 <div class="container">
-    <h1>Edit your remindr event</h1>
+    <h1>Edit event details</h1>
     <form th:action="${'/remindrs/'+ remindr.id +'/edit'}" method="post" th:object="${remindr}">
         <!--TITLE-->
         <div class="form-group">
@@ -74,15 +74,14 @@
             <input type="text" id="location" name="location" th:field="*{location}" class="form-control" />
         </div>
         <div
-                class="alert alert-danger"
-                th:if="${#fields.hasErrors('location')}"
-                th:errors="*{location}" >
+            class="alert alert-danger"
+            th:if="${#fields.hasErrors('location')}"
+            th:errors="*{location}" >
         </div>
-
 
             <input type="submit" class="btn btn-primary"/>
         </form>
-        <a href="/remindrs" class="btn btn-danger">Cancel</a>
+        <a href="/remindrs" class="btn btn-primary">Cancel</a>
 
         <!--&lt;!&ndash;UPLOAD AN IMAGE&ndash;&gt;-->
         <!--<h2>Upload an Image</h2>-->

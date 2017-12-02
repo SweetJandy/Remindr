@@ -26,7 +26,6 @@ public class AlertScheduler implements Job {
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
 
         String appointmentJson = dataMap.getString("appointment");
-
         String twilioAccountSid = dataMap.getString("twilioAccountSid");
         String twilioAuthToken = dataMap.getString("twilioAuthToken");
         String twilioNumber = dataMap.getString("twilioNumber");
@@ -47,10 +46,11 @@ public class AlertScheduler implements Job {
                 String title = appointment.getTitle();
                 String description = appointment.getDescription();
                 String sender = appointment.getSender();
+                String location = appointment.getLocation();
 
                 DateTimeFormatter formatter = DateTimeFormat.forPattern("MM-dd-yyyy hh:mma");
 
-                String messageBody = "Hi " + name + ", just a quick remindr for " + sender + "'s '" + title + "' on " + date + " at " + time + ".";
+                String messageBody = "Hi " + name + ", just a quick remindr for " + sender + "'s '" + title + "' at " + location + " on " + date + " at " + time + ".";
 
                 try {
                     Message message = Message

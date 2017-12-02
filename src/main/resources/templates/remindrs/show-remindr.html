@@ -6,7 +6,11 @@
     <div class="container">
         <div class="row">
 
-        <h1>Show remindr</h1>
+        <h2>Event details
+            <a th:href="@{/remindrs/{id}/edit(id=${remindr.id})}" class="btn btn-default">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+        </h2>
 
 
         <img th:src="${remindr.uploadPath}" width="200" alt="event image" id="image-preview"/>
@@ -18,14 +22,18 @@
         </form>
 
         <h2 th:text="${remindr.title}"></h2>
+        <h4>Title:</h4>
+        <p th:text="${remindr.title}"></p>
         <!--<img th:src="${remindr.uploadPath}" alt="event image" />-->
 
-        <h4>Event description</h4>
-        <p th:text="${remindr.description}"></p>
+        <div th:if="${description} != null">
+            <h4>Description:</h4>
+            <p th:text="${description}"></p>
+        </div>
 
         <!--START DATE AND TIME-->
         <div th:if="${startdate} != null">
-            <h4>Event start date/ time</h4>
+            <h4>Start date/ time:</h4>
             <p th:text="${startdate}"></p>
         </div>
         <div th:if="${starttime} != null">
@@ -35,7 +43,7 @@
 
         <!--END DATE AND TIME-->
         <div th:if="${enddate} != null">
-        <h4>Event end date/ time</h4>
+            <h4>End date/ time:</h4>
             <p th:text="${enddate}"></p>
         </div>
         <div th:if="${endtime} != null">
@@ -44,61 +52,54 @@
         <!--<p th:text="${remindr.endDateTime}"></p>-->
 
         <!--in cron job format-->
-        <h4>Recurring date/ time</h4>
-        <p th:text="${remindr.recurrence}"></p>
+        <div th:if="${recurrence} != null">
+            <h4>Recurring date/ time:</h4>
+            <p th:text="${recurrence}"></p>
+        </div>
 
-        <h4>Event location</h4>
+        <h4>Location:</h4>
         <p th:text="${remindr.location}"></p>
 
-        <button class="btn btn-primary"  type="submit">
-            <a th:href="@{/remindrs/{id}/edit(id=${remindr.id})}" style="color:white;">Edit event details</a>
-        </button>
-
-        <!--</div>-->
-        <br />
-
-        <!--ALERTS-->
-        <h4>You have
-            <span th:text="${numberOfAlerts}"></span>
-            alert(s) on this remindr:
-        </h4>
-        <ul th:each="alert : ${alerts}">
-            <li th:text = "${alert}">
-            </li>
-        </ul>
-        <button class="btn btn-primary" type="submit">
-            <a th:href="@{/remindrs/{id}/edit-alerts(id=${remindr.id})}" style="color:white;">Edit your alerts</a>
-        </button>
-
         <!--CONTACTS-->
-        <h4> You have attached
+        <h2>Friends
+            <a th:href="@{/remindrs/{id}/add-contacts(id=${remindr.id})}" class="btn btn-default">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+        </h2>
+
+        <h4>
             <span th:text="${contactSize}"></span>
-            contact(s) to this remindr:
+            friend(s) invited
+            <span th:if="${contactSize} > 0">:</span>
         </h4>
         <ul th:each="contact : ${contacts}">
             <li th:text = "${contact.firstName + ' ' + contact.lastName}"></li>
         </ul>
-        <button class="btn btn-primary" type="submit">
-            <a th:href="@{/remindrs/{id}/edit-contacts(id=${remindr.id})}" style="color:white;">Edit your contacts</a>
-        </button>
 
+        <!--ALERTS-->
+        <h2>Remindrs
+            <a th:href="@{/remindrs/{id}/edit-alerts(id=${remindr.id})}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span>
+            </a>
+        </h2>
+
+        <h4>
+            <span th:text="${numberOfAlerts}"></span>
+            remindr(s) set
+            <span th:if="${numberOfAlerts} > 0">:</span>
+        </h4>
+        <ul th:each="alert : ${alerts}">
+            <li th:text = "${alert}"></li>
+        </ul>
 
         <h4>Created by:
             <span th:text="${remindr.user.contact.FirstName + ' ' + remindr.user.contact.LastName}"></span>
         </h4>
 
-        <!--<div sec:authorize="isAuthenticated()">-->
-        <!--<form method="post" th:action="@{/remindrs/{id}/delete(id=${remindr.id})}">-->
-            <!--<input class="btn btn-default" type="submit" value="Delete" />-->
-        <!--</form>-->
-
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteRemindrModal">
             Delete
         </button>
-        <button class="btn btn-primary" type="submit" >
-            <a th:href="@{/remindrs}" style="color:white;">Back to remindrs</a>
-        </button>
+        <a th:href="@{/remindrs}" class="btn btn-primary" style="color:white;">Back to remindrs</a>
         </div>
     </div>
 

@@ -22,6 +22,8 @@ public class Appointment {
 
   private String sender;
 
+  private String location;
+
   public Appointment() {}
 
   public Long getId() {
@@ -100,5 +102,13 @@ public class Appointment {
 
   public void setSender(String sender) {
     this.sender = sender;
+  }
+
+  public String getLocation() {
+    return location;
+  }
+
+  public void setLocation(String location) {
+    this.location = location;
   }
 }

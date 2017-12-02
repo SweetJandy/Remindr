@@ -1,9 +1,6 @@
 package com.sweetjandy.remindr.services;
 
-import com.sweetjandy.remindr.models.Alert;
-import com.sweetjandy.remindr.models.AlertTime;
-import com.sweetjandy.remindr.models.Contact;
-import com.sweetjandy.remindr.models.Appointment;
+import com.sweetjandy.remindr.models.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
@@ -44,7 +41,12 @@ public class AppointmentUtility {
 
         List<Contact> contacts = alert.getRemindr().getContacts();
         for(Contact contact : contacts) {
-            appointmentList.add(convertAlertAndContactToAppointment(alert, contact));
+            //if they did not text stop and they have opted in
+            if(!contact.isStop() && contact.getRemindrContacts().stream().filter(r -> r.getRemindr().equals(alert.getRemindr())).findFirst().get().getInviteStatus() == InviteStatus.ACCEPTED) {
+
+                appointmentList.add(convertAlertAndContactToAppointment(alert, contact));
+            }
+
         }
 
         return appointmentList;
@@ -61,6 +63,7 @@ public class AppointmentUtility {
         appointment.setTitle(alert.getRemindr().getTitle());
         appointment.setDescription(alert.getRemindr().getDescription());
         appointment.setSender(alert.getRemindr().getUser().getContact().getFirstName() + " " + alert.getRemindr().getUser().getContact().getLastName());
+        appointment.setLocation(alert.getRemindr().getLocation());
         try {
             appointment.setDate(convertDate(alert.getRemindr().getStartDateTime(), alert.getRemindr().getTimeZone()));
         } catch (ParseException e) {
@@ -71,7 +74,7 @@ public class AppointmentUtility {
         return appointment;
     }
 
-    private String convertDate(String date, String timeZone) throws ParseException {
+    public String convertDate(String date, String timeZone) throws ParseException {
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm");
         DateTime date1 = formatter.parseDateTime(date);

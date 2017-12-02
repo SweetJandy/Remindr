@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="/fragments/partials :: head('Create a remindr')">
+<head th:replace="/fragments/partials :: head('Create a remindr event')">
 </head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
 <!--DROPDOWN FOR CONTACTS-->
 <div class="container">
-    <h2>Add alerts</h2>
+    <h2>Edit remindr(s)</h2>
     <form th:action="@{/remindrs/{id}/edit-alerts(id = ${remindr.id})}" th:method="POST" th:object="${remindr}" id="surveyForm" >
         <input type="hidden" name="alerts" value=""/>
         <div class="row">

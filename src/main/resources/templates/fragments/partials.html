@@ -51,9 +51,11 @@
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<li class="text-center"><a href="/profile">View profile</a></li>
-						<li class="text-center"><a href="/remindrs">View your remindrs</a></li>
-						<li class="text-center"><a href="/remindrs/create">Create a remindr</a></li>
+						<li class="text-center"><a href="/profile/edit">Account settings <span class="glyphicon glyphicon-cog"></span></a></li>
+						<li class="text-center"><a href="/profile">View dashboard</a></li>
+						<li class="text-center"><a href="/contacts/add">Add/import friends</a></li>
+						<li class="text-center"><a href="/remindrs">View your events</a></li>
+						<li class="text-center"><a href="/remindrs/create">Create an event</a></li>
 					</ul>
 				</li>
 				<li sec:authorize="isAuthenticated()">

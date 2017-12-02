@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
@@ -22,7 +23,6 @@ public class Contact {
     private String firstName;
 
     @Column(nullable = true)
-//    @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
     @Column(nullable = false, length = 20)
@@ -41,11 +41,18 @@ public class Contact {
 //    private long secretCode;
 
 
-    @ManyToMany(cascade = CascadeType.DETACH, mappedBy = "contacts")
-    private List<Remindr> remindrs;
+    @OneToMany(mappedBy = "contact")
+    private List<RemindrContact> remindrContacts;
 
     @ManyToOne
     private User user;
+
+//    @Column(nullable = true)
+    @ManyToOne
+    private Remindr pending; // the contact's last pending remindr
+
+    @Column(nullable = false)
+    private boolean stop;
 
     public Contact() {
     }
@@ -125,11 +132,25 @@ public class Contact {
 //    }
 
     public List<Remindr> getRemindrs() {
+
+        List<Remindr> remindrs = new ArrayList<>();
+        for(RemindrContact remindrContact: getRemindrContacts()) {
+            remindrs.add(remindrContact.getRemindr());
+        }
+
         return remindrs;
     }
 
     public void setRemindrs(List<Remindr> remindrs) {
-        this.remindrs = remindrs;
+
+        List<RemindrContact> remindrContacts = new ArrayList<>();
+        for(Remindr remindr: remindrs) {
+            RemindrContact remindrContact = new RemindrContact();
+            remindrContact.setContact(this);
+            remindrContact.setRemindr(remindr);
+            remindrContacts.add(remindrContact);
+        }
+        setRemindrContacts(remindrContacts);
     }
 
     public User getUser() {
@@ -142,5 +163,39 @@ public class Contact {
 
     public boolean stillHasSameNumber(Contact myself) {
         return phoneNumber.equals(myself.phoneNumber);
+    }
+
+
+    public Remindr getPending() {
+        return pending;
+    }
+
+    public void setPending(Remindr pending) {
+        this.pending = pending;
+    }
+    @Override
+    public boolean equals(Object object) {
+        Contact contact = (Contact) object;
+        if(this.getId() == contact.getId() || this.getPhoneNumber().equals(contact.getPhoneNumber())){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isStop() {
+        return stop;
+    }
+
+    public void setStop(boolean stop) {
+        this.stop = stop;
+    }
+
+    public List<RemindrContact> getRemindrContacts() {
+        return remindrContacts;
+    }
+
+    public void setRemindrContacts(List<RemindrContact> remindrContacts) {
+        this.remindrContacts = remindrContacts;
     }
 }

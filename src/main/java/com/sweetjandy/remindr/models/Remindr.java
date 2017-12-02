@@ -4,6 +4,7 @@ package com.sweetjandy.remindr.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.engine.internal.Cascade;
 import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,18 +62,13 @@ public class Remindr {
     @JsonManagedReference
     private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)@JoinTable
-            (name = "contact_remindr",
-                    joinColumns = {@JoinColumn(name = "remindr_id")},
-                    inverseJoinColumns = {@JoinColumn(name = "contact_id")}
-            )
-    private List<Contact> contacts;
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "remindr")
+    private List<RemindrContact> remindrContacts;
 
 
     public Remindr() {
         alerts = new ArrayList<Alert>();
-        contacts = new ArrayList<Contact>();
+        remindrContacts = new ArrayList<RemindrContact>();
 
     }
 
@@ -148,14 +144,26 @@ public class Remindr {
     }
 
     public List<Contact> getContacts() {
+
+        List<Contact> contacts = new ArrayList<>();
+        for(RemindrContact remindrContact: getRemindrContacts()) {
+            contacts.add(remindrContact.getContact());
+        }
+
         return contacts;
     }
 
     public void setContacts(List<Contact> contacts) {
-        for (Contact contact : contacts) {
-            contact.getRemindrs().add(this);
+
+        // converting contacts into remindrContacts
+        List<RemindrContact> remindrContacts = new ArrayList<>();
+        for(Contact contact: contacts) {
+            RemindrContact remindrContact = new RemindrContact();
+            remindrContact.setContact(contact);
+            remindrContact.setRemindr(this);
+            remindrContacts.add(remindrContact);
         }
-        this.contacts = contacts;
+        setRemindrContacts(remindrContacts);
     }
 
 
@@ -188,5 +196,23 @@ public class Remindr {
 
     public String getTimeZone() {
         return timeZone;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        Remindr remindr = (Remindr) object;
+        if(this.getId() == remindr.getId()){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public List<RemindrContact> getRemindrContacts() {
+        return remindrContacts;
+    }
+
+    public void setRemindrContacts(List<RemindrContact> remindrContacts) {
+        this.remindrContacts = remindrContacts;
     }
 }
