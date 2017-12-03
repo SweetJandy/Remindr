@@ -1,3 +1,43 @@
-#secondForm {
-    display: none;
+/*Footer*/
+#footer-links {
+    list-style-type: none;
 }
+
+#footer-links > li {
+    display: inline;
+}
+
+/*Landing page*/
+
+/*Slider */
+@keyframes slidy {
+    0% { left: 0%; }
+    20% { left: 0%; }
+    25% { left: -100%; }
+    45% { left: -100%; }
+    50% { left: -200%; }
+    70% { left: -200%; }
+    75% { left: -300%; }
+    95% { left: -300%; }
+    100% { left: -400%; }
+}
+
+body { margin: 0; }
+div#slider { overflow: hidden; }
+div#slider figure img { width: 20%; float: left; }
+div#slider figure {
+    position: relative;
+    width: 500%;
+    margin: 0;
+    left: 0;
+    text-align: left;
+    font-size: 0;
+    animation: 30s slidy infinite;
+}
+
+figure > img {
+    height:90vh;
+}
+/*End of slider*/
+
+

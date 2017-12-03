@@ -3,12 +3,8 @@ package com.sweetjandy.remindr.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sweetjandy.remindr.models.Alert;
-import com.sweetjandy.remindr.repositories.AlertsRepository;
 import com.sweetjandy.remindr.models.Appointment;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import com.sweetjandy.remindr.repositories.AlertsRepository;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -16,10 +12,12 @@ import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 

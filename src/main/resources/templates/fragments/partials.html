@@ -10,6 +10,7 @@
     <title th:text="${title}"></title>
     <!-- include stylesheets, etc here -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+	<link rel="stylesheet" href="/scripts/css/font-awesome-4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="/scripts/css/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -51,11 +52,9 @@
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<li class="text-center"><a href="/profile/edit">Account settings <span class="glyphicon glyphicon-cog"></span></a></li>
-						<li class="text-center"><a href="/profile">View dashboard</a></li>
-						<li class="text-center"><a href="/contacts/add">Add/import friends</a></li>
-						<li class="text-center"><a href="/remindrs">View your events</a></li>
-						<li class="text-center"><a href="/remindrs/create">Create an event</a></li>
+						<li class="text-center"><a href="/profile"><span class="glyphicon glyphicon-dashboard"></span> View dashboard</a></li>
+						<li class="text-center"><a href="/profile/edit"><span class="glyphicon glyphicon-cog"></span> Account settings</a></li>
+						<li class="text-center"><a href="/remindrs/create"><span class="glyphicon glyphicon-plus"></span> Create an event</a></li>
 					</ul>
 				</li>
 				<li sec:authorize="isAuthenticated()">
@@ -68,6 +67,35 @@
 
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
+</nav>
+
+
+<nav th:fragment="footer" class="navbar navbar-default navbar-fixed-bottom">
+	<div class="container">
+		<ul id="footer-links">
+			<li>
+				<a href="/about">About</a>
+			</li>
+			<li>
+				<a href="mailto:info@remindr.life">info@remindr.life</a>
+			</li>
+			<li>
+				<a href="https://www.facebook.com/remindrlife/">
+					<i class="fa fa-facebook-square" aria-hidden="true"></i>
+				</a>
+			</li>
+			<li>
+				<a href="https://twitter.com/remindrlife">
+					<i class="fa fa-twitter-square" aria-hidden="true"></i>
+				</a>
+			</li>
+			<li>
+				<a href="https://www.instagram.com/remindrlife/">
+					<i class="fa fa-instagram" aria-hidden="true"></i>
+				</a>
+			</li>
+		</ul>
+	</div>
 </nav>
 
 <div th:fragment="scripts">

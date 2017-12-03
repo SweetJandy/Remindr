@@ -62,14 +62,12 @@ public class Remindr {
     @JsonManagedReference
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "remindr")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "remindr")
     private List<RemindrContact> remindrContacts;
-
 
     public Remindr() {
         alerts = new ArrayList<Alert>();
         remindrContacts = new ArrayList<RemindrContact>();
-
     }
 
     public Remindr(String title, String description, String endDateTime, String startDateTime, String location, String uploadPath) {
