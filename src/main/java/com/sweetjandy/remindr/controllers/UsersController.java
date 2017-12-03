@@ -51,7 +51,7 @@ public class UsersController {
 
     @PostMapping("/register")
     // Errors validation has to be right after the object
-    public String registerUser(@Valid User user, Errors validation, Model viewModel, @ModelAttribute User newUser) {
+    public String registerUser(@Valid User user, Errors validation, Model viewModel) {
 
         User existingUser = usersRepository.findByUsername(user.getUsername());
 
@@ -104,8 +104,8 @@ public class UsersController {
         String hashPassword = passwordEncoder.encode(user.getPassword());
 
         user.setPassword(hashPassword);
-        usersRepository.save(newUser);
-        authenticate(newUser);
+        usersRepository.save(user);
+        authenticate(user);
         return "redirect:/profile";
     }
 
