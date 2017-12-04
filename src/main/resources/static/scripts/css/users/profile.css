@@ -1,0 +1,51 @@
+h1 {
+    margin-bottom: 35px;
+}
+
+
+#add-friends-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+#view-friends-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#view-friends {
+    margin: 23px;
+    width: 178px;
+}
+
+
+/*// Medium devices (tablets, 768px and up)*/
+@media (max-width: 768px) {
+
+    div.col-xs-12.col-sm-6 {
+        display:flex;
+        justify-content: center;
+    }
+
+    div.card.col-xs-12.col-sm-6 {
+        float:none;
+
+    }
+
+    #view-friends {
+        width: 150px;
+        margin: 37px;
+    }
+
+    #view-friends-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    #add-friends-container {
+        display: flex;
+        justify-content: center
+    }
+
+}

@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-<head th:replace="/fragments/partials :: head('Show all remindrs')"></head>
+<head th:replace="/fragments/partials :: head('Show all remindrs','scripts/css/remindrs/show-all-remindrs.css')"></head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
 
 <div class="container">
     <div class="row">
-        <h1 class="text-center">Events <a th:href="@{/remindrs/create}" class="btn btn-default"><span class="glyph glyphicon-plus"></span></a></h1>
+        <h1 class="text-center">Events
+            <a th:href="@{/remindrs/create}" class="btn btn-default"><span class="glyph glyphicon-plus"></span></a>
+        </h1>
         <div th:each="remindr : ${remindrs}">
+
             <div class="col-sm-6 col-md-3">
                 <a th:href="@{/remindrs/{id}(id=${remindr.id})}" >
                     <div class="thumbnail">
@@ -18,7 +21,6 @@
                     </div>
                         <!--<div sec:authorize="isAuthenticated()">-->
                     <!--</div>-->
-                    </div>
                 </a>
             </div>
         </div>
