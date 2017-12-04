@@ -7,7 +7,7 @@
 <nav th:replace="/fragments/partials :: navbar"></nav>
 <div class="container">
     <div class="row">
-        <h1>Create an event</h1>
+        <h1 class="text-center">Create an event</h1>
         <form th:action="@{/remindrs/create}" method="post" th:object="${remindr}">
             <!--TITLE-->
             <div class="form-group">
