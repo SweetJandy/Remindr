@@ -9,11 +9,15 @@
 	<h2>Invite friends</h2>
 	<div class="row">
 		<div class="col-xs-12">
-			<a th:href="@{/contacts/add?from={id}(id = ${remindr.id})}" class="btn btn-primary">Add more friends</a>
-			<!--<button class="btn btn-primary" id="select-all">Select all Contacts</button>-->
-			<!--<button class="btn btn-primary" id="deselect-all">Deselect all Contacts</button>-->
+			<a th:href="@{/contacts/add?from={id}(id = ${remindr.id})}" class="btn btn-primary">Add new contact</a>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" id="check-all" name="contacts" />
+					Select/ deselect all
+				</label>
+			</div>
 		</div>
-		<div class="col-lg-12">
+		<div class="col-lg-12" th:if="${contacts.size()} != 0">
 			<input type="text" placeholder="search" id="searchContacts" class="form-control"/>
 		</div>
 	</div>
@@ -32,6 +36,7 @@
 		<a th:href="@{/remindrs/{id}/edit-alerts(id = ${remindr.id})}" class="btn btn-primary">Skip for now</a>
 		<button class="btn btn-primary">Save</button>
 	</form>
+
 </div>
 <nav th:replace="/fragments/partials :: footer"></nav>
 
@@ -49,21 +54,10 @@
                 }
             });
         });
+
         //set a property on the html element
-        $("#select-all").click(function () {
-            $(".contact-checkbox").prop("checked", true);
-        });
-        $("#deselect-all").click(function () {
-            $(".contact-checkbox").prop("checked", false);
-        });
-
-
-        $(".checkbox-input").click (function () {
-            if (!$(".the-checkbox").prop("checked")) {
-                $(".the-checkbox").attr("checked", true);
-            } else {
-                $(".the-checkbox").attr("checked", false);
-            }
+        $("#check-all").change(function () {
+            $("input:checkbox").prop("checked", $(this).prop("checked"))
         });
     });
 </script>
