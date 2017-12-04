@@ -58,7 +58,8 @@ public class TwilioController {
 
         String phoneNumber = allRequestParams.get("From");
         phoneNumber = phoneService.formatPhoneNumber(phoneNumber);
-        Contact contact = contactsRepository.findByPhoneNumber(phoneNumber);
+        List<Contact> contacts = contactsRepository.findByPhoneNumber(phoneNumber);
+        Contact contact = contacts.stream().filter(c -> c.getPending() != null).findFirst().get();
 
         String bodyParam = allRequestParams.get("Body");
 
@@ -77,7 +78,6 @@ public class TwilioController {
                 response = twilioSvc.setResponse(optIn);
                 RemindrContact remindrContact = contact.getRemindrContacts().stream().filter(r -> r.getRemindr().equals(contact.getPending())).findFirst().get();
                 remindrContact.setInviteStatus(InviteStatus.ACCEPTED);
-                contactsRepository.save(contact);
 
                 for(Alert alert : contact.getPending().getAlerts()) {
                     Appointment appointment = appointmentUtility.convertAlertAndContactToAppointment(alert, contact);
@@ -85,6 +85,7 @@ public class TwilioController {
                 }
 
                 contact.setPending(null);
+                contactsRepository.save(contact);
             }
         } else if (bodyParam.equalsIgnoreCase("no") || bodyParam.equalsIgnoreCase("n")){
             response = twilioSvc.setResponse(optOut);
