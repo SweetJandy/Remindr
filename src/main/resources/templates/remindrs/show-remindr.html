@@ -47,36 +47,42 @@
                 </div>
                 <hr />
                 <!--FRIENDS-->
-                <div class="card-block friends">
-                    <h2>Friends
-                        <a th:href="@{/remindrs/{id}/add-contacts(id=${remindr.id})}" class="btn btn-default">
-                            <span class="glyphicon glyphicon-pencil"></span>
-                        </a>
-                    </h2>
+            <div class="grey-background">
+                <div class="friend-alert">
+                    <div class="card-block friends">
+                        <h2>Friends
+                            <a th:href="@{/remindrs/{id}/add-contacts(id=${remindr.id})}" class="btn btn-default">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        </h2>
 
-                    <h4>
-                        <span th:text="${contactSize}"></span>
-                        friend(s) invited
-                        <span th:if="${contactSize} > 0">:</span>
-                    </h4>
-                    <ul th:each="contact : ${contacts}">
-                        <li th:text = "${contact.firstName + ' ' + contact.lastName}"></li>
-                    </ul>
+                        <h4>
+                            <span th:text="${contactSize}"></span>
+                            friend(s) invited
+                            <span th:if="${contactSize} > 0">:</span>
+                        </h4>
+                        <ul th:each="contact : ${contacts}">
+                            <li th:text = "${contact.firstName + ' ' + contact.lastName}"></li>
+                        </ul>
+                    </div>
 
-                <!--ALERTS-->
-                <h2>Remindrs
-                    <a th:href="@{/remindrs/{id}/edit-alerts(id=${remindr.id})}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span>
-                    </a>
-                </h2>
+                    <div class="card-block alerts">
+                        <!--ALERTS-->
+                        <h2>Remindrs
+                            <a th:href="@{/remindrs/{id}/edit-alerts(id=${remindr.id})}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        </h2>
 
-                <h4>
-                    <span th:text="${numberOfAlerts}"></span>
-                    remindr(s) set
-                    <span th:if="${numberOfAlerts} > 0">:</span>
-                </h4>
-                <ul th:each="alert : ${alerts}">
-                    <li th:text = "${alert}"></li>
-                </ul>
+                        <h4>
+                            <span th:text="${numberOfAlerts}"></span>
+                            remindr(s) set
+                            <span th:if="${numberOfAlerts} > 0">:</span>
+                        </h4>
+                        <ul th:each="alert : ${alerts}">
+                            <li th:text = "${alert}"></li>
+                        </ul>
+                    </div>
+                </div>
 
         <!--SEND NOW-->
         <a th:href="@{/remindrs/{id}/send(id=${remindr.id})}" class="btn btn-primary">Send now</a>
@@ -108,12 +114,14 @@
                         Delete
                     </button>
                 </div>
+            </div>
                 <div class="card-footer text-muted">
                     <h4>Created by:
                         <span th:text="${remindr.user.contact.FirstName + ' ' + remindr.user.contact.LastName}"></span>
                     </h4>
                 </div>
             </div>
+
 
         <!--<a class="btn btn-primary" id="add-pic">Edit picture</a>-->
         <!--<a class="btn btn-primary" id="choose-another" style="display: none">Choose another</a>-->
@@ -205,6 +213,5 @@
 
 <!--});-->
 <!--</script>-->
-    </div>
 </body>
 </html>
