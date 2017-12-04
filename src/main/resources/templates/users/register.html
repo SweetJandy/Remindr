@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/fragments/partials :: head('Register')"></head>
+<head th:replace="/fragments/partials :: head('Register','/scripts/css/users/register.css')"></head>
 
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
@@ -73,6 +73,9 @@
         </form>
     </div>
 </div>
+
+<nav th:replace="/fragments/partials :: footer"></nav>
+
 <div th:replace="/fragments/partials :: scripts"></div>
 
 </body>

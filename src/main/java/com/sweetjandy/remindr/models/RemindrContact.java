@@ -11,7 +11,6 @@ public class RemindrContact {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
     @ManyToOne
     @JoinColumn(name="remindr_id")
     private Remindr remindr;

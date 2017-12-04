@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.engine.internal.Cascade;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +30,8 @@ public class Remindr {
     @NotBlank(message = "Title cannot be blank")
     private String title;
 
-    @Column(nullable = true)
+    @Column(nullable = true, length = 300)
+    @Length(max = 1000, message = "The field must be less than 1000 characters")
     private String description;
 
     @Column(nullable = false)
@@ -62,14 +64,12 @@ public class Remindr {
     @JsonManagedReference
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "remindr")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "remindr")
     private List<RemindrContact> remindrContacts;
-
 
     public Remindr() {
         alerts = new ArrayList<Alert>();
         remindrContacts = new ArrayList<RemindrContact>();
-
     }
 
     public Remindr(String title, String description, String endDateTime, String startDateTime, String location, String uploadPath) {

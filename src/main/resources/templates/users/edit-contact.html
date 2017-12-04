@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-<head th:replace="fragments/partials :: head('Update contact')">
+<head th:replace="fragments/partials :: head('Update contact','scripts/css/remindrs/edit-contact.css')">
 </head>
 <body>
 
@@ -10,7 +10,7 @@
 
     <div class="row">
 
-        <h1>Update contact</h1>
+        <h1>Update friend</h1>
         <!--<div>-->
         <!--sec:authorize="isAuthenticated()"-->
         <!--&gt;-->
@@ -49,13 +49,6 @@
                     <div class="form-group col-md-6">
                         <label for="lastName">Last name</label>
                         <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name" th:field="*{lastName}" />
-
-                        <div
-                        class="alert alert-danger"
-                        th:if="${#fields.hasErrors('lastName')}"
-                        th:errors="*{lastName}">
-                        </div>
-
                     </div>
 
                 </div>
@@ -90,6 +83,7 @@
 
 </div>
 
+<nav th:replace="/fragments/partials :: footer"></nav>
 
 <div th:include="fragments/partials :: scripts"></div>
 </body>

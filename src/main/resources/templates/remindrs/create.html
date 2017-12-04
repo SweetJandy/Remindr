@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:h="http://www.w3.org/1999/html">
-<head th:replace="/fragments/partials :: head('Create a remindr')">
+<head th:replace="/fragments/partials :: head('Create a remindr', '/scripts/css/remindrs/create.css')">
 <link type="text/css" href="/scripts/cron/jquery-cron.css" rel="stylesheet" />
 </head>
 <body>
@@ -25,16 +25,21 @@
                 <label for="description">Description (optional) </label>
                 <textarea class="form-control" rows="3" id="description" name="description" th:field="*{description}"></textarea>
             </div>
-
-            <!--Click this to toggle optional recurring form-->
-            <label for="optional-recurring">Set a recurring event</label>
-            <input id="optional-recurring" type="checkbox" />
-
-            <!--RECURRING EVENT INFO-->
-            <div id='selector' class="form-group">
-                <label class="hidden" id="recurring-label" for="recurrence">Recurring event (optional) </label>
-                <input class="form-control hidden" name="recurrence" id="recurrence" th:field="*{recurrence}"/>
+            <div
+                    class="alert alert-danger"
+                    th:if="${#fields.hasErrors('description')}"
+                    th:errors="*{description}" >
             </div>
+
+            <!--&lt;!&ndash;Click this to toggle optional recurring form&ndash;&gt;-->
+            <!--<label for="optional-recurring">Set a recurring event</label>-->
+            <!--<input id="optional-recurring" type="checkbox" />-->
+
+            <!--&lt;!&ndash;RECURRING EVENT INFO&ndash;&gt;-->
+            <!--<div id='selector' class="form-group">-->
+                <!--<label class="hidden" id="recurring-label" for="recurrence">Recurring event (optional) </label>-->
+                <!--<input class="form-control hidden" name="recurrence" id="recurrence" th:field="*{recurrence}"/>-->
+            <!--</div>-->
 
             <!--START DATE/TIME-->
             <div class="form-group">
@@ -112,6 +117,9 @@
         </form>
     </div>
 </div>
+
+<nav th:replace="/fragments/partials :: footer"></nav>
+
 <div th:replace="/fragments/partials :: scripts"></div>
 <script src="../../static/scripts/file-upload.js"></script>
 <script type="text/javascript" src="/scripts/cron/jquery-cron.js"></script>
@@ -139,35 +147,35 @@
         });
 
 
-        $("#optional-recurring").click(function () {
-            var isItChecked = $('#optional-recurring').prop('checked');
-
-            if (isItChecked) {
-
-                // if it's checked, show the cron field
-                $('#selector').cron({
-                    initial: "0 12 * * 5",
-                    onChange: function() {
-                        $('#recurrence').val($(this).cron("value"));
-                    }
-                });
-
-                // apply cron with default options
-                var recurrence=[[${remindr.recurrence}]];
-
-                // Updating the value of an existing cron object
-                cron_field.cron("value", recurrence);
-
-                // if it's checked, show the cron field and its label
-                $("#recurring-label").show();
-                $("#selector").show();
-
-            } else {
-
-                $("#selector").hide();
-                $("#recurring-label").hide();
-            }
-        });
+//        $("#optional-recurring").click(function () {
+//            var isItChecked = $('#optional-recurring').prop('checked');
+//
+//            if (isItChecked) {
+//
+//                // if it's checked, show the cron field
+//                $('#selector').cron({
+//                    initial: "0 12 * * 5",
+//                    onChange: function() {
+//                        $('#recurrence').val($(this).cron("value"));
+//                    }
+//                });
+//
+//                // apply cron with default options
+//                var recurrence=[[${remindr.recurrence}]];
+//
+//                // Updating the value of an existing cron object
+//                cron_field.cron("value", recurrence);
+//
+//                // if it's checked, show the cron field and its label
+//                $("#recurring-label").show();
+//                $("#selector").show();
+//
+//            } else {
+//
+//                $("#selector").hide();
+//                $("#recurring-label").hide();
+//            }
+//        });
 
 
     ///////////////
