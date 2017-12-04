@@ -1,37 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-<head th:replace="/fragments/partials :: head('Events','scripts/css/remindrs/show-all-remindrs.css')"></head>
-
+<head th:replace="/fragments/partials :: head('Show all remindrs','scripts/css/remindrs/show-all-remindrs.css')"></head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
 
 <div class="container">
-    <div class="row">
-        <h1 class="text-center">Events <a th:href="@{/remindrs/create}" class="btn btn-default"><span class="glyph glyphicon-plus"></span></a></h1>
-        <div th:each="remindr : ${remindrs}">
+	<div class="row">
+		<h1 class="text-center">Events
+			<a th:href="@{/remindrs/create}" class="btn btn-default"><span class="glyph glyphicon-plus"></span></a>
+		</h1>
+		<div th:each="remindr : ${remindrs}">
 
-            <div class="col-sm-6 col-md-3">
-                <a th:href="@{/remindrs/{id}(id=${remindr.id})}" >
-                    <div class="thumbnail">
-                        <img th:if="${remindr.uploadPath} != null" th:src="${remindr.uploadPath}" />
-                        <!--and ${remindr.uploadPath.length()} &gt; 0" -->
-                    </div>
-                    <div class="caption">
-                        <h3 th:text="${remindr.title}"></h3>
-                        <p th:text="${remindr.description}"></p>
-                    </div>
-                        <!--<div sec:authorize="isAuthenticated()">-->
-                    <!--</div>-->
-                </a>
-            </div>
-        </div>
-        <div th:if="${remindrs.size()} == 0">
-            <div class="col-lg-12 text-center alert alert-info" role="alert">You don't have any events yet. Click the plus sign to get started!</div>
-            <a href="/contacts/add">
-                <img src="/scripts/img/add-friend.png" class="img-responsive" alt="add friends" style="margin: 0 auto;" />
-            </a>
-        </div>
-    </div>
+			<div class="col-sm-6 col-md-3">
+				<a th:href="@{/remindrs/{id}(id=${remindr.id})}">
+					<div class="thumbnail">
+						<img th:if="${remindr.uploadPath} != ''" th:src="${remindr.uploadPath}"/>
+						<!--and ${remindr.uploadPath.length()} &gt; 0"-->
+
+                        <img th:if="${remindr.uploadPath} == ''" src="/scripts/img/remindrBig.png" width="300" i="image-preview"/>
+					</div>
+						<div class="caption">
+							<h3 th:text="${remindr.title}"></h3>
+							<p th:text="${remindr.description}"></p>
+						</div>
+					<!--<div sec:authorize="isAuthenticated()">-->
+					<!--</div>-->
+				</a>
+			</div>
+		</div>
+		<div th:if="${remindrs.size()} == 0">
+			<div class="col-lg-12 text-center alert alert-info" role="alert">You don't have any events yet. Click the
+				plus sign to get started!
+			</div>
+			<a href="/contacts/add">
+				<img src="/scripts/img/add-friend.png" class="img-responsive" alt="add friends"
+					 style="margin: 0 auto;"/>
+			</a>
+		</div>
+	</div>
 </div>
 
 <nav th:replace="/fragments/partials :: footer"></nav>

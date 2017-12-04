@@ -9,7 +9,10 @@
             <div class="card">
                 <h2 class="card-header" th:text="${remindr.title}"></h2>
                 <div class="row pic-details">
-                    <img class="col-xs-12 col-sm-5" th:if="${remindr.uploadPath} != null" th:src="${remindr.uploadPath}" width="300" id="image-preview"/>
+                    <img th:src="${remindr.uploadPath}" th:if="${remindr.uploadPath} != ''" class="col-xs-12 col-sm-5" width="300" id="image-preview"/>
+
+                    <img class="col-xs-12 col-sm-5" th:if="${remindr.uploadPath} == ''" src="/scripts/img/remindrBig.png" width="300" i="image-preview"/>
+
                     <!--EVENT DETAILS-->
                     <div th:if="${remindr.uploadPath} != null" class="card-block col-xs-12 col-sm-5">
                         <h2 class="card-title">Event details
@@ -59,7 +62,6 @@
                     <ul th:each="contact : ${contacts}">
                         <li th:text = "${contact.firstName + ' ' + contact.lastName}"></li>
                     </ul>
-                </div>
 
                 <!--ALERTS-->
                 <h2>Remindrs
@@ -76,31 +78,29 @@
                     <li th:text = "${alert}"></li>
                 </ul>
 
-                <!--<h4>Created by:-->
-                    <!--<span th:text="${remindr.user.contact.FirstName + ' ' + remindr.user.contact.LastName}"></span>-->
-                <!--</h4>-->
-                    <!--<a th:href="@{/remindrs/{id}/send(id=${remindr.id})}" class="btn btn-primary">Send now</a>-->
-                <!--&lt;!&ndash; Button trigger modal &ndash;&gt;-->
-                <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteRemindrModal">-->
-                    <!--Delete-->
-                <!--</button>-->
-                <!--<a th:href="@{/remindrs}" class="btn btn-primary" style="color:white;">Back to events</a>-->
-                <!--&lt;!&ndash;ALERTS&ndash;&gt;-->
-                <!--<h2>Remindrs-->
-                    <!--<a th:href="@{/remindrs/{id}/edit-alerts(id=${remindr.id})}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span>-->
-                    <!--</a>-->
-                <!--</h2>-->
-
-                <div class="card-block alerts">
-                    <h4>
-                        <span th:text="${numberOfAlerts}"></span>
-                        remindr(s) set
-                        <span th:if="${numberOfAlerts} > 0">:</span>
-                    </h4>
-                    <ul th:each="alert : ${alerts}">
-                        <li th:text = "${alert}"></li>
-                    </ul>
-                </div>
+        <!--SEND NOW-->
+        <a th:href="@{/remindrs/{id}/send(id=${remindr.id})}" class="btn btn-primary">Send now</a>
+        <!--&lt;!&ndash; Button trigger modal &ndash;&gt;-->
+        <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteRemindrModal">-->
+            <!--Delete-->
+        <!--</button>-->
+        <!--<a th:href="@{/remindrs}" class="btn btn-primary" style="color:white;">Back to events</a>-->
+                    <!--&lt;!&ndash;ALERTS&ndash;&gt;-->
+                    <!--<h2>Remindrs-->
+                        <!--<a th:href="@{/remindrs/{id}/edit-alerts(id=${remindr.id})}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span>-->
+                        <!--</a>-->
+                    <!--</h2>-->
+                <!--</div>-->
+                <!--<div class="card-block alerts">-->
+                    <!--<h4>-->
+                        <!--<span th:text="${numberOfAlerts}"></span>-->
+                        <!--remindr(s) set-->
+                        <!--<span th:if="${numberOfAlerts} > 0">:</span>-->
+                    <!--</h4>-->
+                    <!--<ul th:each="alert : ${alerts}">-->
+                        <!--<li th:text = "${alert}"></li>-->
+                    <!--</ul>-->
+                <!--</div>-->
                 <!-- Button trigger modal -->
                 <div class="card-block buttons">
                     <a th:href="@{/remindrs}" class="btn btn-primary" style="color:white;">Back to remindrs</a>
@@ -205,5 +205,6 @@
 
 <!--});-->
 <!--</script>-->
+    </div>
 </body>
 </html>
