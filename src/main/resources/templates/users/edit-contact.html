@@ -10,7 +10,7 @@
 
     <div class="row">
 
-        <h1>Update contact</h1>
+        <h1>Update friend</h1>
         <!--<div>-->
         <!--sec:authorize="isAuthenticated()"-->
         <!--&gt;-->
@@ -49,13 +49,6 @@
                     <div class="form-group col-md-6">
                         <label for="lastName">Last name</label>
                         <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name" th:field="*{lastName}" />
-
-                        <div
-                        class="alert alert-danger"
-                        th:if="${#fields.hasErrors('lastName')}"
-                        th:errors="*{lastName}">
-                        </div>
-
                     </div>
 
                 </div>

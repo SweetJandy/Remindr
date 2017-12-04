@@ -26,15 +26,15 @@
                 <textarea class="form-control" rows="3" id="description" name="description" th:field="*{description}"></textarea>
             </div>
 
-            <!--Click this to toggle optional recurring form-->
-            <label for="optional-recurring">Set a recurring event</label>
-            <input id="optional-recurring" type="checkbox" />
+            <!--&lt;!&ndash;Click this to toggle optional recurring form&ndash;&gt;-->
+            <!--<label for="optional-recurring">Set a recurring event</label>-->
+            <!--<input id="optional-recurring" type="checkbox" />-->
 
-            <!--RECURRING EVENT INFO-->
-            <div id='selector' class="form-group">
-                <label class="hidden" id="recurring-label" for="recurrence">Recurring event (optional) </label>
-                <input class="form-control hidden" name="recurrence" id="recurrence" th:field="*{recurrence}"/>
-            </div>
+            <!--&lt;!&ndash;RECURRING EVENT INFO&ndash;&gt;-->
+            <!--<div id='selector' class="form-group">-->
+                <!--<label class="hidden" id="recurring-label" for="recurrence">Recurring event (optional) </label>-->
+                <!--<input class="form-control hidden" name="recurrence" id="recurrence" th:field="*{recurrence}"/>-->
+            <!--</div>-->
 
             <!--START DATE/TIME-->
             <div class="form-group">
@@ -142,35 +142,35 @@
         });
 
 
-        $("#optional-recurring").click(function () {
-            var isItChecked = $('#optional-recurring').prop('checked');
-
-            if (isItChecked) {
-
-                // if it's checked, show the cron field
-                $('#selector').cron({
-                    initial: "0 12 * * 5",
-                    onChange: function() {
-                        $('#recurrence').val($(this).cron("value"));
-                    }
-                });
-
-                // apply cron with default options
-                var recurrence=[[${remindr.recurrence}]];
-
-                // Updating the value of an existing cron object
-                cron_field.cron("value", recurrence);
-
-                // if it's checked, show the cron field and its label
-                $("#recurring-label").show();
-                $("#selector").show();
-
-            } else {
-
-                $("#selector").hide();
-                $("#recurring-label").hide();
-            }
-        });
+//        $("#optional-recurring").click(function () {
+//            var isItChecked = $('#optional-recurring').prop('checked');
+//
+//            if (isItChecked) {
+//
+//                // if it's checked, show the cron field
+//                $('#selector').cron({
+//                    initial: "0 12 * * 5",
+//                    onChange: function() {
+//                        $('#recurrence').val($(this).cron("value"));
+//                    }
+//                });
+//
+//                // apply cron with default options
+//                var recurrence=[[${remindr.recurrence}]];
+//
+//                // Updating the value of an existing cron object
+//                cron_field.cron("value", recurrence);
+//
+//                // if it's checked, show the cron field and its label
+//                $("#recurring-label").show();
+//                $("#selector").show();
+//
+//            } else {
+//
+//                $("#selector").hide();
+//                $("#recurring-label").hide();
+//            }
+//        });
 
 
     ///////////////
