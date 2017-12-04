@@ -1,16 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-<head th:replace="fragments/partials :: head('Dashboard')">
+<head th:replace="fragments/partials :: head('Dashboard', '/scripts/css/users/profile.css')">
 </head>
 <body>
-
 <nav th:replace="fragments/partials :: navbar"></nav>
-
-<div class="container">
-
-    <div class="row">
-
-        <h1>Dashboard</h1>
+<h1 style="text-align: center">Dashboard</h1>
 <!--<div>-->
         <!--sec:authorize="isAuthenticated()"-->
 <!--&gt;-->
@@ -25,30 +19,86 @@
 <!--<div sec:authorize="!isAuthenticated()">-->
     <!--Please log in-->
 <!--</div>-->
-
-        <div class="list-group col-xs-12 col-sm-6">
-            <p class="list-group-item active">
-                Manage friends
-            </p>
-            <a href="/contacts/add" class="list-group-item">Add/import friends</a>
-            <a href="/contacts" class="list-group-item">View friends</a>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6" id="add-friends-container">
+                <!--ADD/IMPORT FRIENDS-->
+                <div class="card col-xs-12 col-sm-6">
+                    <a href="/contacts/add" style="display:block">
+                        <img class="card-img-top" src="/scripts/imgs/001-users.svg" id="add-friends" alt="Card image cap" width="200"/>
+                        <div class="card-footer">
+                            <h4 class="card-title">
+                                <a href="/contacts/add">Add/import friends</a>
+                            </h4>
+                        </div>
+                    </a>
+                            <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <!--CREATE AN EVENT-->
+                <div class="card col-xs-12 col-sm-6">
+                    <a href="/remindrs/create" style="display:block">
+                        <img class="card-img-top" src="/scripts/imgs/002-add-event.svg" id="create-event" alt="Card image cap" width="200"/>
+                        <div class="card-footer">
+                            <h4 class="card-title">
+                                <a href="/remindrs/create">Create an event</a>
+                            </h4>
+                        </div>
+                    </a>
+                    <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+                <!--VIEW FRIENDS-->
+                <div class="col-xs-12 col-sm-6" id="view-friends-container">
+                    <div class="card col-xs-12 col-sm-6">
+                        <a href="/contacts" style="display:block">
+                            <img class="card-img-top" src="/scripts/imgs/agenda.svg" id="view-friends" alt="Card image cap"/>
+                            <div class="card-footer">
+                                <h4 class="card-title">
+                                    <a href="/contacts">View friends</a>
+                                </h4>
+                                <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <!--VIEW YOUR EVENTS-->
+                    <div class="card col-xs-12 col-sm-6">
+                        <a href="/remindrs" style="display:block">
+                            <img class="card-img-top" src="/scripts/imgs/003-time.svg" id="view-events" alt="Card image cap" width="200"/>
+                            <div class="card-footer">
+                                <h4 class="card-title">
+                                    <a href="/remindrs">View your events</a>
+                                </h4>
+                            </div>
+                        </a>
+                        <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="list-group col-xs-12 col-sm-6">
-            <p class="list-group-item active">
-                Manage events
-            </p>
-            <a href="/remindrs"
-                    class="list-group-item">View your events</a>
-                    <!--th:href="/ads/users-ads?id=${sessionScope.user.id}"-->
-            <a href="/remindrs/create" class="list-group-item">Create an event</a>
-        </div>
+        <!--<div class="list-group col-xs-12 col-sm-6">-->
+            <!--<p class="list-group-item active">-->
+                <!--Manage friends-->
+            <!--</p>-->
+            <!--<a href="/contacts/add" class="list-group-item">Add/import friends</a>-->
+            <!--<a href="/contacts" class="list-group-item">View friends</a>-->
+        <!--</div>-->
 
-    </div>
-
-</div>
-
-
+        <!--<div class="list-group col-xs-12 col-sm-6">-->
+            <!--<p class="list-group-item active">-->
+                <!--Manage events-->
+            <!--</p>-->
+            <!--<a href="/remindrs"-->
+                    <!--class="list-group-item">View your events</a>-->
+                    <!--&lt;!&ndash;th:href="/ads/users-ads?id=${sessionScope.user.id}"&ndash;&gt;-->
+            <!--<a href="/remindrs/create" class="list-group-item">Create an event</a>-->
+        <!--</div>-->
 <div th:include="fragments/partials :: scripts"></div>
 </body>
 </html>

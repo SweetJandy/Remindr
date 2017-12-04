@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/fragments/partials :: head('Edit your remindr')"></head>
+<head th:replace="/fragments/partials :: head('Edit your remindr','/scripts/css/remindrs/edit.css')"></head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
 <div class="container">
@@ -21,6 +21,11 @@
         <div class="form-group">
             <label for="description">Event description (optional) </label>
             <textarea class="form-control" rows="3" id="description" name="description" th:field="*{description}"></textarea>
+        </div>
+        <div
+                class="alert alert-danger"
+                th:if="${#fields.hasErrors('description')}"
+                th:errors="*{description}" >
         </div>
 
         <!--START DATE/TIME-->

@@ -1,19 +1,95 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/fragments/partials :: head('Show remindr')"></head>
+<head th:replace="/fragments/partials :: head('Show remindr','/scripts/css/remindrs/show-remindr.css')"></head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
     <div class="container">
         <div class="row">
 
-        <h2>Event details
-            <a th:href="@{/remindrs/{id}/edit(id=${remindr.id})}" class="btn btn-default">
-                <span class="glyphicon glyphicon-pencil"></span>
-            </a>
-        </h2>
+            <div class="card">
+                <h2 class="card-header" th:text="${remindr.title}"></h2>
+                <div class="row pic-details">
+                    <img class="col-xs-12 col-sm-5" th:if="${remindr.uploadPath} != null" th:src="${remindr.uploadPath}" width="300" id="image-preview"/>
+                    <!--EVENT DETAILS-->
+                    <div th:if="${remindr.uploadPath} != null" class="card-block col-xs-12 col-sm-5">
+                        <h2 class="card-title">Event details
+                            <a th:href="@{/remindrs/{id}/edit(id=${remindr.id})}" class="btn btn-default">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        </h2>
+                        <div th:if="${description} != null">
+                            <h4 class="card-title">Description:</h4>
+                            <p class="card-text" th:text="${description}"></p>
+                        </div>
+                        <!--START DATE AND TIME-->
+                        <div th:if="${startdate} != null">
+                            <h4 class="card-title">Start date/ time:</h4>
+                            <p class="card-text" th:text="${startdate}"></p>
+                        </div>
+                        <div th:if="${starttime} != null">
+                            <p class="card-text" th:text="${starttime}"></p>
+                        </div>
 
+                        <!--END DATE AND TIME-->
+                        <div th:if="${enddate} != null">
+                            <h4 class="card-title">End date/ time:</h4>
+                            <p class="card-text" th:text="${enddate}"></p>
+                        </div>
+                        <div th:if="${endtime} != null">
+                            <p class="card-text" th:text="${endtime}"></p>
+                        </div>
+                        <h4 class="card-title">Location:</h4>
+                        <p class="card-text" th:text="${remindr.location}"></p>
+                    </div>
+                </div>
+                <hr />
+                <!--FRIENDS-->
+                <div class="card-block friends">
+                    <h2>Friends
+                        <a th:href="@{/remindrs/{id}/add-contacts(id=${remindr.id})}" class="btn btn-default">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                    </h2>
 
-        <img th:src="${remindr.uploadPath}" width="200" alt="event image" id="image-preview"/>
+                    <h4>
+                        <span th:text="${contactSize}"></span>
+                        friend(s) invited
+                        <span th:if="${contactSize} > 0">:</span>
+                    </h4>
+                    <ul th:each="contact : ${contacts}">
+                        <li th:text = "${contact.firstName + ' ' + contact.lastName}"></li>
+                    </ul>
+
+                    <!--ALERTS-->
+                    <h2>Remindrs
+                        <a th:href="@{/remindrs/{id}/edit-alerts(id=${remindr.id})}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                    </h2>
+                </div>
+                <div class="card-block alerts">
+                    <h4>
+                        <span th:text="${numberOfAlerts}"></span>
+                        remindr(s) set
+                        <span th:if="${numberOfAlerts} > 0">:</span>
+                    </h4>
+                    <ul th:each="alert : ${alerts}">
+                        <li th:text = "${alert}"></li>
+                    </ul>
+                </div>
+                <!-- Button trigger modal -->
+                <div class="card-block buttons">
+                    <a th:href="@{/remindrs}" class="btn btn-primary" style="color:white;">Back to remindrs</a>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteRemindrModal">
+                        Delete
+                    </button>
+                </div>
+                <div class="card-footer text-muted">
+                    <h4>Created by:
+                        <span th:text="${remindr.user.contact.FirstName + ' ' + remindr.user.contact.LastName}"></span>
+                    </h4>
+                </div>
+            </div>
+
         <!--<a class="btn btn-primary" id="add-pic">Edit picture</a>-->
         <!--<a class="btn btn-primary" id="choose-another" style="display: none">Choose another</a>-->
         <!--<form th:action="@{/remindrs/{id}/edit-pic(id = ${remindr.id})}" method="post">-->
@@ -21,85 +97,17 @@
             <!--<button class="btn btn-primary" style="display:none" id="upload-pic">Upload</button>-->
         <!--</form>-->
 
-        <h2 th:text="${remindr.title}"></h2>
-        <h4>Title:</h4>
-        <p th:text="${remindr.title}"></p>
+        <!--<h4>Title:</h4>-->
+        <!--<p th:text="${remindr.title}"></p>-->
         <!--<img th:src="${remindr.uploadPath}" alt="event image" />-->
 
-        <div th:if="${description} != null">
-            <h4>Description:</h4>
-            <p th:text="${description}"></p>
-        </div>
 
-        <!--START DATE AND TIME-->
-        <div th:if="${startdate} != null">
-            <h4>Start date/ time:</h4>
-            <p th:text="${startdate}"></p>
-        </div>
-        <div th:if="${starttime} != null">
-            <p th:text="${starttime}"></p>
-        </div>
-        <!--<p th:text="${remindr.startDateTime}"></p>-->
+        <!--&lt;!&ndash;in cron job format&ndash;&gt;-->
+        <!--<div th:if="${recurrence} != null">-->
+            <!--<h4>Recurring date/ time:</h4>-->
+            <!--<p th:text="${recurrence}"></p>-->
+        <!--</div>-->
 
-        <!--END DATE AND TIME-->
-        <div th:if="${enddate} != null">
-            <h4>End date/ time:</h4>
-            <p th:text="${enddate}"></p>
-        </div>
-        <div th:if="${endtime} != null">
-            <p th:text="${endtime}"></p>
-        </div>
-        <!--<p th:text="${remindr.endDateTime}"></p>-->
-
-        <!--in cron job format-->
-        <div th:if="${recurrence} != null">
-            <h4>Recurring date/ time:</h4>
-            <p th:text="${recurrence}"></p>
-        </div>
-
-        <h4>Location:</h4>
-        <p th:text="${remindr.location}"></p>
-
-        <!--CONTACTS-->
-        <h2>Friends
-            <a th:href="@{/remindrs/{id}/add-contacts(id=${remindr.id})}" class="btn btn-default">
-                <span class="glyphicon glyphicon-pencil"></span>
-            </a>
-        </h2>
-
-        <h4>
-            <span th:text="${contactSize}"></span>
-            friend(s) invited
-            <span th:if="${contactSize} > 0">:</span>
-        </h4>
-        <ul th:each="contact : ${contacts}">
-            <li th:text = "${contact.firstName + ' ' + contact.lastName}"></li>
-        </ul>
-
-        <!--ALERTS-->
-        <h2>Remindrs
-            <a th:href="@{/remindrs/{id}/edit-alerts(id=${remindr.id})}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span>
-            </a>
-        </h2>
-
-        <h4>
-            <span th:text="${numberOfAlerts}"></span>
-            remindr(s) set
-            <span th:if="${numberOfAlerts} > 0">:</span>
-        </h4>
-        <ul th:each="alert : ${alerts}">
-            <li th:text = "${alert}"></li>
-        </ul>
-
-        <h4>Created by:
-            <span th:text="${remindr.user.contact.FirstName + ' ' + remindr.user.contact.LastName}"></span>
-        </h4>
-
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteRemindrModal">
-            Delete
-        </button>
-        <a th:href="@{/remindrs}" class="btn btn-primary" style="color:white;">Back to remindrs</a>
         </div>
     </div>
 

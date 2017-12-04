@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" lang="en">
-<head th:fragment="head(title)">
+<head th:fragment="head(title, href)">
     <meta charset="UTF-8" />
 
 	<!--token information is inserted into meta tag-->
@@ -10,8 +10,9 @@
     <title th:text="${title}"></title>
     <!-- include stylesheets, etc here -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
-    <link rel="stylesheet" href="/scripts/css/style.css" />
+    <link rel="stylesheet" href="/scripts/css/base.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" th:href="${href}" />
 
 </head>
 <body>
@@ -26,7 +27,9 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="/">remindr</a>
+			<a class="navbar-brand" href="/">
+				<img src="/scripts/imgs/remindrLogo.png" width = "155px"/>
+			</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:h="http://www.w3.org/1999/html">
-<head th:replace="/fragments/partials :: head('Create a remindr')">
+<head th:replace="/fragments/partials :: head('Create a remindr', '/scripts/css/remindrs/create.css')">
 <link type="text/css" href="/scripts/cron/jquery-cron.css" rel="stylesheet" />
 </head>
 <body>
@@ -24,6 +24,11 @@
             <div class="form-group">
                 <label for="description">Description (optional) </label>
                 <textarea class="form-control" rows="3" id="description" name="description" th:field="*{description}"></textarea>
+            </div>
+            <div
+                    class="alert alert-danger"
+                    th:if="${#fields.hasErrors('description')}"
+                    th:errors="*{description}" >
             </div>
 
             <!--Click this to toggle optional recurring form-->
