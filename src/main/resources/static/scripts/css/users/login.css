@@ -7,3 +7,21 @@ div.row {
     width:55%;
 }
 
+div.footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+input.btn.btn-primary {
+    margin-bottom: 20px;
+}
+
+a.register {
+    color: #6E7E85;
+}

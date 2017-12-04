@@ -23,9 +23,11 @@
 			<div class="alert alert-danger" th:if="${param.error}">
 				Username and password combination is incorrect
 			</div>
-			<input class="btn btn-primary" type="submit" value="Login"/>
+			<div class="footer">
+				<input class="btn btn-primary" type="submit" value="Login"/>
+				<a class="register" th:href="@{/register}">Don't have an account?</a>
+			</div>
 		</form>
-		<a th:href="@{/register}">Don't have an account?</a>
 	</div>
 </div>
 

@@ -113,8 +113,8 @@ img.card-img-top {
 button.btn.btn-primary {
     background-color: #49D0B9;
     border:none;
-    width: 200px;
-    height: 44px;
+    width: 145px;
+    height: 40px;
 }
 
 button.btn.btn-primary:hover {
@@ -133,8 +133,8 @@ a.btn.btn-primary {
     color: white;
     background-color: #49D0B9;
     border:none;
-    width: 200px;
-    height: 44px;
+    width: 145px;
+    height: 40px;
 }
 
 a.btn.btn-primary:hover {
@@ -148,7 +148,7 @@ a.btn.btn-primary:active {
 }
 
 input.btn.btn-primary {
-    width: 75px;
+    width: 145px;
     height: 40px;
     border:none;
     background-color: #49D0B9;
@@ -172,5 +172,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p {
+    font-family: 'Raleway', sans-serif;
+}
+
+label {
     font-family: 'Oswald', sans-serif;
+    font-weight: bold;
+}
+
+a {
+    font-family: 'Raleway', sans-serif;
 }
