@@ -36,7 +36,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-public class RemindrController {
+public class
+RemindrController {
     private RemindrsRepository remindrsRepository;
     private UsersRepository usersRepository;
     private ContactsRepository contactsRepository;
@@ -171,7 +172,7 @@ public class RemindrController {
                 // if can't validate with year, validate with MONTH
                 if (
                         (endDateMonth != null && startDateMonth != null) &&
-                        (Integer.parseInt(endDateMonth) - Integer.parseInt(endDateMonth) < 0)) {
+                        (Integer.parseInt(endDateMonth) - Integer.parseInt(startDateMonth) < 0)) {
                     validation.rejectValue(
                             "endDateTime",
                             "remindr.endDateTime",
@@ -187,7 +188,7 @@ public class RemindrController {
                     // if can't validate with month, validate with day
                     if (
                             (endDateDay != null && startDateDay != null) &&
-                                    (Integer.parseInt(endDateDay) - Integer.parseInt(endDateDay) < 0)) {
+                                    (Integer.parseInt(endDateDay) - Integer.parseInt(startDateDay) < 0)) {
                         validation.rejectValue(
                                 "endDateTime",
                                 "remindr.endDateTime",
@@ -195,7 +196,7 @@ public class RemindrController {
                         );
                         return "remindrs/create";
                     } else if ((endDateDay != null && startDateDay != null) &&
-                            (Integer.parseInt(endDateDay) - Integer.parseInt(endDateDay) == 0)) {
+                            (Integer.parseInt(endDateDay) - Integer.parseInt(startDateDay) == 0)) {
                         if (Integer.parseInt(endTime) - Integer.parseInt(startTime) < 0) {
 
                             validation.rejectValue(
@@ -229,8 +230,6 @@ public class RemindrController {
                 );
                 return "remindrs/create";
             }
-
-            return "/remindrs/create";
 
         }
 
@@ -555,7 +554,8 @@ public class RemindrController {
                            @RequestParam(name="endDateTime") String endDateTime,
                            @RequestParam(name="title") String title,
                            @RequestParam(name="description") String description,
-                           @RequestParam(name="location") String location)
+                           @RequestParam(name="location") String location,
+                           @RequestParam (name="pic-input") String url)
 
     {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -645,7 +645,7 @@ public class RemindrController {
                 // if can't validate with year, validate with MONTH
                 if (
                         (endDateMonth != null && startDateMonth != null) &&
-                                (Integer.parseInt(endDateMonth) - Integer.parseInt(endDateMonth) < 0)) {
+                                (Integer.parseInt(endDateMonth) - Integer.parseInt(startDateMonth) < 0)) {
                     validation.rejectValue(
                             "endDateTime",
                             "remindr.endDateTime",
@@ -661,7 +661,7 @@ public class RemindrController {
                     // if can't validate with month, validate with day
                     if (
                             (endDateDay != null && startDateDay != null) &&
-                                    (Integer.parseInt(endDateDay) - Integer.parseInt(endDateDay) < 0)) {
+                            (Integer.parseInt(endDateDay) - Integer.parseInt(startDateDay) < 0)) {
                         validation.rejectValue(
                                 "endDateTime",
                                 "remindr.endDateTime",
@@ -669,7 +669,8 @@ public class RemindrController {
                         );
                         return "/remindrs/edit";
                     } else if ((endDateDay != null && startDateDay != null) &&
-                            (Integer.parseInt(endDateDay) - Integer.parseInt(endDateDay) == 0)) {
+                            (Integer.parseInt(endDateDay) - Integer.parseInt(startDateDay) == 0))
+                    {
                         if (Integer.parseInt(endTime) - Integer.parseInt(startTime) < 0) {
 
                             validation.rejectValue(
@@ -726,12 +727,12 @@ public class RemindrController {
             remindr.setStartDateTime(startDateTime);
             remindr.setTimeZone(timezoneValue);
             remindr.setLocation(location);
-            remindr.setUploadPath(remindrsRepository.findOne(id).getUploadPath());
+            remindr.setUploadPath(url);
 
 
         // SAVE REMINDR
         remindrsRepository.save(remindr);
-        return "redirect:/remindrs/{id}";
+        return "redirect:/remindrs/" + id;
 
     }
 
@@ -771,7 +772,7 @@ public class RemindrController {
         remindr.setUploadPath(url);
         remindrsRepository.save(remindr);
 
-        return "redirect:/remindrs/{id}";
+        return "redirect:/remindrs/create";
     }
 
 
