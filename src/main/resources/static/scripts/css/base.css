@@ -1,10 +1,31 @@
-#secondForm {
-    display: none;
+body {
+    padding-bottom: 70px;
+}
+
+/*Footer*/
+#footer-links {
+    list-style-type: none;
+}
+
+#footer-links > li {
+    list-style-type: none;
+    display: inline;
+    padding: 10px;
+    text-align: center;
+    margin: 10px auto;
+}
+
+/*NAVBAR*/
+
+.navbar {
+    margin-bottom: 0;
 }
 
 nav.navbar.navbar-default {
     background-color: #F2545B;
     height: 70px;
+    border-top: none;
+    border-bottom: none;
 }
 
 ul.nav.navbar-nav.navbar-right {
