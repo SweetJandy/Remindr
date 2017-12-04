@@ -9,7 +9,7 @@
 		<h1 id="friends" class="text-center">Friends <a href="/contacts/add" class="btn btn-default"><span class="glyph glyphicon-plus"></span></a></h1>
 
 		<div th:if="${contacts.size()} &gt; 0">
-			<div class="col-lg-6">
+			<div class="col-lg-12 searchContainer">
 				<input type="text" placeholder="search" id="searchContacts" class="form-control"/>
 			</div>
 		</div>
@@ -19,7 +19,7 @@
 				<img src="/scripts/img/add-friend.png" class="img-responsive" alt="add friends" style="margin: 0 auto;" />
 			</a>
 		</div>
-		<div class="list-group col-lg-6" >
+		<div class="list-group col-lg-12" >
 			<div th:each="contact : ${contacts}">
 				<a class="list-group-item list-group-item-action" th:href="${'/contacts/' + contact.id}">
 				<span th:text="${contact.firstName}"></span>

@@ -11,33 +11,24 @@ import com.sweetjandy.remindr.services.AppointmentUtility;
 import com.sweetjandy.remindr.services.RemindrService;
 import com.sweetjandy.remindr.services.ScheduleService;
 import com.sweetjandy.remindr.services.TwilioService;
-import org.hibernate.Hibernate;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Duration;
+import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.RegEx;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import org.springframework.validation.Validator;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.*;
-import java.text.SimpleDateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -117,125 +108,43 @@ RemindrController {
             return "/remindrs/create";
         }
 
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm");
+        DateTimeZone dtZone = DateTimeZone.forID(timezoneValue);
+        formatter.withZone(dtZone);
+        LocalDateTime startDate = formatter.parseLocalDateTime(startDateTime);
+        LocalDateTime currentDate = LocalDateTime.now(dtZone);
 
-        Date curTime = new Date();
-
-        String startDateMonth = remindrService.getMonth(startDateTime);
-        String startDateDay = remindrService.getDate(startDateTime);
-        String startDateYear = remindrService.getYear(startDateTime);
-        String startTime = remindrService.getTime(startDateTime);
-
-        // start date
-        Calendar start = Calendar.getInstance();
-        start.set(Calendar.YEAR, Integer.parseInt(startDateYear));
-        start.set(Calendar.MONTH, Integer.parseInt(startDateMonth)-1);
-        start.set(Calendar.DAY_OF_MONTH, Integer.parseInt(startDateDay));
-        start.set(Calendar.HOUR_OF_DAY, Integer.parseInt(startTime.substring(0,2)));
-        start.set(Calendar.MINUTE, Integer.parseInt(startTime.substring(3)));
-
-        Date userStartTime = start.getTime();
-
-        if (!curTime.before(userStartTime)) {
+        if (!currentDate.isBefore(startDate)) {
             validation.rejectValue(
                     "startDateTime",
                     "remindr.startDateTime",
                     "Event can't be in the past"
             );
-            return "remindrs/create";
+            return "/remindrs/create";
         }
 
         if (!Strings.isNullOrEmpty(endDateTime)) {
-
-            // TIME VALIDATION
-
-            String endDateMonth = remindrService.getMonth(endDateTime);
-            String endDateDay = remindrService.getDate(endDateTime);
-            String endDateYear = remindrService.getYear(endDateTime);
-
-            startTime = remindrService.getTime(startDateTime);
-            String endTime = remindrService.getTime(endDateTime);
-
-            // remove colon
-            startTime = startTime.replace(":", "");
-            endTime = endTime.replace(":", "");
-
+            LocalDateTime endDate = formatter.parseLocalDateTime(endDateTime);
             // check if end date is before start date
-            if (
-                    (endDateYear != null && startDateYear != null) &&
-                    (Integer.parseInt(endDateYear) - Integer.parseInt(startDateYear) < 0)) {
+            if (endDate.isBefore(startDate)) {
                 validation.rejectValue(
                         "endDateTime",
                         "remindr.endDateTime",
                         "The end date can't be before the start date"
                 );
 
-                return "remindrs/create";
-            } else if (
-                    (endDateYear != null && startDateYear != null) &&
-                    (Integer.parseInt(endDateYear) - Integer.parseInt(startDateYear)) == 0) {
-
-                // if can't validate with year, validate with MONTH
-                if (
-                        (endDateMonth != null && startDateMonth != null) &&
-                        (Integer.parseInt(endDateMonth) - Integer.parseInt(startDateMonth) < 0)) {
-                    validation.rejectValue(
-                            "endDateTime",
-                            "remindr.endDateTime",
-                            "The end date can't be before the start date"
-                    );
-
-                    return "remindrs/create";
-                } else if (
-                        (endDateMonth != null && startDateMonth != null) &&
-                            (Integer.parseInt(endDateMonth) - Integer.parseInt(startDateMonth) == 0)
-                        ) {
-
-                    // if can't validate with month, validate with day
-                    if (
-                            (endDateDay != null && startDateDay != null) &&
-                                    (Integer.parseInt(endDateDay) - Integer.parseInt(startDateDay) < 0)) {
-                        validation.rejectValue(
-                                "endDateTime",
-                                "remindr.endDateTime",
-                                "The end date can't be before the start date"
-                        );
-                        return "remindrs/create";
-                    } else if ((endDateDay != null && startDateDay != null) &&
-                            (Integer.parseInt(endDateDay) - Integer.parseInt(startDateDay) == 0)) {
-                        if (Integer.parseInt(endTime) - Integer.parseInt(startTime) < 0) {
-
-                            validation.rejectValue(
-                                    "endDateTime",
-                                    "remindr.endDateTime",
-                                    "The end date/time can't be before the start date"
-                            );
-                            return "remindrs/create";
-                        }
-                    }
-
-                }
-
+                return "/remindrs/create";
             }
-
-            // end date
-            Calendar end = Calendar.getInstance();
-            end.set(Calendar.YEAR, Integer.parseInt(endDateYear));
-            end.set(Calendar.MONTH, Integer.parseInt(endDateDay));
-            end.set(Calendar.DAY_OF_MONTH, Integer.parseInt(endDateMonth)-1);
-            start.set(Calendar.HOUR_OF_DAY, Integer.parseInt(startTime.substring(0,2)));
-            start.set(Calendar.MINUTE, Integer.parseInt(startTime.substring(3)));
-            Date userEndTime = end.getTime();
-
-
-            if (!curTime.before(userEndTime)) {
+            if (!currentDate.isBefore(endDate)) {
                 validation.rejectValue(
                         "endDateTime",
                         "remindr.endDateTime",
                         "Event can't be in the past"
                 );
-                return "remindrs/create";
+                return "/remindrs/create";
             }
 
+            remindr.setEndDateTime(endDateTime);
         }
 
 
@@ -592,9 +501,9 @@ RemindrController {
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm");
         DateTimeZone dtZone = DateTimeZone.forID(timezoneValue);
-        DateTime startDate = formatter.parseDateTime(startDateTime).withZone(dtZone);
-        DateTime endDate = formatter.parseDateTime(endDateTime).withZone(dtZone);
-        DateTime currentDate = DateTime.now();
+        formatter.withZone(dtZone);
+        LocalDateTime startDate = formatter.parseLocalDateTime(startDateTime);
+        LocalDateTime currentDate = LocalDateTime.now(dtZone);
 
         if (!currentDate.isBefore(startDate)) {
             validation.rejectValue(
@@ -606,6 +515,7 @@ RemindrController {
         }
 
         if (!Strings.isNullOrEmpty(endDateTime)) {
+            LocalDateTime endDate = formatter.parseLocalDateTime(endDateTime);
             // check if end date is before start date
             if (endDate.isBefore(startDate)) {
                 validation.rejectValue(
@@ -678,10 +588,11 @@ RemindrController {
         for(Appointment appointment : appointments) {
             try {
                 DateTimeZone zone = DateTimeZone.forID(appointment.getTimeZone());
-                DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm");
-                String d = formatter.print(DateTime.now().withZone(zone));
-                d = appointmentUtility.convertDate(d, appointment.getTimeZone());
-                appointment.setDate(d);
+                DateTimeFormatter formatter = DateTimeFormat.forPattern("MM-dd-yyyy h:mma").withZone(zone);
+                DateTime eventDateTime = formatter.parseDateTime(appointment.getDate()).withZone(zone);
+                DateTime currentDateTime = DateTime.now().withZone(zone);
+                Duration duration = new Duration(currentDateTime, eventDateTime);
+                appointment.setDelta((int)duration.getStandardMinutes()+1);
                 scheduleService.scheduleJob(appointment);
             }
             catch(ParseException ex) {

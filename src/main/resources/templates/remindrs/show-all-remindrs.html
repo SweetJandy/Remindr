@@ -14,8 +14,10 @@
 			<div class="col-sm-6 col-md-3">
 				<a th:href="@{/remindrs/{id}(id=${remindr.id})}">
 					<div class="thumbnail">
-						<img th:if="${remindr.uploadPath} != null and ${remindr.uploadPath.length()} &gt; 0"
-							 th:src="${remindr.uploadPath}"/>
+						<img th:if="${remindr.uploadPath} != ''" th:src="${remindr.uploadPath}"/>
+						<!--and ${remindr.uploadPath.length()} &gt; 0"-->
+
+                        <img th:if="${remindr.uploadPath} == ''" src="/scripts/img/remindrBig.png" width="300" i="image-preview"/>
 					</div>
 						<div class="caption">
 							<h3 th:text="${remindr.title}"></h3>
@@ -31,7 +33,7 @@
 				plus sign to get started!
 			</div>
 			<a href="/contacts/add">
-				<img src="/scripts/img/add-friend.png" class="img-responsive" alt="add friends"
+				<img src="/scripts/img/002-add-event.svg" class="img-responsive" alt="add friends"
 					 style="margin: 0 auto;"/>
 			</a>
 		</div>

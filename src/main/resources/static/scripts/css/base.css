@@ -1,5 +1,6 @@
 body {
     padding-bottom: 70px;
+    background-image: url('/scripts/img/dust_scratches.png');
 }
 
 a:link {
@@ -9,6 +10,8 @@ a:link {
 /*Footer*/
 #footer-links {
     list-style-type: none;
+    margin-top: 25px;
+    padding-left: 0;
 }
 
 #footer-links > li {
@@ -19,14 +22,25 @@ a:link {
     margin: 10px auto;
 }
 
+#footer-links > li > a {
+    color: white;
+    text-decoration: none;
+}
+
+.searchContainer {
+    padding-left: 0;
+}
+
 /*NAVBAR*/
 
 .navbar {
     margin-bottom: 0;
+    border-radius: 0;
 }
 
 nav.navbar.navbar-default {
     background-color: #F2545B;
+    border-color: transparent;
     height: 70px;
     border-top: none;
     border-bottom: none;
@@ -111,38 +125,76 @@ img.card-img-top {
 /*BUTTONS*/
 
 button.btn.btn-primary {
-    background-color: #F2545B;
+    background-color: #49D0B9;
     border:none;
-    width: 200px;
-    height: 44px;
+    width: 145px;
+    height: 40px;
 }
 
 button.btn.btn-primary:hover {
-    background-color: #f7898e;
+    background-color: #49D0B9;
+    background-color: #2f8c7d;
     border:none;
 
 }
 
 button.btn.btn-primary:active {
-    background-color:#F2545B;
+    background-color:#49D0B9;
     border: none;
 }
 
 a.btn.btn-primary {
     line-height: 34px;
     color: white;
-    background-color: #F2545B;
+    background-color: #49D0B9;
     border:none;
-    width: 200px;
-    height: 44px;
+    width: 145px;
+    height: 40px;
 }
 
 a.btn.btn-primary:hover {
-    background-color: #f7898e;
+    background-color: #2f8c7d;
     border:none;
 }
 
 a.btn.btn-primary:active {
-    background-color:#F2545B;
+    background-color:#49D0B9;
     border-color: transparent;
+}
+
+input.btn.btn-primary {
+    width: 145px;
+    height: 40px;
+    border:none;
+    background-color: #49D0B9;
+}
+
+input.btn.btn-primary:hover {
+    border: none;
+    background-color: #2f8c7d;
+}
+
+input.btn.btn-primary:active {
+    border:none;
+    background-color: #49D0B9;
+}
+
+/*FONTS*/
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: bold;
+}
+
+p {
+    font-family: 'Raleway', sans-serif;
+}
+
+label {
+    font-family: 'Oswald', sans-serif;
+    font-weight: bold;
+}
+
+a {
+    font-family: 'Raleway', sans-serif;
 }

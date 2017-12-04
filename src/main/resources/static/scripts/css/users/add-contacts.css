@@ -1,0 +1,39 @@
+input.btn.btn-primary {
+    width: 145px;
+    height: 40px;
+    border:none;
+    background-color: #49D0B9;
+}
+
+input.btn.btn-primary:hover {
+    border: none;
+    background-color: #49D0B9;
+}
+
+input.btn.btn-primary:active {
+    border:none;
+    background-color: #49D0B9;
+}
+
+
+a.btn.btn-primary {
+    height: 40px;
+    border:none;
+    background-color: #49D0B9;
+}
+
+a.btn.btn-primary:hover {
+    border: none;
+    background-color: #49D0B9;
+}
+
+a.btn.btn-primary:active {
+    border:none;
+    background-color: #49D0B9;
+}
+
+#cancel {
+    width: 145px;
+    margin-top: 10px;
+
+}
