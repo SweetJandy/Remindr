@@ -59,6 +59,7 @@
                     <ul th:each="contact : ${contacts}">
                         <li th:text = "${contact.firstName + ' ' + contact.lastName}"></li>
                     </ul>
+                </div>
 
                 <!--ALERTS-->
                 <h2>Remindrs
@@ -66,14 +67,14 @@
                     </a>
                 </h2>
 
-                <!--<h4>-->
-                    <!--<span th:text="${numberOfAlerts}"></span>-->
-                    <!--remindr(s) set-->
-                    <!--<span th:if="${numberOfAlerts} > 0">:</span>-->
-                <!--</h4>-->
-                <!--<ul th:each="alert : ${alerts}">-->
-                    <!--<li th:text = "${alert}"></li>-->
-                <!--</ul>-->
+                <h4>
+                    <span th:text="${numberOfAlerts}"></span>
+                    remindr(s) set
+                    <span th:if="${numberOfAlerts} > 0">:</span>
+                </h4>
+                <ul th:each="alert : ${alerts}">
+                    <li th:text = "${alert}"></li>
+                </ul>
 
                 <!--<h4>Created by:-->
                     <!--<span th:text="${remindr.user.contact.FirstName + ' ' + remindr.user.contact.LastName}"></span>-->
@@ -89,7 +90,7 @@
                     <!--<a th:href="@{/remindrs/{id}/edit-alerts(id=${remindr.id})}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span>-->
                     <!--</a>-->
                 <!--</h2>-->
-                </div>
+
                 <div class="card-block alerts">
                     <h4>
                         <span th:text="${numberOfAlerts}"></span>
