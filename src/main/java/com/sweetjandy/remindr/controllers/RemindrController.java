@@ -13,6 +13,7 @@ import com.sweetjandy.remindr.services.ScheduleService;
 import com.sweetjandy.remindr.services.TwilioService;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -587,10 +588,11 @@ RemindrController {
         for(Appointment appointment : appointments) {
             try {
                 DateTimeZone zone = DateTimeZone.forID(appointment.getTimeZone());
-                DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm");
-                String d = formatter.print(DateTime.now().withZone(zone));
-                d = appointmentUtility.convertDate(d, appointment.getTimeZone());
-                appointment.setDate(d);
+                DateTimeFormatter formatter = DateTimeFormat.forPattern("MM-dd-yyyy h:mma").withZone(zone);
+                DateTime eventDateTime = formatter.parseDateTime(appointment.getDate()).withZone(zone);
+                DateTime currentDateTime = DateTime.now().withZone(zone);
+                Duration duration = new Duration(currentDateTime, eventDateTime);
+                appointment.setDelta((int)duration.getStandardMinutes()+1);
                 scheduleService.scheduleJob(appointment);
             }
             catch(ParseException ex) {
