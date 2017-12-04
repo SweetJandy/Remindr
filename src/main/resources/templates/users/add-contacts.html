@@ -10,7 +10,7 @@
 
         <h1 class="text-center">Add friends</h1>
 
-        <a class="btn btn-primary import" th:href="${authorizationUrl}">Import your Google contacts</a>
+        <a class="btn btn-primary" id="import" th:href="${authorizationUrl}">Import your Google contacts</a>
 
         <h2>OR</h2>
 
@@ -51,6 +51,7 @@
         </form>
 
         <a href="/contacts" id="cancel" class="btn btn-primary">Cancel</a>
+
 
     </div>
 

@@ -32,6 +32,9 @@ a.btn.btn-primary:active {
     background-color: #49D0B9;
 }
 
+#import {
+    width: 209px;
+}
 
 #cancel {
     width: 145px;
