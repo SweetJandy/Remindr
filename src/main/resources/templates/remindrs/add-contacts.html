@@ -10,19 +10,15 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<a th:href="@{/contacts/add?from={id}(id = ${remindr.id})}" class="btn btn-primary">Add new contact</a>
-			<!--<button class="btn btn-primary" id="select-all">Select all Contacts</button>-->
-			<!--<button class="btn btn-primary" id="deselect-all">Deselect all Contacts</button>-->
-			<a th:href="@{/contacts/add?from={id}(id = ${remindr.id})}" class="btn btn-primary">Add more friends</a>
-			<button class="btn btn-primary" id="select-all">Select all Contacts</button>
-			<button class="btn btn-primary" id="deselect-all">Deselect all Contacts</button>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" id="check-all" name="contacts" />
+					Select/ deselect all
+				</label>
+			</div>
 		</div>
 		<div class="col-lg-6">
 			<input type="text" placeholder="search" id="searchContacts" class="form-control"/>
-		</div>
-		<div class="checkbox">
-			<label>
-				<input type="checkbox" id="check-all"/>
-			</label>
 		</div>
 	</div>
 	<form th:action="@{/remindrs/{id}/add-contacts(id = ${remindr.id})}" method="post" th:object="${remindr}"
@@ -44,9 +40,8 @@
 		<a th:href="@{/remindrs/create}" class="btn btn-primary">Back</a>
 		<button class="btn btn-primary">Save</button>
 	</form>
-</div>
-<nav th:replace="/fragments/partials :: footer"></nav>
 
+</div>
 <div th:replace="/fragments/partials :: scripts"></div>
 <script type="text/javascript" th:src="@{/scripts/add_button.js}"></script>
 <script>
@@ -62,38 +57,8 @@
             })
         });
         //set a property on the html element
-        $("#check-all").change(function(){
+        $("#check-all").change(function () {
             $("input:checkbox").prop("checked", $(this).prop("checked"))
-        });
-//        $("#select-all").click(function () {
-//            $(".contact-checkbox").prop("checked", true)
-//        });
-//        $("#deselect-all").click(function () {
-//            $(".contact-checkbox").prop("checked", false)
-//        })
-        $("#deselect-all").click(function () {
-            $(".contact-checkbox").prop("checked", false)
-        })
-
-    $(document).ready(function(){
-       $("#searchContacts").keyup(function(){
-           $(".contact").each(function(){
-              var show = $(this).find("input[type='text']").val().toLowerCase().indexOf($("#searchContacts").val().toLowerCase()) >= 0;
-              if(show){
-                  $(this).show();
-              } else {
-                  $(this).hide();
-              }
-           })
-       });
-
-
-        $(".checkbox-input").click (function () {
-            if (!$(".the-checkbox").prop("checked")) {
-                $(".the-checkbox").attr("checked", true);
-            } else {
-                $(".the-checkbox").attr("checked", false);
-            }
         });
     });
 </script>
