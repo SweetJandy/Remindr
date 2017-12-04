@@ -1,0 +1,66 @@
+h1.our-story {
+    padding-right: 60px;
+}
+
+div.container.team-photos {
+    display: flex;
+    justify-content: center;
+}
+
+div.our-story {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.our-story-container {
+    background-color: #6E7E85;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 100%;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    color: white;
+}
+
+p {
+    text-align: center;
+    font-size: 29px;
+}
+
+img.phone {
+    max-width: 417px;
+}
+
+img.gif {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+i.personal {
+    color: #6E7E85;
+    font-size: 25px;
+}
+
+ul.personal {
+    list-style-type: none;
+    font-size: 30px;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+ul.personal li {
+    display:inline;
+}
+
+div.headshots {
+    margin: 10px;
+}
+
+h1 {
+    text-align: center;
+    padding-bottom: 30px;
+}
+
