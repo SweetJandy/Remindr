@@ -78,7 +78,6 @@ public class TwilioController {
                 response = twilioSvc.setResponse(optIn);
                 RemindrContact remindrContact = contact.getRemindrContacts().stream().filter(r -> r.getRemindr().equals(contact.getPending())).findFirst().get();
                 remindrContact.setInviteStatus(InviteStatus.ACCEPTED);
-                contactsRepository.save(contact);
 
                 for(Alert alert : contact.getPending().getAlerts()) {
                     Appointment appointment = appointmentUtility.convertAlertAndContactToAppointment(alert, contact);
@@ -86,6 +85,7 @@ public class TwilioController {
                 }
 
                 contact.setPending(null);
+                contactsRepository.save(contact);
             }
         } else if (bodyParam.equalsIgnoreCase("no") || bodyParam.equalsIgnoreCase("n")){
             response = twilioSvc.setResponse(optOut);
