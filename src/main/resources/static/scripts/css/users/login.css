@@ -1,0 +1,9 @@
+div.container {
+    display: flex;
+    justify-content: center;
+}
+
+div.row {
+    width:55%;
+}
+
