@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +36,7 @@ public class UsersController {
 
 
     @Autowired
-    public UsersController(UsersRepository usersRepository, ContactsRepository contactsRepository,PasswordEncoder passwordEncoder, PhoneService phoneService) {
+    public UsersController(UsersRepository usersRepository, ContactsRepository contactsRepository, PasswordEncoder passwordEncoder, PhoneService phoneService) {
         this.usersRepository = usersRepository;
         this.contactsRepository = contactsRepository;
         this.passwordEncoder = passwordEncoder;
@@ -50,7 +51,7 @@ public class UsersController {
 
     @PostMapping("/register")
     // Errors validation has to be right after the object
-    public String registerUser(@Valid User user, Errors validation, Model viewModel, @ModelAttribute User newUser) {
+    public String registerUser(@Valid User user, Errors validation, Model viewModel) {
 
         User existingUser = usersRepository.findByUsername(user.getUsername());
 
@@ -103,8 +104,8 @@ public class UsersController {
         String hashPassword = passwordEncoder.encode(user.getPassword());
 
         user.setPassword(hashPassword);
-        usersRepository.save(newUser);
-        authenticate(newUser);
+        usersRepository.save(user);
+        authenticate(user);
         return "redirect:/profile";
     }
 
@@ -148,7 +149,7 @@ public class UsersController {
     }
 
     @PostMapping("/profile/edit")
-    public String editProfile (@Valid User user, Errors validation, Model viewModel, HttpServletResponse response) {
+    public String editProfile(@Valid User user, Errors validation, Model viewModel, HttpServletResponse response) {
 
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (currentUser.getId() == 0) {
@@ -165,57 +166,64 @@ public class UsersController {
             );
         }
 
-
 //        PASSWORD VALIDATION
 //        If current password field is not empty
         if (!user.getPassword().equals("")) {
 //            If current password field does not equal current user's password
-            if (!currentUser.getPassword().equals(user.getPassword())){
+
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+            if ((!passwordEncoder.matches(user.getPassword(), currentUser.getPassword()))) {
                 validation.rejectValue(
                         "password",
                         "password",
                         "Current password is incorrect"
                 );
-            } else {
-
-                // If new password field does not equal the confirm password field
-                if(user.getNewPassword().equals("")) {
-                    validation.rejectValue(
-                            "newPassword",
-                            "newPassword",
-                            "New password cannot be blank"
-                    );
-                }
-                else if (!user.getNewPassword().equals(user.getConfirmNewPassword())) {
-                    validation.rejectValue(
-                            "confirmNewPassword",
-                            "confirmNewPassword",
-                            "Password confirmation does not match"
-                    );
-                // if user is changing password and everything is ok
-                } else {
-                    // set new password to user
-                    user.setPassword(user.getNewPassword());
-                }
-
-            }
-        // if user does not want to change password
         } else {
-            // transfer current user's password to new user object
-            user.setPassword(currentUser.getPassword());
+
+            // If new password field does not equal the confirm password field
+            if (user.getNewPassword().equals("")) {
+                validation.rejectValue(
+                        "newPassword",
+                        "newPassword",
+                        "New password cannot be blank"
+                );
+            } else if (!user.getNewPassword().equals(user.getConfirmNewPassword())) {
+                validation.rejectValue(
+                        "confirmNewPassword",
+                        "confirmNewPassword",
+                        "Password confirmation does not match"
+                );
+                // if user is changing password and everything is ok
+            } else {
+                // set new password to user
+//                user.setPassword(user.getNewPassword());
+                String hashPassword = passwordEncoder.encode(user.getNewPassword());
+                user.setPassword(hashPassword);
+            }
+
         }
+        // if user does not want to change password
+    } else
+
+    {
+        // transfer current user's password to new user object
+        user.setPassword(currentUser.getPassword());
+    }
 
 
-        if (validation.hasErrors()) {
-            viewModel.addAttribute("errors", validation);
-            viewModel.addAttribute("user", user);
-            return "users/edit-profile";
-        }
+        if(validation.hasErrors())
+
+    {
+        viewModel.addAttribute("errors", validation);
+        viewModel.addAttribute("user", user);
+        return "users/edit-profile";
+    }
 
         contactsRepository.save(user.getContact());
         usersRepository.save(user);
 
-        return "redirect:/profile";
-    }
+        return"redirect:/profile";
+}
 }
 

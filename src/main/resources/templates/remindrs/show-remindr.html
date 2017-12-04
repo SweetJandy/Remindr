@@ -60,6 +60,30 @@
                         <li th:text = "${contact.firstName + ' ' + contact.lastName}"></li>
                     </ul>
 
+        <!--ALERTS-->
+        <h2>Remindrs
+            <a th:href="@{/remindrs/{id}/edit-alerts(id=${remindr.id})}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span>
+            </a>
+        </h2>
+
+        <h4>
+            <span th:text="${numberOfAlerts}"></span>
+            remindr(s) set
+            <span th:if="${numberOfAlerts} > 0">:</span>
+        </h4>
+        <ul th:each="alert : ${alerts}">
+            <li th:text = "${alert}"></li>
+        </ul>
+
+        <h4>Created by:
+            <span th:text="${remindr.user.contact.FirstName + ' ' + remindr.user.contact.LastName}"></span>
+        </h4>
+            <a th:href="@{/remindrs/{id}/send(id=${remindr.id})}" class="btn btn-primary">Send now</a>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteRemindrModal">
+            Delete
+        </button>
+        <a th:href="@{/remindrs}" class="btn btn-primary" style="color:white;">Back to events</a>
                     <!--ALERTS-->
                     <h2>Remindrs
                         <a th:href="@{/remindrs/{id}/edit-alerts(id=${remindr.id})}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span>

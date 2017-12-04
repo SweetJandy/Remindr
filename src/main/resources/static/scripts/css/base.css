@@ -2,6 +2,10 @@ body {
     padding-bottom: 70px;
 }
 
+a:link {
+    text-decoration: none;
+}
+
 /*Footer*/
 #footer-links {
     list-style-type: none;
