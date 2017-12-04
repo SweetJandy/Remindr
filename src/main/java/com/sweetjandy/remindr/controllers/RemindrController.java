@@ -13,6 +13,7 @@ import com.sweetjandy.remindr.services.ScheduleService;
 import com.sweetjandy.remindr.services.TwilioService;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,8 +110,8 @@ RemindrController {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm");
         DateTimeZone dtZone = DateTimeZone.forID(timezoneValue);
         formatter.withZone(dtZone);
-        DateTime startDate = formatter.parseDateTime(startDateTime).withZoneRetainFields(dtZone);
-        DateTime currentDate = DateTime.now().withZone(dtZone);
+        LocalDateTime startDate = formatter.parseLocalDateTime(startDateTime);
+        LocalDateTime currentDate = LocalDateTime.now(dtZone);
 
         if (!currentDate.isBefore(startDate)) {
             validation.rejectValue(
@@ -122,7 +123,7 @@ RemindrController {
         }
 
         if (!Strings.isNullOrEmpty(endDateTime)) {
-            DateTime endDate = formatter.parseDateTime(endDateTime).withZoneRetainFields(dtZone);
+            LocalDateTime endDate = formatter.parseLocalDateTime(endDateTime);
             // check if end date is before start date
             if (endDate.isBefore(startDate)) {
                 validation.rejectValue(
@@ -500,8 +501,8 @@ RemindrController {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm");
         DateTimeZone dtZone = DateTimeZone.forID(timezoneValue);
         formatter.withZone(dtZone);
-        DateTime startDate = formatter.parseDateTime(startDateTime).withZoneRetainFields(dtZone);
-        DateTime currentDate = DateTime.now().withZone(dtZone);
+        LocalDateTime startDate = formatter.parseLocalDateTime(startDateTime);
+        LocalDateTime currentDate = LocalDateTime.now(dtZone);
 
         if (!currentDate.isBefore(startDate)) {
             validation.rejectValue(
@@ -513,7 +514,7 @@ RemindrController {
         }
 
         if (!Strings.isNullOrEmpty(endDateTime)) {
-            DateTime endDate = formatter.parseDateTime(endDateTime).withZoneRetainFields(dtZone);
+            LocalDateTime endDate = formatter.parseLocalDateTime(endDateTime);
             // check if end date is before start date
             if (endDate.isBefore(startDate)) {
                 validation.rejectValue(
