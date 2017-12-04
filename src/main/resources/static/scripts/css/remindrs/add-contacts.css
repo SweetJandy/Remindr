@@ -5,3 +5,7 @@ input#searchContacts.form-control {
 h2 {
     margin-bottom: 20px;
 }
+
+.list-group {
+    padding-right: 0;
+}

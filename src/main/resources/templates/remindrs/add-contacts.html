@@ -13,23 +13,20 @@
 			<!--<button class="btn btn-primary" id="select-all">Select all Contacts</button>-->
 			<!--<button class="btn btn-primary" id="deselect-all">Deselect all Contacts</button>-->
 		</div>
-		<div class="col-lg-6">
+		<div class="col-lg-12">
 			<input type="text" placeholder="search" id="searchContacts" class="form-control"/>
 		</div>
 	</div>
 	<form th:action="@{/remindrs/{id}/add-contacts(id = ${remindr.id})}" method="post" th:object="${remindr}"
 		  id="surveyForm">
 		<input type="hidden" name="contacts" value=""/>
-		<div class="row contact" th:each="contact : ${contacts}">
-			<div class="col-lg-6">
-				<div class="input-group">
-                  <span class="input-group-addon">
-                    <input type="checkbox" class="contact-checkbox" th:value="${contact.id}" name="contacts"/>
-                  </span>
-					<input type="text" class="form-control" readonly="readonly"
-						   th:value="${contact.firstName + ' ' + contact.lastName + ': ' + contact.phoneNumber}"/>
-				</div><!-- /input-group -->
-			</div><!-- /.col-lg-6 -->
+		<div class="list-group col-lg-12">
+			<div th:each="contact : ${contacts}">
+				<label class="list-group-item list-group-item-action">
+					<input type="checkbox" class="contact-checkbox" th:value="${contact.id}" name="contacts"/>
+					<span th:text="${contact.firstName}"></span>
+				</label>
+			</div>
 		</div>
 
 		<a th:href="@{/remindrs/{id}/edit-alerts(id = ${remindr.id})}" class="btn btn-primary">Skip for now</a>
@@ -43,34 +40,22 @@
 <script>
     $(document).ready(function () {
         $("#searchContacts").keyup(function () {
-            $(".contact").each(function () {
-                var show = $(this).find("input[type='text']").val().toLowerCase().indexOf($("#searchContacts").val().toLowerCase()) >= 0;
+            $("div.list-group>div").each(function () {
+                var show = $(this).text().toLowerCase().indexOf($("#searchContacts").val().toLowerCase()) >= 0;
                 if (show) {
                     $(this).show();
                 } else {
                     $(this).hide();
                 }
-            })
+            });
         });
         //set a property on the html element
         $("#select-all").click(function () {
-            $(".contact-checkbox").prop("checked", true)
+            $(".contact-checkbox").prop("checked", true);
         });
         $("#deselect-all").click(function () {
-            $(".contact-checkbox").prop("checked", false)
-        })
-
-    $(document).ready(function(){
-       $("#searchContacts").keyup(function(){
-           $(".contact").each(function(){
-              var show = $(this).find("input[type='text']").val().toLowerCase().indexOf($("#searchContacts").val().toLowerCase()) >= 0;
-              if(show){
-                  $(this).show();
-              } else {
-                  $(this).hide();
-              }
-           })
-       });
+            $(".contact-checkbox").prop("checked", false);
+        });
 
 
         $(".checkbox-input").click (function () {

@@ -10,6 +10,7 @@
     <title th:text="${title}"></title>
     <!-- include stylesheets, etc here -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+	<link rel="stylesheet" href="/scripts/css/font-awesome-4.7.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="/scripts/css/base.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link href="https://fonts.googleapis.com/css?family=Oswald:400,700|Raleway:400,800,800i,900,900i" rel="stylesheet" />
@@ -30,7 +31,7 @@
 				<span class="icon-bar"></span>
 			</button>
 			<a class="navbar-brand" href="/">
-				<img src="/scripts/img/remindrLogo.png" width = "155px"/>
+				<img src="/scripts/img/remindrLogo2.png" width = "155px"/>
 			</a>
 		</div>
 
@@ -74,13 +75,10 @@
 </nav>
 
 <nav th:fragment="footer" class="navbar navbar-default navbar-fixed-bottom">
-	<div class="container">
+	<div class="container" style="text-align:center;">
 		<ul id="footer-links">
 			<li>
 				<a href="/about">About</a>
-			</li>
-			<li>
-				<a href="mailto:info@remindr.life">info@remindr.life</a>
 			</li>
 			<li>
 				<a href="https://www.facebook.com/remindrlife/" target="_blank">
@@ -96,6 +94,9 @@
 				<a href="https://www.instagram.com/remindrlife/" target="_blank">
 					<i class="fa fa-instagram" aria-hidden="true"></i>
 				</a>
+			</li>
+			<li>
+				<a href="mailto:info@remindr.life">info@remindr.life</a>
 			</li>
 		</ul>
 	</div>
