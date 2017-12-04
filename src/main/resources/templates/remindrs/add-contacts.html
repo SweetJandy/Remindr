@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="/fragments/partials :: head('Create a remindr')">
+<head th:replace="/fragments/partials :: head('Create a remindr','scripts/css/remindrs/add-contacts.css')">
 </head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
@@ -12,6 +12,9 @@
 			<a th:href="@{/contacts/add?from={id}(id = ${remindr.id})}" class="btn btn-primary">Add new contact</a>
 			<!--<button class="btn btn-primary" id="select-all">Select all Contacts</button>-->
 			<!--<button class="btn btn-primary" id="deselect-all">Deselect all Contacts</button>-->
+			<a th:href="@{/contacts/add?from={id}(id = ${remindr.id})}" class="btn btn-primary">Add more friends</a>
+			<button class="btn btn-primary" id="select-all">Select all Contacts</button>
+			<button class="btn btn-primary" id="deselect-all">Deselect all Contacts</button>
 		</div>
 		<div class="col-lg-6">
 			<input type="text" placeholder="search" id="searchContacts" class="form-control"/>
@@ -41,8 +44,9 @@
 		<a th:href="@{/remindrs/create}" class="btn btn-primary">Back</a>
 		<button class="btn btn-primary">Save</button>
 	</form>
-
 </div>
+<nav th:replace="/fragments/partials :: footer"></nav>
+
 <div th:replace="/fragments/partials :: scripts"></div>
 <script type="text/javascript" th:src="@{/scripts/add_button.js}"></script>
 <script>
@@ -67,6 +71,30 @@
 //        $("#deselect-all").click(function () {
 //            $(".contact-checkbox").prop("checked", false)
 //        })
+        $("#deselect-all").click(function () {
+            $(".contact-checkbox").prop("checked", false)
+        })
+
+    $(document).ready(function(){
+       $("#searchContacts").keyup(function(){
+           $(".contact").each(function(){
+              var show = $(this).find("input[type='text']").val().toLowerCase().indexOf($("#searchContacts").val().toLowerCase()) >= 0;
+              if(show){
+                  $(this).show();
+              } else {
+                  $(this).hide();
+              }
+           })
+       });
+
+
+        $(".checkbox-input").click (function () {
+            if (!$(".the-checkbox").prop("checked")) {
+                $(".the-checkbox").attr("checked", true);
+            } else {
+                $(".the-checkbox").attr("checked", false);
+            }
+        });
     });
 </script>
 </body>

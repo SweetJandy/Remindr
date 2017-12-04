@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-<head th:replace="fragments/partials :: head('Account settings')">
+<head th:replace="fragments/partials :: head('Account settings', 'scripts/css/users/edit-profile.css')">
 </head>
 <body>
 
@@ -158,6 +158,7 @@
 
 </div>
 
+<nav th:replace="/fragments/partials :: footer"></nav>
 
 <div th:include="fragments/partials :: scripts"></div>
 </body>

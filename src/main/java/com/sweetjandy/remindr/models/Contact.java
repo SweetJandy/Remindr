@@ -1,5 +1,6 @@
 package com.sweetjandy.remindr.models;
 
+import org.hibernate.annotations.Fetch;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,7 +42,7 @@ public class Contact {
 //    private long secretCode;
 
 
-    @OneToMany(mappedBy = "contact")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")
     private List<RemindrContact> remindrContacts;
 
     @ManyToOne

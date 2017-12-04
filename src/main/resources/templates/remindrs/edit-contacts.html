@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="/fragments/partials :: head('Create a remindr')">
+<head th:replace="/fragments/partials :: head('Create a remindr','/scripts/css/remindrs/edit-contacts.css')">
 </head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
@@ -41,6 +41,9 @@
 	</form>
 
 </div>
+
+<nav th:replace="/fragments/partials :: footer"></nav>
+
 <div th:replace="/fragments/partials :: scripts"></div>
 <script type="text/javascript" th:src="@{/scripts/add_button.js}"></script>
 <script>
