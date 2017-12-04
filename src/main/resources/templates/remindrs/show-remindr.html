@@ -1,82 +1,64 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/fragments/partials :: head('Show remindr')"></head>
+<head th:replace="/fragments/partials :: head('Show remindr','/scripts/css/remindrs/show-remindr.css')"></head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
     <div class="container">
         <div class="row">
 
-        <h2>Event details
-            <a th:href="@{/remindrs/{id}/edit(id=${remindr.id})}" class="btn btn-default">
-                <span class="glyphicon glyphicon-pencil"></span>
-            </a>
-        </h2>
+            <div class="card">
+                <h2 class="card-header" th:text="${remindr.title}"></h2>
+                <div class="row pic-details">
+                    <img class="col-xs-12 col-sm-5" th:if="${remindr.uploadPath} != null" th:src="${remindr.uploadPath}" width="300" id="image-preview"/>
+                    <!--EVENT DETAILS-->
+                    <div th:if="${remindr.uploadPath} != null" class="card-block col-xs-12 col-sm-5">
+                        <h2 class="card-title">Event details
+                            <a th:href="@{/remindrs/{id}/edit(id=${remindr.id})}" class="btn btn-default">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        </h2>
+                        <div th:if="${description} != null">
+                            <h4 class="card-title">Description:</h4>
+                            <p class="card-text" th:text="${description}"></p>
+                        </div>
+                        <!--START DATE AND TIME-->
+                        <div th:if="${startdate} != null">
+                            <h4 class="card-title">Start date/ time:</h4>
+                            <p class="card-text" th:text="${startdate}"></p>
+                        </div>
+                        <div th:if="${starttime} != null">
+                            <p class="card-text" th:text="${starttime}"></p>
+                        </div>
 
+                        <!--END DATE AND TIME-->
+                        <div th:if="${enddate} != null">
+                            <h4 class="card-title">End date/ time:</h4>
+                            <p class="card-text" th:text="${enddate}"></p>
+                        </div>
+                        <div th:if="${endtime} != null">
+                            <p class="card-text" th:text="${endtime}"></p>
+                        </div>
+                        <h4 class="card-title">Location:</h4>
+                        <p class="card-text" th:text="${remindr.location}"></p>
+                    </div>
+                </div>
+                <hr />
+                <!--FRIENDS-->
+                <div class="card-block friends">
+                    <h2>Friends
+                        <a th:href="@{/remindrs/{id}/add-contacts(id=${remindr.id})}" class="btn btn-default">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                    </h2>
 
-        <div th:if="${remindr.uploadPath} != null and ${remindr.uploadPath.length()} &gt; 0">
-            <img th:src="${remindr.uploadPath}" width="200" alt="event image" id="image-preview"/>
-            <a class="btn btn-primary" id="add-pic">Edit picture</a>
-            <a class="btn btn-primary" id="choose-another" style="display: none">Choose another</a>
-            <form th:action="@{/remindrs/{id}/edit-pic(id = ${remindr.id})}" method="post">
-                <input type="hidden" id="pic-input" name="pic-input" th:value="${remindr.uploadPath}" />
-                <button class="btn btn-primary" style="display:none" id="upload-pic">Upload</button>
-            </form>
-        </div>
-
-        <h2 th:text="${remindr.title}"></h2>
-        <!--<h4>Title:</h4>-->
-        <!--<p th:text="${remindr.title}"></p>-->
-        <!--<img th:src="${remindr.uploadPath}" alt="event image" />-->
-
-        <div th:if="${description} != null">
-            <h4>Description:</h4>
-            <p th:text="${description}"></p>
-        </div>
-
-        <!--START DATE AND TIME-->
-        <div th:if="${startdate} != null">
-            <h4>Start date/ time:</h4>
-            <p th:text="${startdate}"></p>
-        </div>
-        <div th:if="${starttime} != null">
-            <p th:text="${starttime}"></p>
-        </div>
-        <!--<p th:text="${remindr.startDateTime}"></p>-->
-
-        <!--END DATE AND TIME-->
-        <div th:if="${enddate} != null">
-            <h4>End date/ time:</h4>
-            <p th:text="${enddate}"></p>
-        </div>
-        <div th:if="${endtime} != null">
-            <p th:text="${endtime}"></p>
-        </div>
-        <!--<p th:text="${remindr.endDateTime}"></p>-->
-
-        <!--in cron job format-->
-        <div th:if="${recurrence} != null">
-            <h4>Recurring date/ time:</h4>
-            <p th:text="${recurrence}"></p>
-        </div>
-
-        <h4>Location:</h4>
-        <p th:text="${remindr.location}"></p>
-
-        <!--CONTACTS-->
-        <h2>Friends
-            <a th:href="@{/remindrs/{id}/add-contacts(id=${remindr.id})}" class="btn btn-default">
-                <span class="glyphicon glyphicon-pencil"></span>
-            </a>
-        </h2>
-
-        <h4>
-            <span th:text="${contactSize}"></span>
-            friend(s) invited
-            <span th:if="${contactSize} > 0">:</span>
-        </h4>
-        <ul th:each="contact : ${contacts}">
-            <li th:text = "${contact.firstName + ' ' + contact.lastName}"></li>
-        </ul>
+                    <h4>
+                        <span th:text="${contactSize}"></span>
+                        friend(s) invited
+                        <span th:if="${contactSize} > 0">:</span>
+                    </h4>
+                    <ul th:each="contact : ${contacts}">
+                        <li th:text = "${contact.firstName + ' ' + contact.lastName}"></li>
+                    </ul>
 
         <!--ALERTS-->
         <h2>Remindrs
@@ -101,7 +83,55 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteRemindrModal">
             Delete
         </button>
-        <a th:href="@{/remindrs}" class="btn btn-primary" style="color:white;">Back to remindrs</a>
+        <a th:href="@{/remindrs}" class="btn btn-primary" style="color:white;">Back to events</a>
+                    <!--ALERTS-->
+                    <h2>Remindrs
+                        <a th:href="@{/remindrs/{id}/edit-alerts(id=${remindr.id})}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                    </h2>
+                </div>
+                <div class="card-block alerts">
+                    <h4>
+                        <span th:text="${numberOfAlerts}"></span>
+                        remindr(s) set
+                        <span th:if="${numberOfAlerts} > 0">:</span>
+                    </h4>
+                    <ul th:each="alert : ${alerts}">
+                        <li th:text = "${alert}"></li>
+                    </ul>
+                </div>
+                <!-- Button trigger modal -->
+                <div class="card-block buttons">
+                    <a th:href="@{/remindrs}" class="btn btn-primary" style="color:white;">Back to remindrs</a>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteRemindrModal">
+                        Delete
+                    </button>
+                </div>
+                <div class="card-footer text-muted">
+                    <h4>Created by:
+                        <span th:text="${remindr.user.contact.FirstName + ' ' + remindr.user.contact.LastName}"></span>
+                    </h4>
+                </div>
+            </div>
+
+        <!--<a class="btn btn-primary" id="add-pic">Edit picture</a>-->
+        <!--<a class="btn btn-primary" id="choose-another" style="display: none">Choose another</a>-->
+        <!--<form th:action="@{/remindrs/{id}/edit-pic(id = ${remindr.id})}" method="post">-->
+            <!--<input type="hidden" id="pic-input" name="pic-input" th:value="${remindr.uploadPath}" />-->
+            <!--<button class="btn btn-primary" style="display:none" id="upload-pic">Upload</button>-->
+        <!--</form>-->
+
+        <!--<h4>Title:</h4>-->
+        <!--<p th:text="${remindr.title}"></p>-->
+        <!--<img th:src="${remindr.uploadPath}" alt="event image" />-->
+
+
+        <!--&lt;!&ndash;in cron job format&ndash;&gt;-->
+        <!--<div th:if="${recurrence} != null">-->
+            <!--<h4>Recurring date/ time:</h4>-->
+            <!--<p th:text="${recurrence}"></p>-->
+        <!--</div>-->
+
         </div>
     </div>
 
@@ -129,50 +159,50 @@
 
 <div th:replace="/fragments/partials :: scripts"></div>
 <div th:replace="/fragments/deleteRemindrModal :: deleteRemindrModalScript"></div>
-<script>
-$(document).ready(function(){
+<!--<script>-->
+<!--$(document).ready(function(){-->
 
-    $("#add-pic").click(openPicker);
-    $("#choose-another").click(openPicker);
+    <!--$("#add-pic").click(openPicker);-->
+    <!--$("#choose-another").click(openPicker);-->
 
-    var fsClient = filestack.init('AjqlwAL0oTqy2FzYw5Eylz');
+    <!--var fsClient = filestack.init('AjqlwAL0oTqy2FzYw5Eylz');-->
 
-    function openPicker (event) {
-        console.log(event);
+    <!--function openPicker (event) {-->
+        <!--console.log(event);-->
 
-        fsClient.pick({
-            fromSources:["local_file_system","url","imagesearch","facebook","instagram","googledrive","dropbox","webcam"],
-            accept:["image/*"],
-            maxFiles:1,
-            transformations:{
-                crop:{      force:true},
-                circle:true,
-                rotate:true},
-            maxSize:1000000
-        }).then(function(response) {
-            // declare this function to handle response
-            function handleFilestack (response) {
-                console.log(response);
-                $("#pic-input").val(response.filesUploaded[0].url);
-                $("#image-preview").attr(
-                    {
-                        "src":response.filesUploaded[0].url,
-                        "width": "200"
-                    });
-                $("#add-pic").attr("style","display: none");
-                $("#upload-pic").attr("style","display:inline-block");
-                $("#choose-another").attr("style","display:inline-block");
-                console.log(response.filesUploaded[0].url);
-            }
+        <!--fsClient.pick({-->
+            <!--fromSources:["local_file_system","url","imagesearch","facebook","instagram","googledrive","dropbox","webcam"],-->
+            <!--accept:["image/*"],-->
+            <!--maxFiles:1,-->
+            <!--transformations:{-->
+                <!--crop:{      force:true},-->
+                <!--circle:true,-->
+                <!--rotate:true},-->
+            <!--maxSize:1000000-->
+        <!--}).then(function(response) {-->
+            <!--// declare this function to handle response-->
+            <!--function handleFilestack (response) {-->
+                <!--console.log(response);-->
+                <!--$("#pic-input").val(response.filesUploaded[0].url);-->
+                <!--$("#image-preview").attr(-->
+                    <!--{-->
+                        <!--"src":response.filesUploaded[0].url,-->
+                        <!--"width": "200"-->
+                    <!--});-->
+                <!--$("#add-pic").attr("style","display: none");-->
+                <!--$("#upload-pic").attr("style","display:inline-block");-->
+                <!--$("#choose-another").attr("style","display:inline-block");-->
+                <!--console.log(response.filesUploaded[0].url);-->
+            <!--}-->
 
-            handleFilestack(response);
+            <!--handleFilestack(response);-->
 
 
-//            $("#submit-pic").removeAtt("Hidden");
-        });
-    }
+<!--//            $("#submit-pic").removeAtt("Hidden");-->
+        <!--});-->
+    <!--}-->
 
-});
-</script>
+<!--});-->
+<!--</script>-->
 </body>
 </html>

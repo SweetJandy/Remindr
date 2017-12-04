@@ -1,24 +1,3 @@
-body {
-    padding-bottom: 70px;
-}
-
-.navbar {
-    margin-bottom: 0;
-}
-
-/*Footer*/
-#footer-links {
-    list-style-type: none;
-}
-
-#footer-links > li {
-    list-style-type: none;
-    display: inline;
-    padding: 10px;
-    text-align: center;
-    margin: 10px auto;
-}
-
 /*Landing page*/
 
 /*Slider */
@@ -52,23 +31,23 @@ figure > img {
 }
 
 /*.hashtag {*/
-    /*position: absolute;*/
-    /*top: 50%;*/
-    /*left: 50%;*/
-    /*transform: translate(-50%, -50%);*/
+/*position: absolute;*/
+/*top: 50%;*/
+/*left: 50%;*/
+/*transform: translate(-50%, -50%);*/
 /*}*/
 
 /*.slider-container {*/
-    /*position: relative;*/
-    /*text-align: center;*/
-    /*color: white;*/
+/*position: relative;*/
+/*text-align: center;*/
+/*color: white;*/
 /*}*/
 
 /*.hashtag {*/
-    /*position: absolute;*/
-    /*top: 50%;*/
-    /*left: 50%;*/
-    /*transform: translate(-50%, -50%);*/
+/*position: absolute;*/
+/*top: 50%;*/
+/*left: 50%;*/
+/*transform: translate(-50%, -50%);*/
 /*}*/
 
 .slider-container {

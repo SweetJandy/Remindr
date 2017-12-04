@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/fragments/partials :: head('Log in')"></head>
+<head th:replace="/fragments/partials :: head('Log in', '/scripts/css/login.css')"></head>
 
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
@@ -8,7 +8,6 @@
 <div class="container">
 	<div class="row">
 		<h1>Log in</h1>
-
 		<form th:action="@{/login}" th:method="post" th:object="${user}">
 			<div class="form-group">
 				<label for="username">Email</label>
@@ -24,16 +23,14 @@
 			<div class="alert alert-danger" th:if="${param.error}">
 				Username and password combination is incorrect
 			</div>
-
-
 			<input class="btn btn-primary" type="submit" value="Login"/>
 		</form>
+		<a th:href="@{/register}">Don't have an account?</a>
 	</div>
 </div>
 
 <nav th:replace="/fragments/partials :: footer"></nav>
 
 <div th:replace="/fragments/partials :: scripts"></div>
-
 </body>
 </html>
