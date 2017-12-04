@@ -29,7 +29,7 @@ public class User {
 
     @Column(nullable = false)
     @JsonIgnore
-//    @NotBlank(message = "Password cannot be blank")
+    @NotBlank(message = "Password cannot be blank")
     private String password;
 
     private transient String confirmPassword;
