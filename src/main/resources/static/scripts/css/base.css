@@ -125,38 +125,38 @@ img.card-img-top {
 /*BUTTONS*/
 
 button.btn.btn-primary {
-    background-color: #F2545B;
+    background-color: #49D0B9;
     border:none;
     width: 200px;
     height: 44px;
 }
 
 button.btn.btn-primary:hover {
-    background-color: #f7898e;
+    background-color: #49D0B9;
     border:none;
 
 }
 
 button.btn.btn-primary:active {
-    background-color:#F2545B;
+    background-color:#49D0B9;
     border: none;
 }
 
 a.btn.btn-primary {
     line-height: 34px;
     color: white;
-    background-color: #F2545B;
+    background-color: #49D0B9;
     border:none;
     width: 200px;
     height: 44px;
 }
 
 a.btn.btn-primary:hover {
-    background-color: #f7898e;
+    background-color: #49D0B9;
     border:none;
 }
 
 a.btn.btn-primary:active {
-    background-color:#F2545B;
+    background-color:#49D0B9;
     border-color: transparent;
 }

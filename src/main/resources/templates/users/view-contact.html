@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/fragments/partials :: head('View contact', 'scripts/css/users/view-contact.css')"></head>
+<head th:replace="/fragments/partials :: head('View friend', '/scripts/css/users/view-contact.css')"></head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
 
@@ -8,15 +8,17 @@
 
 	<div class="row">
 
-		<h2 th:text="${contact.firstName} + ' ' + ${contact.lastName}"></h2>
-
-		<h3 th:text="${contact.phoneNumber}"></h3>
-
-		<a th:href="@{/contacts/{id}/edit(id=${contact.id})}" class="btn btn-primary">Edit</a>
+		<h1 class="text-center">View friend</h1>
+		<a th:href="@{/contacts/{id}/edit(id=${contact.id})}" class="btn btn-primary" id="edit"><span class="glyphicon glyphicon-pencil"></span></a>
 
 		<!-- Button trigger modal -->
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteContactModal">
-		Delete</button>
+		<button type="button" class="btn btn-primary" id="delete" data-toggle="modal" data-target="#deleteContactModal">
+			<span class="glyphicon glyphicon-minus"></span></button>
+
+		<h2 th:text="${contact.firstName} + ' ' + ${contact.lastName}"></h2>
+
+
+		<h3 th:text="${contact.phoneNumber}"></h3>
 
 		<a href="/contacts" class="btn btn-primary">Back to all friends</a>
 

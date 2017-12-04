@@ -1,0 +1,69 @@
+body {
+    text-align:center;
+}
+
+input.btn.btn-primary {
+    height: 40px;
+    border:none;
+    background-color: #49D0B9;
+}
+
+input.btn.btn-primary:hover {
+    border: none;
+    background-color: #49D0B9;
+}
+
+input.btn.btn-primary:active {
+    border:none;
+    background-color: #49D0B9;
+}
+
+
+a.btn.btn-primary {
+    height: 40px;
+    border:none;
+    background-color: #49D0B9;
+}
+
+a.btn.btn-primary:hover {
+    border: none;
+    background-color: #49D0B9;
+}
+
+a.btn.btn-primary:active {
+    border:none;
+    background-color: #49D0B9;
+}
+
+.btn.btn-primary {
+    height: 40px;
+    border:none;
+    background-color: #49D0B9;
+}
+
+.btn.btn-primary:hover {
+    border: none;
+    background-color: #49D0B9;
+}
+
+.btn.btn-primary:active {
+    border:none;
+    background-color: #49D0B9;
+}
+
+#delete {
+    width: auto;
+    height: 40px;
+}
+
+#edit {
+    width: auto;
+}
+
+h1 {
+    display: inline;
+}
+
+.top-navbar {
+    margin-bottom: 30px;
+}
