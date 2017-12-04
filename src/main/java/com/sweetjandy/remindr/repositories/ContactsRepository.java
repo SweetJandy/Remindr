@@ -18,7 +18,7 @@ public interface ContactsRepository extends CrudRepository<Contact, Long> {
     @Query(value = "SELECT * from remindr_contact WHERE remindr_id = ?1", nativeQuery = true)
     List<Contact> findForRemindr(long id);
 
-    Contact findByPhoneNumber (String phoneNumber);
+    List<Contact> findByPhoneNumber (String phoneNumber);
 
 }
 

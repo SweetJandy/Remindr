@@ -58,7 +58,8 @@ public class TwilioController {
 
         String phoneNumber = allRequestParams.get("From");
         phoneNumber = phoneService.formatPhoneNumber(phoneNumber);
-        Contact contact = contactsRepository.findByPhoneNumber(phoneNumber);
+        List<Contact> contacts = contactsRepository.findByPhoneNumber(phoneNumber);
+        Contact contact = contacts.stream().filter(c -> c.getPending() != null).findFirst().get();
 
         String bodyParam = allRequestParams.get("Body");
 
