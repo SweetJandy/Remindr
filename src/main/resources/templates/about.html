@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/partials :: head('Our story', '/scripts/css/about.css')"></head>
+
+<body>
+<nav th:replace="/fragments/partials :: navbar"></nav>
+
+<div class="container our-story-container">
+    <div class="row our-story">
+        <h1 class="text-center our-story">Our Story</h1>
+        <img class="col-xs-12 col-sm-6 phone" src="/scripts/img/remindriphone.png" width="300px"/>
+        <p class="col-xs-12 col-sm-6">
+            <strong>
+            Remindr was actually inspired by true events.
+            </strong>
+            <br />
+            <br />
+            One of the Remindr team member’s friends, who is a professional cosplayer, had recently entered a competition and asked that her friends vote for her costume on a daily basis. However, she was having to text different groups of friends every single day to remind us all to vote for her!
+            <br />
+            <br />
+            <strong>
+            Remindr to the rescue!
+            </strong>
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="gif">
+        <h1 class="text-center">Our team</h1>
+        <img class="gif col-xs-12" src="/scripts/img/pictures.gif"/>
+    </div>
+    <hr />
+    <div class="container team-photos">
+        <!--AMY-->
+        <div class="headshots amy">
+            <img src="/scripts/img/amy.jpg" width="300px"/>
+            <div>
+                <ul class="personal">
+                    <!--GITHUB-->
+                    <li>
+                        <a href="https://github.com/amyyan210" target="_blank">
+                            <i class="fa fa-github-alt personal" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <!--LINKEDIN-->
+                    <li>
+                        <a href="https://www.linkedin.com/in/amyyanaway" target="_blank">
+                            <i class="fa fa-linkedin personal" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <!--PERSONAL-->
+                    <li>
+                        <a href="http://yanaway.com/" target="_blank">
+                            <i class="fa fa-user personal" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <!--EMAIL-->
+                    <li>
+                        <a href="mailto:amy@yanaway.com" target="_blank">
+                            <i class="fa fa-envelope personal" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!--BRANDON-->
+        <div class="headshots brandon">
+            <img src="/scripts/img/BrandonGossen3.jpg" width="300px"/>
+            <div>
+                <ul class="personal">
+                    <!--GITHUB-->
+                    <li>
+                        <a href="https://github.com/brandonbcg123" target="_blank">
+                            <i class="fa fa-github-alt personal" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <!--LINKEDIN-->
+                    <li>
+                        <a href="https://www.linkedin.com/in/brandongossen/" target="_blank">
+                            <i class="fa fa-linkedin personal" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <!--PERSONAL-->
+                    <li>
+                        <a href="https://brandonbcg123.github.io/" target="_blank">
+                            <i class="fa fa-user personal" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <!--EMAIL-->
+                    <li>
+                        <a href="mailto:brandongossen@yahoo.com" target="_blank">
+                            <i class="fa fa-envelope personal" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!--JOYCE-->
+        <div class="headshots joyce">
+            <img src="/scripts/img/JoyceLing4.jpg" width="300px"/>
+            <div>
+                <ul class="personal">
+                    <!--GITHUB-->
+                    <li>
+                        <a href="https://github.com/joyceling" target="_blank">
+                            <i class="fa fa-github-alt personal" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <!--LINKEDIN-->
+                    <li>
+                        <a href="https://www.linkedin.com/in/joyce-ling/" target="_blank">
+                            <i class="fa fa-linkedin personal" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <!--PERSONAL-->
+                    <li>
+                        <a href="https://joyceling.github.io/" target="_blank">
+                            <i class="fa fa-user personal" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <!--EMAIL-->
+                    <li>
+                        <a href="mailto:yueh.j.ling@gmail.com" target="_blank">
+                            <i class="fa fa-envelope personal" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<nav th:replace="/fragments/partials :: footer"></nav>
+
+<div th:replace="/fragments/partials :: scripts"></div>
+</body>
+</html>

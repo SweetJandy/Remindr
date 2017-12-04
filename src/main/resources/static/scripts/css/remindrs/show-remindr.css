@@ -21,6 +21,10 @@ h2 {
     color: #6E7E85;
 }
 
+h4 {
+    padding: 12px;
+}
+
 h2.card-header {
     color: #F2545B;
 }
@@ -43,7 +47,6 @@ div.alerts {
 }
 
 div.buttons {
-    background-color: #00000026;
     width: 100%;
     padding: 12px;
 }
@@ -67,7 +70,6 @@ h4 {
     h2.card-title {
         margin-top: 31px;
     }
-
 
 }
 
