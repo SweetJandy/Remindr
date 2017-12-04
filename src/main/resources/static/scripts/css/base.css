@@ -125,38 +125,75 @@ img.card-img-top {
 /*BUTTONS*/
 
 button.btn.btn-primary {
-    background-color: #F2545B;
+    background-color: #49D0B9;
     border:none;
-    width: 200px;
-    height: 44px;
+    width: 145px;
+    height: 40px;
 }
 
 button.btn.btn-primary:hover {
-    background-color: #f7898e;
+    background-color: #2f8c7d;
     border:none;
 
 }
 
 button.btn.btn-primary:active {
-    background-color:#F2545B;
+    background-color:#49D0B9;
     border: none;
 }
 
 a.btn.btn-primary {
     line-height: 34px;
     color: white;
-    background-color: #F2545B;
+    background-color: #49D0B9;
     border:none;
-    width: 200px;
-    height: 44px;
+    width: 145px;
+    height: 40px;
 }
 
 a.btn.btn-primary:hover {
-    background-color: #f7898e;
+    background-color: #2f8c7d;
     border:none;
 }
 
 a.btn.btn-primary:active {
-    background-color:#F2545B;
+    background-color:#49D0B9;
     border-color: transparent;
+}
+
+input.btn.btn-primary {
+    width: 145px;
+    height: 40px;
+    border:none;
+    background-color: #49D0B9;
+}
+
+input.btn.btn-primary:hover {
+    border: none;
+    background-color: #2f8c7d;
+}
+
+input.btn.btn-primary:active {
+    border:none;
+    background-color: #49D0B9;
+}
+
+/*FONTS*/
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: bold;
+}
+
+p {
+    font-family: 'Raleway', sans-serif;
+}
+
+label {
+    font-family: 'Oswald', sans-serif;
+    font-weight: bold;
+}
+
+a {
+    font-family: 'Raleway', sans-serif;
 }
