@@ -6,9 +6,11 @@ import com.sweetjandy.remindr.repositories.AlertsRepository;
 import com.sweetjandy.remindr.repositories.ContactsRepository;
 import com.sweetjandy.remindr.repositories.RemindrsRepository;
 import com.sweetjandy.remindr.repositories.UsersRepository;
+import com.sweetjandy.remindr.services.AppointmentUtility;
 import com.sweetjandy.remindr.services.RemindrService;
 import com.sweetjandy.remindr.services.ScheduleService;
 import com.sweetjandy.remindr.services.TwilioService;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,9 +45,10 @@ RemindrController {
     private RemindrService remindrService;
     private ScheduleService scheduleService;
     private TwilioService twilioService;
+    private AppointmentUtility appointmentUtility;
 
     @Autowired
-    public RemindrController(RemindrsRepository remindrsRepository, UsersRepository usersRepository, ContactsRepository contactsRepository, AlertsRepository alertsRepository, ScheduleService scheduleService, RemindrService remindrService, TwilioService twilioService) {
+    public RemindrController(RemindrsRepository remindrsRepository, UsersRepository usersRepository, ContactsRepository contactsRepository, AlertsRepository alertsRepository, ScheduleService scheduleService, RemindrService remindrService, TwilioService twilioService, AppointmentUtility appointmentUtility) {
         this.contactsRepository = contactsRepository;
         this.remindrsRepository = remindrsRepository;
         this.usersRepository = usersRepository;
@@ -53,6 +56,7 @@ RemindrController {
         this.scheduleService = scheduleService;
         this.remindrService = remindrService;
         this.twilioService = twilioService;
+        this.appointmentUtility = appointmentUtility;
     }
 
 
@@ -730,6 +734,27 @@ RemindrController {
         remindrsRepository.save(remindr);
         return "redirect:/remindrs/" + id;
 
+    }
+
+    @PostMapping("/remindrs/{id}/send")
+    public String sendNow(@PathVariable Long id) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        user = usersRepository.findOne(user.getId());
+
+        Remindr remindr = remindrsRepository.findOne(id);
+
+        if(!isYourRemindr(user, remindr.getId())) {
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return "You do not own this remindr.";
+        }
+
+        Alert alert = new Alert();
+        alert.setRemindr(remindr);
+        alert.setAlertTime(AlertTime.ZERO);
+        List<Appointment> appointments = appointmentUtility.convertAlertToAppointments(alert);
+
+
+        return "redirect:/remindrs/{id}";
     }
 
     @PostMapping("/remindrs/{id}/edit-pic")

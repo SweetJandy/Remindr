@@ -9,7 +9,7 @@
     <h2>Invite friends</h2>
     <div class="row">
 
-        <a th:href="@{/contacts/add?from={id}(id = ${remindr.id})}" class="btn btn-primary">Add new contact</a>
+        <a th:href="@{/contacts/add?from={id}(id = ${remindr.id})}" class="btn btn-primary">Add more friends</a>
         <div class="col-lg-6">
             <input type="text" placeholder="search" id="searchContacts" class="form-control"/>
         </div>
@@ -22,7 +22,8 @@
                   <span class="input-group-addon">
                     <input type="checkbox" th:value="${contact.id}" name="contacts"/>
                   </span>
-                    <input type="text" class="form-control" readonly="readonly" th:value="${contact.firstName + ' ' + contact.lastName + ': ' + contact.phoneNumber}"/>
+                <input type="text" class="form-control" readonly="readonly" th:value="${contact.firstName}" />
+                     <!--+ ' ' + contact.lastName + ': ' + contact.phoneNumber}"/>&ndash;&gt;-->
                 </div><!-- /input-group -->
             </div><!-- /.col-lg-6 -->
         </div>
@@ -33,6 +34,9 @@
     </form>
 
 </div>
+
+<nav th:replace="/fragments/partials :: footer"></nav>
+
 <div th:replace="/fragments/partials :: scripts"></div>
 <script type="text/javascript" th:src="@{/scripts/add_button.js}"></script>
 <script>
