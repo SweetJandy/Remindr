@@ -92,8 +92,10 @@
             </div>
 
             <!--UPLOAD AN IMAGE-->
-            <input id="pic-input" th:field="*{uploadPath}" class="hidden" />
-            <a class="btn btn-primary" id="add-pic">Attach an image</a>
+            <input id="pic-input" th:field="*{uploadPath}" class="hidden"/>
+                <a class="btn btn-primary" id="add-pic" style="width:fit-content">
+                    <i class="fa fa-camera-retro" aria-hidden="true" style="font-size:32px;"></i>
+                </a>
             <img id="image-preview" style="display:block" />
 
             <!--&lt;!&ndash;UPLOAD AN IMAGE&ndash;&gt;-->
@@ -109,11 +111,12 @@
 
             <!--<p id="demo"></p>-->
 
-        <div class="row">
+        <!--<div class="row">-->
+            <br />
             <input class="btn btn-primary" type="submit" value="Next" th:href="@{/remindrs/add-contacts}"/>
             <!--<a href="/remindrs/add-contacts" class="btn btn-primary">Next: Add contacts</a>-->
             <a href="/remindrs" class="btn btn-primary">Cancel</a>
-        </div>
+        <!--</div>-->
         </form>
     </div>
 </div>

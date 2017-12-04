@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="/fragments/partials :: head('Create a remindr','scripts/css/remindrs/add-contacts.css')">
+<head th:replace="/fragments/partials :: head('Create a remindr','/scripts/css/remindrs/add-contacts.css')">
 </head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
@@ -10,8 +10,8 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<a th:href="@{/contacts/add?from={id}(id = ${remindr.id})}" class="btn btn-primary">Add more friends</a>
-			<button class="btn btn-primary" id="select-all">Select all Contacts</button>
-			<button class="btn btn-primary" id="deselect-all">Deselect all Contacts</button>
+			<!--<button class="btn btn-primary" id="select-all">Select all Contacts</button>-->
+			<!--<button class="btn btn-primary" id="deselect-all">Deselect all Contacts</button>-->
 		</div>
 		<div class="col-lg-6">
 			<input type="text" placeholder="search" id="searchContacts" class="form-control"/>
@@ -33,7 +33,6 @@
 		</div>
 
 		<a th:href="@{/remindrs/{id}/edit-alerts(id = ${remindr.id})}" class="btn btn-primary">Skip for now</a>
-		<a th:href="@{/remindrs/create}" class="btn btn-primary">Back</a>
 		<button class="btn btn-primary">Save</button>
 	</form>
 </div>
