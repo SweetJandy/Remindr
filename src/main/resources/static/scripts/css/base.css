@@ -1,5 +1,6 @@
 body {
     padding-bottom: 70px;
+    background-image: url('/scripts/img/dust_scratches.png');
 }
 
 a:link {
@@ -9,6 +10,8 @@ a:link {
 /*Footer*/
 #footer-links {
     list-style-type: none;
+    margin-top: 25px;
+    padding-left: 0;
 }
 
 #footer-links > li {
@@ -19,14 +22,25 @@ a:link {
     margin: 10px auto;
 }
 
+#footer-links > li > a {
+    color: white;
+    text-decoration: none;
+}
+
+.searchContainer {
+    padding-left: 0;
+}
+
 /*NAVBAR*/
 
 .navbar {
     margin-bottom: 0;
+    border-radius: 0;
 }
 
 nav.navbar.navbar-default {
     background-color: #F2545B;
+    border-color: transparent;
     height: 70px;
     border-top: none;
     border-bottom: none;
