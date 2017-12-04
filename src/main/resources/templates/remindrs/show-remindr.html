@@ -121,7 +121,7 @@
                 <h4 class="modal-title">Delete remindr</h4>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this remindr?</p>
+                <p>Are you sure you want to delete this event?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
@@ -130,6 +130,8 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<nav th:replace="/fragments/partials :: footer"></nav>
 
 <div th:replace="/fragments/partials :: scripts"></div>
 <div th:replace="/fragments/deleteRemindrModal :: deleteRemindrModalScript"></div>

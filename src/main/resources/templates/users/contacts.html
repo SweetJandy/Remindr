@@ -6,27 +6,38 @@
 
 <div class="container">
 	<div class="row">
-		<h1>Contacts <a href="/contacts/add" class="btn btn-default"><span class="glyph glyphicon-plus"></span></a></h1>
+		<h1 id="friends" class="text-center">Friends <a href="/contacts/add" class="btn btn-default"><span class="glyph glyphicon-plus"></span></a></h1>
 
-		<div class="col-lg-6">
-			<input type="text" placeholder="search" id="searchContacts" class="form-control"/>
+		<div th:if="${contacts.size()} &gt; 0">
+			<div class="col-lg-6">
+				<input type="text" placeholder="search" id="searchContacts" class="form-control"/>
+			</div>
 		</div>
-		<div th:each="contact : ${contacts}">
-			<h4><a th:href="${'/contacts/' + contact.id}">
+		<div th:if="${contacts.size()} == 0">
+			<div class="col-lg-12 text-center alert alert-info" role="alert">You don't have any friends yet. Click the plus sign to get started!</div>
+			<a href="/contacts/add">
+				<img src="/scripts/img/add-friend.png" class="img-responsive" alt="add friends" style="margin: 0 auto;" />
+			</a>
+		</div>
+		<div class="list-group col-lg-6" >
+			<div th:each="contact : ${contacts}">
+				<a class="list-group-item list-group-item-action" th:href="${'/contacts/' + contact.id}">
 				<span th:text="${contact.firstName}"></span>
-				<span th:text="${contact.lastName}" th:if="${contact.lastName != null}"></span>
+				<!--<span th:text="${contact.lastName}" th:if="${contact.lastName != null}"></span>-->
 				</a>
-			</h4>
+			</div>
 		</div>
 	</div>
 
 </div>
 
+<nav th:replace="/fragments/partials :: footer"></nav>
+
 <div th:replace="/fragments/partials :: scripts"></div>
 <script>
     $(document).ready(function(){
         $("#searchContacts").keyup(function(){
-            $("h4>a").each(function(){
+            $("div.list-group>div").each(function(){
                 var show = $(this).text().toLowerCase().indexOf($("#searchContacts").val().toLowerCase()) >= 0;
                 if(show){
                     $(this).show();
