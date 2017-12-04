@@ -1,5 +1,6 @@
 package com.sweetjandy.remindr.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Strings;
 import com.sweetjandy.remindr.models.*;
 import com.sweetjandy.remindr.repositories.AlertsRepository;
@@ -11,6 +12,10 @@ import com.sweetjandy.remindr.services.RemindrService;
 import com.sweetjandy.remindr.services.ScheduleService;
 import com.sweetjandy.remindr.services.TwilioService;
 import org.hibernate.Hibernate;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -735,7 +740,7 @@ public class RemindrController {
 
     }
 
-    @PostMapping("/remindrs/{id}/send")
+    @GetMapping("/remindrs/{id}/send")
     public String sendNow(@PathVariable Long id) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         user = usersRepository.findOne(user.getId());
@@ -751,6 +756,23 @@ public class RemindrController {
         alert.setRemindr(remindr);
         alert.setAlertTime(AlertTime.ZERO);
         List<Appointment> appointments = appointmentUtility.convertAlertToAppointments(alert);
+
+        for(Appointment appointment : appointments) {
+            try {
+                DateTimeZone zone = DateTimeZone.forID(appointment.getTimeZone());
+                DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm");
+                String d = formatter.print(DateTime.now().withZone(zone));
+                d = appointmentUtility.convertDate(d, appointment.getTimeZone());
+                appointment.setDate(d);
+                scheduleService.scheduleJob(appointment);
+            }
+            catch(ParseException ex) {
+                ex.printStackTrace();
+            }
+            catch(JsonProcessingException jx) {
+                jx.printStackTrace();
+            }
+        }
 
 
         return "redirect:/remindrs/{id}";
