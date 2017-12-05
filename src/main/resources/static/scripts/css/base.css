@@ -92,6 +92,16 @@ div.card.col-xs-12.col-sm-6:hover {
     box-shadow: 14px 4px 40px 3px #9e9e9e75;
 }
 
+#card-container {
+    position: relative;
+    z-index: 0;
+}
+
+#nav-container {
+    position: relative;
+    z-index: 999;
+}
+
 h4.card-title {
     font-size: 15px;
 }
