@@ -18,4 +18,10 @@ public class HomeController {
         return "/about";
     }
 
+    @GetMapping("/howitworks")
+    public String getHowItWorks() {
+
+        return "/howitworks";
+    }
+
 }

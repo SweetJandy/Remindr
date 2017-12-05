@@ -3,7 +3,6 @@
 	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" lang="en">
 <head th:fragment="head(title, href)">
     <meta charset="UTF-8" />
-
 	<!--token information is inserted into meta tag-->
 	<meta name="_csrf" th:content="${_csrf.token}"/>
 	<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -16,9 +15,9 @@
 	<link href="https://fonts.googleapis.com/css?family=Oswald:400,700|Raleway:400,800,800i,900,900i" rel="stylesheet" />
 	<link rel="stylesheet" href="/scripts/css/font-awesome-4.7.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" th:href="${href}" />
-
-</head>
+	<link rel="icon" type="image/x-icon" href="/scripts/img/header_icon.ico" />
 <body>
+
 <nav th:fragment="navbar" class="navbar navbar-default top-navbar">
 	<div class="container-fluid">
 		<!-- Brand and toggle get grouped for better mobile display -->
@@ -77,6 +76,9 @@
 <nav th:fragment="footer" class="navbar navbar-default navbar-fixed-bottom">
 	<div class="container" style="text-align:center;">
 		<ul id="footer-links">
+			<li>
+				<a href="/howitworks">About</a>
+			</li>
 			<li>
 				<a href="/about">About</a>
 			</li>
