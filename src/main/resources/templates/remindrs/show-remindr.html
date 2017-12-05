@@ -20,9 +20,9 @@
                                 <span class="glyphicon glyphicon-pencil"></span>
                             </a>
                         </h2>
-                        <div th:if="${description} != null">
+                        <div th:if="${description} != ''">
                             <h4 class="card-title">Description:</h4>
-                            <p class="card-text" th:text="${description}"></p>
+                            <p class="card-text" th:text="${remindr.description}"></p>
                         </div>
                         <!--START DATE AND TIME-->
                         <div th:if="${startdate} != null">
