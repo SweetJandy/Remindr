@@ -55,3 +55,15 @@ div.our-story-container {
     }
 
 }
+
+@media (max-width: 500px) {
+
+
+    img.phone {
+
+    width:  345px;
+    margin-left: auto;
+    margin-right: auto;
+
+    }
+}
