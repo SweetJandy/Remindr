@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:h="http://www.w3.org/1999/html">
-<head th:replace="/fragments/partials :: head('Create a remindr', '/scripts/css/remindrs/create.css')">
+<head th:replace="/fragments/partials :: head('Create an event', '/scripts/css/remindrs/create.css')">
 <link type="text/css" href="/scripts/cron/jquery-cron.css" rel="stylesheet" />
 </head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
 <div class="container">
     <div class="row">
-        <h1>Create an event</h1>
+        <h1 class="text-center">Create an event</h1>
         <form th:action="@{/remindrs/create}" method="post" th:object="${remindr}">
             <!--TITLE-->
             <div class="form-group">
