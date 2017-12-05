@@ -71,7 +71,7 @@ a.navbar-brand {
 
 button.btn-link.btn {
     color: white;
-    margin-top: -4px !important;
+    margin-top: -8px;
 }
 
 /*CARD STYLING*/
@@ -237,5 +237,8 @@ a.dropdown-toggle {
 @media screen and (max-width: 767px) {
     .navbar-default .navbar-nav .open .dropdown-menu > li > a {
         color: #FFF;
+    }
+    button.btn-link.btn {
+        margin-top: -4px;
     }
 }
