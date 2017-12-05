@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/fragments/partials :: head('Contacts', 'scripts/css/users/contacts.css')"></head>
+<head th:replace="/fragments/partials :: head('Friends', 'scripts/css/users/contacts.css')"></head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
 
@@ -23,7 +23,7 @@
 			<div th:each="contact : ${contacts}">
 				<a class="list-group-item list-group-item-action" th:href="${'/contacts/' + contact.id}">
 				<span th:text="${contact.firstName}"></span>
-				<!--<span th:text="${contact.lastName}" th:if="${contact.lastName != null}"></span>-->
+				<span th:text="${contact.lastName}" th:if="${contact.lastName != null}"></span>
 				</a>
 			</div>
 		</div>

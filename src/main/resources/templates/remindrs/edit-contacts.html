@@ -9,10 +9,8 @@
 	<h2>Invite friends</h2>
 	<div class="row">
 		<div class="col-xs-12">
-			<a th:href="@{/contacts/add?from={id}(id = ${remindr.id})}" class="btn btn-primary">Add new contact</a>
+			<a th:href="@{/contacts/edit?from={id}(id = ${remindr.id})}" class="btn btn-primary">Add more friends</a>
 
-			<!--<button class="btn btn-primary" id="select-all">Select all Contacts</button>-->
-			<!--<button class="btn btn-primary" id="deselect-all">Deselect all Contacts</button>-->
 		</div>
 		<div class="col-lg-6">
 			<input type="text" placeholder="search" id="searchContacts" class="form-control"/>

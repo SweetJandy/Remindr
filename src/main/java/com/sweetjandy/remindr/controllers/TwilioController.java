@@ -69,7 +69,7 @@ public class TwilioController {
 
         String response = twilioSvc.setResponse(body);
 
-        if (bodyParam.equalsIgnoreCase("yes") || bodyParam.equalsIgnoreCase("y")) {
+        if (bodyParam.trim().equalsIgnoreCase("yes") || bodyParam.trim().equalsIgnoreCase("y")) {
             // if they don't have any invites
             if(contact.getPending() == null) {
                 response = twilioSvc.setResponse(noInvites);
@@ -87,7 +87,7 @@ public class TwilioController {
                 contact.setPending(null);
                 contactsRepository.save(contact);
             }
-        } else if (bodyParam.equalsIgnoreCase("no") || bodyParam.equalsIgnoreCase("n")){
+        } else if (bodyParam.trim().equalsIgnoreCase("no") || bodyParam.trim().equalsIgnoreCase("n")){
             response = twilioSvc.setResponse(optOut);
             RemindrContact remindrContact = contact.getRemindrContacts().stream().filter(r -> r.getRemindr().equals(contact.getPending())).findFirst().get();
             remindrContact.setInviteStatus(InviteStatus.DECLINED);

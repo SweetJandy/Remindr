@@ -1,0 +1,14 @@
+#update-profile {
+    margin-bottom: 10px;
+}
+
+.account, .password {
+    background-color: #49D0B9 !important;
+    border-color: #49D0B9 !important;
+    margin-bottom: 10px;
+}
+
+.settings {
+    margin-bottom: 20px;
+}
+

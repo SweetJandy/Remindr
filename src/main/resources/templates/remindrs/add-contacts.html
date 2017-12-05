@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="/fragments/partials :: head('Create a remindr','/scripts/css/remindrs/add-contacts.css')">
+<head th:replace="/fragments/partials :: head('Invite friends','/scripts/css/remindrs/add-contacts.css')">
 </head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
@@ -9,7 +9,7 @@
 	<h2>Invite friends</h2>
 	<div class="row">
 		<div class="col-xs-12">
-			<a th:href="@{/contacts/add?from={id}(id = ${remindr.id})}" class="btn btn-primary">Add new contact</a>
+			<a th:href="@{/contacts/add?from={id}(id = ${remindr.id})}" class="btn btn-primary">Add more friends</a>
 			<div class="checkbox">
 				<label>
 					<input type="checkbox" id="check-all" name="contacts" />
@@ -29,6 +29,9 @@
 				<label class="list-group-item list-group-item-action">
 					<input type="checkbox" class="contact-checkbox" th:value="${contact.id}" name="contacts"/>
 					<span th:text="${contact.firstName}"></span>
+					<span th:if="${contact.LastName} != ''">
+                            <span th:text="${contact.LastName}"></span>
+                        </span>
 				</label>
 			</div>
 		</div>
