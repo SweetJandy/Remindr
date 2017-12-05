@@ -89,16 +89,24 @@
             th:errors="*{location}" >
         </div>
 
+
+        <div class="row">
             <!--UPLOAD AN IMAGE-->
-            <img th:src="${remindr.uploadPath}" width="200" alt="event image" id="image-preview"/>
+            <img th:src="${remindr.uploadPath}" class="col-xs-12 col-sm-5" style="display:none" width="300" id="image-preview"/>
+            <img class="col-xs-12 col-sm-5 remindr-logo" th:if="${remindr.uploadPath} == ''" src="/scripts/img/remindrBig.png" width="300"/>
             <a class="btn btn-primary" id="add-pic">Edit picture</a>
+
             <a class="btn btn-primary" id="choose-another" style="display: none">Choose another</a>
             <!--<form th:action="@{/remindrs/{id}/edit-pic(id = ${remindr.id})}" method="post">-->
             <input type="hidden" id="pic-input" name="pic-input" th:value="${remindr.uploadPath}" />
+        </div>
+        <br/>
+        <br/>
+        <div class="row">
                 <!--<button class="btn btn-primary" style="display:none" id="upload-pic">Confirm</button>-->
             <!--</form>-->
-
             <button class="btn btn-primary">Submit</button>
+        </div>
         </form>
         <a href="/remindrs" class="btn btn-primary">Cancel</a>
 
@@ -177,6 +185,7 @@
 
         function openPicker (event) {
             console.log(event);
+
 //        $("#add-pic").attr("Hidden", "hidden");
 
             fsClient.pick({
@@ -194,11 +203,14 @@
                 function handleFilestack(response) {
                     console.log(response);
                     $("#pic-input").val(response.filesUploaded[0].url);
+                    $(".remindr-logo").attr("style","display:none");
                     $("#image-preview").attr(
                         {
                             "src":response.filesUploaded[0].url,
                             "width": "200"
                         });
+
+                    $("#image-preview").css("display","inline-block");
                     $("#add-pic").attr("style","display: none");
                     $("#upload-pic").attr("style","display:inline-block");
                     $("#choose-another").attr("style","display:inline-block");
