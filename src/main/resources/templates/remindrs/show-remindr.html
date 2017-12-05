@@ -20,9 +20,9 @@
                                 <span class="glyphicon glyphicon-pencil"></span>
                             </a>
                         </h2>
-                        <div th:if="${description} != null">
+                        <div th:if="${description} != ''">
                             <h4 class="card-title">Description:</h4>
-                            <p class="card-text" th:text="${description}"></p>
+                            <p class="card-text" th:text="${remindr.description}"></p>
                         </div>
                         <!--START DATE AND TIME-->
                         <div th:if="${startdate} != null">
@@ -49,23 +49,24 @@
                 <!--FRIENDS-->
             <div class="grey-background">
                 <div class="friend-alert">
-                    <div class="card-block friends">
+                    <div class="card-block friends col-xs-12 col-sm-6">
                         <h2>Friends
                             <a th:href="@{/remindrs/{id}/add-contacts(id=${remindr.id})}" class="btn btn-default">
                                 <span class="glyphicon glyphicon-pencil"></span>
                             </a>
                         </h2>
 
-                    <h4>
-                        <span th:text="${contactSize}"></span>
-                        friend(s) invited
-                        <span th:if="${contactSize} > 0">:</span>
-                    </h4>
-                    <ul th:each="contact : ${contacts}">
-                        <li th:text = "${contact.firstName} + ' ' + ${contact.lastName}"></li>
-                    </ul>
+                        <h4>
+                            <span th:text="${contactSize}"></span>
+                            friend(s) invited
+                            <span th:if="${contactSize} > 0">:</span>
+                        </h4>
+                        <ul th:each="contact : ${contacts}">
+                            <li th:text = "${contact.firstName} + ' ' + ${contact.lastName}"></li>
+                        </ul>
+                    </div>
 
-                    <div class="card-block alerts">
+                    <div class="card-block alerts col-xs-12 col-sm-6">
                         <!--ALERTS-->
                         <h2>Remindrs
                             <a th:href="@{/remindrs/{id}/edit-alerts(id=${remindr.id})}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span>
@@ -81,11 +82,9 @@
                             <li th:text = "${alert}"></li>
                         </ul>
                     </div>
-                </div>
+            </div>
 
         <!--SEND NOW-->
-        <a th:href="@{/remindrs/{id}/send(id=${remindr.id})}" class="btn btn-primary send-immediate" style="width: 155px;
-">Remind immediately</a>
         <!--&lt;!&ndash; Button trigger modal &ndash;&gt;-->
         <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteRemindrModal">-->
             <!--Delete-->
@@ -108,13 +107,16 @@
                     <!--</ul>-->
                 <!--</div>-->
                 <!-- Button trigger modal -->
+                <a th:href="@{/remindrs/{id}/send(id=${remindr.id})}" class="btn btn-primary send-immediate" style="width: 155px;">
+                    Remind immediately
+                </a>
                 <div class="card-block buttons">
                     <a th:href="@{/remindrs}" class="btn btn-primary" style="color:white;">Back to events</a>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteRemindrModal">
                         Delete
                     </button>
                 </div>
-            </div>
+
                 <div class="card-footer text-muted">
                     <h4>Created by:
                         <span th:text="${remindr.user.contact.FirstName}"></span>
