@@ -2,12 +2,12 @@ input.btn.btn-primary {
     width: 145px;
     height: 40px;
     border:none;
-    background-color: #49D0B9;
+    background-color: #6E7E85;
 }
 
 input.btn.btn-primary:hover {
     border: none;
-    background-color: #49D0B9;
+    background-color: #9cadb4;
 }
 
 input.btn.btn-primary:active {
@@ -39,9 +39,5 @@ a.btn.btn-primary:active {
 #cancel {
     width: 145px;
     margin-top: 10px;
-
-}
-
-.import {
-    width:200px;
+    background-color: #6E7E85;
 }
