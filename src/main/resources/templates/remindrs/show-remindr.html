@@ -56,15 +56,14 @@
                             </a>
                         </h2>
 
-                        <h4>
-                            <span th:text="${contactSize}"></span>
-                            friend(s) invited
-                            <span th:if="${contactSize} > 0">:</span>
-                        </h4>
-                        <ul th:each="contact : ${contacts}">
-                            <li th:text = "${contact.firstName + ' ' + contact.lastName}"></li>
-                        </ul>
-                    </div>
+                    <h4>
+                        <span th:text="${contactSize}"></span>
+                        friend(s) invited
+                        <span th:if="${contactSize} > 0">:</span>
+                    </h4>
+                    <ul th:each="contact : ${contacts}">
+                        <li th:text = "${contact.firstName} + ' ' + ${contact.lastName}"></li>
+                    </ul>
 
                     <div class="card-block alerts">
                         <!--ALERTS-->
@@ -85,7 +84,8 @@
                 </div>
 
         <!--SEND NOW-->
-        <a th:href="@{/remindrs/{id}/send(id=${remindr.id})}" class="btn btn-primary">Send now</a>
+        <a th:href="@{/remindrs/{id}/send(id=${remindr.id})}" class="btn btn-primary send-immediate" style="width: 155px;
+">Remind immediately</a>
         <!--&lt;!&ndash; Button trigger modal &ndash;&gt;-->
         <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteRemindrModal">-->
             <!--Delete-->
@@ -109,7 +109,7 @@
                 <!--</div>-->
                 <!-- Button trigger modal -->
                 <div class="card-block buttons">
-                    <a th:href="@{/remindrs}" class="btn btn-primary" style="color:white;">Back to remindrs</a>
+                    <a th:href="@{/remindrs}" class="btn btn-primary" style="color:white;">Back to events</a>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteRemindrModal">
                         Delete
                     </button>
@@ -117,11 +117,13 @@
             </div>
                 <div class="card-footer text-muted">
                     <h4>Created by:
-                        <span th:text="${remindr.user.contact.FirstName + ' ' + remindr.user.contact.LastName}"></span>
+                        <span th:text="${remindr.user.contact.FirstName}"></span>
+                        <span th:if="${remindr.user.contact.LastName} != ''">
+                            <span th:text="${remindr.user.contact.LastName}"></span>
+                        </span>
                     </h4>
                 </div>
             </div>
-
 
         <!--<a class="btn btn-primary" id="add-pic">Edit picture</a>-->
         <!--<a class="btn btn-primary" id="choose-another" style="display: none">Choose another</a>-->
@@ -213,5 +215,6 @@
 
 <!--});-->
 <!--</script>-->
+    </div>
 </body>
 </html>

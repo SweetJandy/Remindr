@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/fragments/partials :: head('Add contacts','/scripts/css/users/add-contacts.css')"></head>
+<head th:replace="/fragments/partials :: head('Add friends','/scripts/css/users/add-contacts.css')"></head>
 <body>
 <nav th:replace="/fragments/partials :: navbar"></nav>
 
@@ -12,7 +12,8 @@
 
         <a class="btn btn-primary" id="import" th:href="${authorizationUrl}">Import your Google contacts</a>
 
-        <h4>OR</h4>
+        <h2>OR</h2>
+
 
         <form th:action="@{/contacts/add}" th:method="post" th:object="${contact}">
             <div class="form-group">

@@ -15,8 +15,9 @@
 		<button type="button" class="btn btn-primary" id="delete" data-toggle="modal" data-target="#deleteContactModal">
 			<span class="glyphicon glyphicon-minus"></span></button>
 
-		<h2 th:text="${contact.firstName} + ' ' + ${contact.lastName}"></h2>
-
+		<h2><span th:text="${contact.firstName}"></span>
+		<span th:text="${contact.lastName}" th:if="${contact.lastName != null}"></span>
+		</h2>
 
 		<h3 th:text="${contact.phoneNumber}"></h3>
 
