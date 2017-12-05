@@ -70,7 +70,8 @@ a.navbar-brand {
 }
 
 button.btn-link.btn {
-    color:white;
+    color: white;
+    margin-top: -4px !important;
 }
 
 /*CARD STYLING*/
@@ -86,6 +87,7 @@ div.card.col-xs-12.col-sm-6 {
     border-radius: 7px;
     margin-bottom: 20px;
     padding: 0;
+    position: static;
 }
 
 div.card.col-xs-12.col-sm-6:hover {
@@ -107,19 +109,19 @@ h4.card-title {
 }
 
 h4.card-title a {
-    color:white;
-    font-weight:300;
+    color: white;
+    font-weight: 300;
 }
 
 h4.card-title a:hover {
-    color:white;
+    color: white;
     text-decoration: none;
 }
 
 div.card-footer {
     width: 100%;
     margin-bottom: 0;
-    margin-top:11px;
+    margin-top: 11px;
     padding-bottom: 0;
     text-align: center;
     height: 44px;
@@ -136,7 +138,7 @@ img.card-img-top {
 
 button.btn.btn-primary {
     background-color: #49D0B9;
-    border:none;
+    border: none;
     width: 145px;
     height: 40px;
 }
@@ -144,12 +146,12 @@ button.btn.btn-primary {
 button.btn.btn-primary:hover {
     background-color: #49D0B9;
     background-color: #2f8c7d;
-    border:none;
+    border: none;
 
 }
 
 button.btn.btn-primary:active {
-    background-color:#49D0B9;
+    background-color: #49D0B9;
     border: none;
 }
 
@@ -157,25 +159,25 @@ a.btn.btn-primary {
     line-height: 29px;
     color: white;
     background-color: #49D0B9;
-    border:none;
+    border: none;
     width: 145px;
     height: 40px;
 }
 
 a.btn.btn-primary:hover {
     background-color: #2f8c7d;
-    border:none;
+    border: none;
 }
 
 a.btn.btn-primary:active {
-    background-color:#49D0B9;
+    background-color: #49D0B9;
     border-color: transparent;
 }
 
 input.btn.btn-primary {
     width: 145px;
     height: 40px;
-    border:none;
+    border: none;
     background-color: #49D0B9;
 }
 
@@ -185,7 +187,7 @@ input.btn.btn-primary:hover {
 }
 
 input.btn.btn-primary:active {
-    border:none;
+    border: none;
     background-color: #49D0B9;
 }
 
@@ -207,4 +209,33 @@ label {
 
 a {
     font-family: 'Raleway', sans-serif;
+}
+
+ul.nav.navbar-nav.navbar-right {
+
+    padding-top: 10px;
+    background-color: #F2545B;
+    text-align: center;
+    margin-top: 2px;
+}
+
+.container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+a.dropdown-toggle {
+    color: #FFF;
+    background-color: #F2545B;
+}
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:focus {
+    color: #FFF;
+    background-color: #F2545B;
+}
+
+@media screen and (max-width: 767px) {
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+        color: #FFF;
+    }
 }
