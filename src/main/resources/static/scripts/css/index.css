@@ -93,13 +93,13 @@ div.main-button {
     width: 100%;
 }
 
-a.main-butt {
-    width: fit-content !important;
-    border: 5px solid white !important;
-    height: 100px !important;
-    font-size: 300% !important;
-    border-radius: 20px !important;
-    line-height: 1.6 !important;
+a.btn.btn-lg.btn-primary.main-butt {
+    width: fit-content;
+    border: 5px solid white;
+    height: 100px;
+    font-size: 300%;
+    border-radius: 20px;
+    line-height: 1.6;
 }
 
 /*End of slider*/
@@ -124,4 +124,12 @@ a.main-butt {
         /* Center and scale the image nicely */
 
     }
+}
+
+@media (max-width: 768px) {
+   a.btn.btn-lg.btn-primary.main-butt {
+       width: 80%;
+       font-size: 26px;
+       line-height: 68px;
+   }
 }
