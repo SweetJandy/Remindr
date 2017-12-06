@@ -234,11 +234,14 @@ a.dropdown-toggle {
     background-color: #F2545B;
 }
 
+@media screen and (max-width: 768px) {
+    button.btn-link.btn {
+        margin-top: -4px !important;
+    }
+}
+
 @media screen and (max-width: 767px) {
     .navbar-default .navbar-nav .open .dropdown-menu > li > a {
         color: #FFF;
-    }
-    button.btn-link.btn {
-        margin-top: -4px;
     }
 }
