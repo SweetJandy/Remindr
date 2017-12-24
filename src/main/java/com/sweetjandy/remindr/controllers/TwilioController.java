@@ -2,6 +2,7 @@ package com.sweetjandy.remindr.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sweetjandy.remindr.models.*;
 import com.sweetjandy.remindr.repositories.ContactsRepository;
+import com.sweetjandy.remindr.repositories.RemindrsRepository;
 import com.sweetjandy.remindr.services.AppointmentUtility;
 import com.sweetjandy.remindr.services.PhoneService;
 import com.sweetjandy.remindr.services.ScheduleService;
@@ -19,6 +20,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -33,13 +36,15 @@ public class TwilioController {
     private PhoneService phoneService;
     private ScheduleService scheduleService;
     private AppointmentUtility appointmentUtility;
+    private RemindrsRepository remindrsRepository;
 
-    public TwilioController(TwilioService twilioservice, ContactsRepository contactsRepository, PhoneService phoneService, ScheduleService scheduleService, AppointmentUtility appointmentUtility) {
+    public TwilioController(TwilioService twilioservice, ContactsRepository contactsRepository, PhoneService phoneService, ScheduleService scheduleService, AppointmentUtility appointmentUtility, RemindrsRepository remindrsRepository) {
         this.twilioSvc = twilioservice;
         this.contactsRepository = contactsRepository;
         this.phoneService = phoneService;
         this.scheduleService = scheduleService;
         this.appointmentUtility = appointmentUtility;
+        this.remindrsRepository = remindrsRepository;
     }
 
 //    @GetMapping ("/sendSMS")
@@ -59,7 +64,27 @@ public class TwilioController {
         String phoneNumber = allRequestParams.get("From");
         phoneNumber = phoneService.formatPhoneNumber(phoneNumber);
         List<Contact> contacts = contactsRepository.findByPhoneNumber(phoneNumber);
-        Contact contact = contacts.stream().filter(c -> c.getPending() != null).findFirst().get();
+//        Contact contact = contacts.stream().filter(c -> c.getPending() != null).findFirst().get();
+        Contact contact = null;
+
+        // get all events
+        List<Remindr> remindrList = new ArrayList<>();
+        for (Remindr remindr : remindrsRepository.findAll()) {
+            remindrList.add(remindr);
+        }
+        Collections.reverse(remindrList);
+
+        for(Remindr remindr : remindrList) {
+            for (Contact contact1 : contacts) {
+                if (contact1.getPending() != null && contact1.getPending().getId() == remindr.getId()) {
+                    contact = contact1;
+                    break;
+                }
+            }
+            if (contact != null) {
+                break;
+            }
+        }
 
         String bodyParam = allRequestParams.get("Body");
 
@@ -69,14 +94,15 @@ public class TwilioController {
 
         String response = twilioSvc.setResponse(body);
 
+        final Contact contactFinal = contact;
         if (bodyParam.trim().equalsIgnoreCase("yes") || bodyParam.trim().equalsIgnoreCase("y")) {
             // if they don't have any invites
-            if(contact.getPending() == null) {
+            if(contact == null || contact.getPending() == null) {
                 response = twilioSvc.setResponse(noInvites);
             } else {
                 Body optIn = new Body("Thanks, we'll send you reminders for '" + contact.getPending().getTitle() + "'.");
                 response = twilioSvc.setResponse(optIn);
-                RemindrContact remindrContact = contact.getRemindrContacts().stream().filter(r -> r.getRemindr().equals(contact.getPending())).findFirst().get();
+                RemindrContact remindrContact = contact.getRemindrContacts().stream().filter(r -> r.getRemindr().equals(contactFinal.getPending())).findFirst().get();
                 remindrContact.setInviteStatus(InviteStatus.ACCEPTED);
 
                 for(Alert alert : contact.getPending().getAlerts()) {
@@ -88,11 +114,15 @@ public class TwilioController {
                 contactsRepository.save(contact);
             }
         } else if (bodyParam.trim().equalsIgnoreCase("no") || bodyParam.trim().equalsIgnoreCase("n")){
-            response = twilioSvc.setResponse(optOut);
-            RemindrContact remindrContact = contact.getRemindrContacts().stream().filter(r -> r.getRemindr().equals(contact.getPending())).findFirst().get();
-            remindrContact.setInviteStatus(InviteStatus.DECLINED);
-            contact.setPending(null);
-            contactsRepository.save(contact);
+            if(contact == null || contact.getPending() == null) {
+                response = twilioSvc.setResponse(noInvites);
+            } else {
+                response = twilioSvc.setResponse(optOut);
+                RemindrContact remindrContact = contact.getRemindrContacts().stream().filter(r -> r.getRemindr().equals(contactFinal.getPending())).findFirst().get();
+                remindrContact.setInviteStatus(InviteStatus.DECLINED);
+                contact.setPending(null);
+                contactsRepository.save(contact);
+            }
         }
 
         return response;

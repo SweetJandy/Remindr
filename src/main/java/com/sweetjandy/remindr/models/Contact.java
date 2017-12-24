@@ -30,7 +30,7 @@ public class Contact {
     @NotBlank(message = "Phone number cannot be blank")
     private String phoneNumber;
 
-    @Column(nullable = true, unique = true)
+    @Column(nullable = true)
     private String googleContact;
 
     @Column(nullable = true, unique = true)

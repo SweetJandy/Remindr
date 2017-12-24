@@ -62,7 +62,8 @@
                             <span th:if="${contactSize} > 0">:</span>
                         </h4>
                         <ul th:each="contact : ${contacts}">
-                            <li th:text = "${contact.firstName} + ' ' + ${contact.lastName}"></li>
+                            <li><span th:text = "${contact.firstName}"></span> <span th:if="${contact.LastName} != ''" th:text="${contact.LastName}"></span>
+                            </li>
                         </ul>
                     </div>
 
