@@ -53,8 +53,10 @@
             </div>
 
             <!--Click this to toggle optional enddate form-->
-            <label for="optional-enddate">Set an end date/ time</label>
-            <input id="optional-enddate" type="checkbox" />
+            <div class="form-group">
+                <label for="optional-enddate">Set an end date/ time</label>
+                <input id="optional-enddate" type="checkbox" />
+            </div>
 
             <!--END DATE/TIME-->
             <!--<div class="form-group">-->
@@ -128,6 +130,16 @@
 <script type="text/javascript" src="/scripts/cron/jquery-cron.js"></script>
 <script th:inline="javascript" type="text/javascript">
     $(document).ready(function() {
+
+        //Press Enter in INPUT moves cursor to next INPUT
+        $('input,select').keypress(function(e){
+            if ( e.which == 13 ) // Enter key = keycode 13
+            {
+                $(this).parents('.form-group').first().nextAll('.form-group').first().find('input:visible,select:visible,textarea:visible').focus();  //Use whatever selector necessary to focus the 'next' input
+                return false;
+            }
+        });
+
         $("#endDateTime").val('');
 
         // check if the checkbox is checked (say that five times fast!!)
@@ -135,14 +147,12 @@
             var isItChecked = $('#optional-enddate').prop('checked');
 
             if (isItChecked) {
-                console.log("It's checked!");
 
                 $("#endDateTime").show();
 //                $("#enddate-label").show();
 //                $("#enddate-label").attr("style","display:block;");
 
             } else {
-                console.log("It's not checked!");
                 $("#endDateTime").hide();
                 $("#endDateTime").val('');
                 $("#enddate-label").hide();
