@@ -124,7 +124,7 @@
 <nav th:replace="/fragments/partials :: footer"></nav>
 
 <div th:replace="/fragments/partials :: scripts"></div>
-<script src="../../static/scripts/file-upload.js"></script>
+<!--<script src="../../static/scripts/file-upload.js"></script>-->
 <script type="text/javascript" src="/scripts/cron/jquery-cron.js"></script>
 <script th:inline="javascript" type="text/javascript">
     $(document).ready(function() {
@@ -222,5 +222,32 @@
 
     });
 </script>
+
+
+
+<script type="text/javascript">
+    function initAutocomplete() {
+        // Create the autocomplete object, restricting the search to geographical
+        // location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('location')),
+            {types: ['geocode']});
+
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+        autocomplete.addListener('place_changed', fillInAddress);
+    }
+
+    function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+
+}
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6OxgyNUW0ssZHfKgSLFIb7VVq-Uh6d6I&amp;libraries=places&amp;callback=initAutocomplete" async="true" defer="true"></script>
+
+
+
 </body>
 </html>
